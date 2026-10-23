@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitAI - مدربك الذكي والتغذية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #6366f1;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --card-border: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --female-color: #ec4899;
+            --water-color: #38bdf8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-bottom: 80px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--bg-dark);
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .user-status-badge {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.7rem;
+            cursor: pointer;
+            width: 16%;
+            padding: 4px 0;
+        }
+
+        .nav-item i { font-size: 1.1rem; }
+        .nav-item.active { color: var(--primary); font-weight: 700; }
+
+        .tab-content { display: none; padding: 16px; }
+        .tab-content.active { display: block; }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .form-group { margin-bottom: 12px; }
+        .form-label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; }
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            background-color: var(--bg-dark);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .checkbox-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .checkbox-card {
+            background-color: var(--bg-dark);
+            border: 1px solid var(--card-border);
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .checkbox-card input { accent-color: var(--primary); width: 16px; height: 16px; }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-primary { background-color: var(--primary); color: #000; }
+        .btn-danger { background-color: var(--danger); color: white; }
+        .btn-water { background-color: var(--water-color); color: #000; }
+        .btn-secondary { background-color: rgba(99, 102, 241, 0.2); color: var(--secondary); border: 1px solid var(--secondary); }
+
+        .macros-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
+        .macro-item { background-color: var(--bg-dark); padding: 10px 4px; border-radius: 10px; text-align: center; }
+        .macro-value { font-weight: 700; font-size: 0.95rem; color: var(--primary); }
+        .macro-label { font-size: 0.7rem; color: var(--text-muted); }
+
+        .camera-box {
+            width: 100%;
+            height: 180px;
+            background-color: var(--bg-dark);
+            border: 2px dashed var(--card-border);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .camera-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        .exercise-item {
+            background-color: var(--bg-dark);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .exercise-icon {
+            width: 40px; height: 40px;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--primary);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .alarm-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(15, 23, 42, 0.96);
+            z-index: 999;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+        .alarm-box {
+            background-color: var(--card-bg);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            padding: 24px;
+            width: 100%;
+            max-width: 340px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .health-alert {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-right: 4px solid var(--warning);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: #fcd34d;
+            margin-top: 10px;
+        }
+
+        canvas { width: 100% !important; height: 180px !important; background: var(--bg-dark); border-radius: 12px; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header>
+        <div class="brand-logo">
+            <i class="fa-solid fa-brain"></i>
+            <span>FitAI</span>
+        </div>
+        <div class="user-status-badge" id="headerGoal">تخسيس وحرق دهون</div>
+    </header>
+
+    <!-- TAB 1: HOME -->
+    <div id="tab-home" class="tab-content active">
+        <div class="card">
+            <div class="card-title">
+                <span><i class="fa-solid fa-fire text-warning"></i> الملخص اليومي</span>
+                <span style="font-size: 0.8rem; color: var(--text-muted);" id="currentDate">اليوم</span>
+            </div>
+            <div class="macros-grid">
+                <div class="macro-item"><div class="macro-value" id="calVal">0/2000</div><div class="macro-label">سعرة</div></div>
+                <div class="macro-item"><div class="macro-value" id="protVal">0g</div><div class="macro-label">بروتين</div></div>
+                <div class="macro-item"><div class="macro-value" id="carbVal">0g</div><div class="macro-label">كارب</div></div>
+                <div class="macro-item"><div class="macro-value" id="fatVal">0g</div><div class="macro-label">دهون</div></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <span><i class="fa-solid fa-droplet" style="color: var(--water-color);"></i> متابعة الماء</span>
+                <span style="font-size: 0.85rem; color: var(--water-color);" id="waterText">0 / 2.5 لتر</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-dark); padding: 10px; border-radius: 10px;">
+                <button class="btn btn-secondary" style="width: 40px; height: 40px;" onclick="addWater(-0.25)">-</button>
+                <span style="font-weight: 700;" id="waterCount">0 أكواب</span>
+                <button class="btn btn-secondary" style="width: 40px; height: 40px;" onclick="addWater(0.25)">+</button>
+            </div>
+        </div>
+
+        <div id="healthAlertsBox"></div>
+    </div>
+
+    <!-- TAB 2: ALARMS -->
+    <div id="tab-alarms" class="tab-content">
+        <!-- 1. منبه الطعام الصارم بأوقات متعددة -->
+        <div class="card" style="border: 1px solid var(--danger);">
+            <div class="card-title">
+                <span><i class="fa-solid fa-utensils text-danger"></i> أوقات منبهات الوجبات (تصوير فقط)</span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
+                حدد مواعيد وجباتك المفضل. المنبه لن ينطفئ حتى تفتح الكاميرا وتصوّر الطعام!
+            </p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <div class="form-group">
+                    <label class="form-label">وجبة الفطور</label>
+                    <input type="time" class="form-input" id="breakfastTime" value="08:00" onchange="saveAlarms()">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">وجبة الغداء</label>
+                    <input type="time" class="form-input" id="lunchTime" value="14:00" onchange="saveAlarms()">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">وجبة العشاء</label>
+                <input type="time" class="form-input" id="dinnerTime" value="20:00" onchange="saveAlarms()">
+            </div>
+            <button class="btn btn-danger" onclick="startAlarmSound('food')">
+                <i class="fa-solid fa-bell"></i> تجربة منبه الوجبات الصارم
+            </button>
+        </div>
+
+        <!-- 2. منبه التمارين الرياضية -->
+        <div class="card" style="border: 1px solid var(--primary);">
+            <div class="card-title">
+                <span><i class="fa-solid fa-dumbbell text-primary"></i> موعد منبه التمارين الرياضية</span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
+                اختر الوقت المناسب لك يومياً لبدء أداء تمارينك.
+            </p>
+            <div class="form-group">
+                <label class="form-label">موعد التمرين المفضّل</label>
+                <input type="time" class="form-input" id="workoutAlarmTime" value="17:00" onchange="saveAlarms()">
+            </div>
+            <button class="btn btn-primary" onclick="startAlarmSound('workout')">
+                <i class="fa-solid fa-bell"></i> تجربة منبه التمارين
+            </button>
+        </div>
+
+        <!-- 3. منبه شرب الماء المكرر -->
+        <div class="card" style="border: 1px solid var(--water-color);">
+            <div class="card-title">
+                <span><i class="fa-solid fa-droplet" style="color: var(--water-color);"></i> منبه شرب الماء المكرر</span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
+                تذكير دوري لزيادة استهلاكك للماء بانتظام طوال اليوم.
+            </p>
+            <div class="form-group">
+                <label class="form-label">التذكير كل (ساعات)</label>
+                <select class="form-select" id="waterAlarmInterval" onchange="saveAlarms()">
+                    <option value="1">كل ساعة</option>
+                    <option value="2" selected>كل ساعتين</option>
+                    <option value="3">كل 3 ساعات</option>
+                </select>
+            </div>
+            <button class="btn btn-water" onclick="startAlarmSound('water')">
+                <i class="fa-solid fa-bell"></i> تجربة منبه الماء
+            </button>
+        </div>
+    </div>
+
+    <!-- TAB 3: MEAL SCANNER -->
+    <div id="tab-nutrition" class="tab-content">
+        <div class="card">
+            <div class="card-title">
+                <span><i class="fa-solid fa-camera text-primary"></i> تحليل الوجبة بالكاميرا</span>
+            </div>
+            <div class="camera-box" onclick="document.getElementById('imgInput').click()">
+                <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2rem; color: var(--text-muted);"></i>
+                <span style="font-size: 0.8rem; color: var(--text-muted);" id="camText">اضغط هنا لالتقاط أو رفع صورة</span>
+                <img id="imgPreview" style="display: none;">
+            </div>
+            <input type="file" id="imgInput" accept="image/*" style="display: none;" onchange="previewFile(event)">
+
+            <button class="btn btn-primary" style="margin-top: 10px;" onclick="analyzeAI()">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> تحليل الوجبة الآن
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><span>وجبات نموذجية سريعة</span></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <button class="btn btn-secondary" onclick="pickPreset('chicken')">دجاج وأرز</button>
+                <button class="btn btn-secondary" onclick="pickPreset('salad')">سلطة سلمون</button>
+                <button class="btn btn-secondary" onclick="pickPreset('sweets')">حلويات</button>
+                <button class="btn btn-secondary" onclick="pickPreset('oats')">شوفان وفاكهة</button>
+            </div>
+        </div>
+
+        <div id="resultCard" class="card" style="display: none;">
+            <div class="card-title"><span id="mealTitle">نتيجة التحليل</span></div>
+            <div class="macros-grid">
+                <div class="macro-item"><div class="macro-value" id="rCal">0</div><div class="macro-label">سعرة</div></div>
+                <div class="macro-item"><div class="macro-value" id="rProt">0g</div><div class="macro-label">بروتين</div></div>
+                <div class="macro-item"><div class="macro-value" id="rCarb">0g</div><div class="macro-label">كارب</div></div>
+                <div class="macro-item"><div class="macro-value" id="rFat">0g</div><div class="macro-label">دهون</div></div>
+            </div>
+            <div id="healthFeedback" class="health-alert"></div>
+            <button class="btn btn-primary" style="margin-top: 10px;" onclick="addMealToHome()">
+                <i class="fa-solid fa-check"></i> اعتماد الوجبة وحفظها
+            </button>
+        </div>
+    </div>
+
+    <!-- TAB 4: WORKOUTS -->
+    <div id="tab-workout" class="tab-content">
+        <div class="card">
+            <div class="card-title">
+                <span><i class="fa-solid fa-dumbbell text-primary"></i> جدول التمارين المخصص</span>
+            </div>
+            <div id="workoutList"></div>
+        </div>
+    </div>
+
+    <!-- TAB 5: BODY TRACKER -->
+    <div id="tab-progress" class="tab-content">
+        <div class="card">
+            <div class="card-title"><span><i class="fa-solid fa-chart-line text-primary"></i> رسم بياني لمتابعة الوزن</span></div>
+            <canvas id="weightChart"></canvas>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><span>تسجيل وزن جديد</span></div>
+            <div style="display: flex; gap: 8px;">
+                <input type="number" id="newWeightInput" class="form-input" placeholder="الوزن الحالي (كجم)">
+                <button class="btn btn-primary" style="width: 120px;" onclick="recordWeight()">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 6: PROFILE -->
+    <div id="tab-profile" class="tab-content">
+        <div class="card">
+            <div class="card-title"><span><i class="fa-solid fa-user-gear text-primary"></i> بياناتك الشخصية وهدفك</span></div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
+                اختر هدفك بدقة (تخسيس، زيادة وزن/النصح، بناء عضلات) للتكيف التلقائي.
+            </p>
+            <form onsubmit="saveProfileData(event)">
+                <div class="form-group">
+                    <label class="form-label">الجنس</label>
+                    <select class="form-select" id="genderSelect" onchange="checkGender()">
+                        <option value="male">ذكر</option>
+                        <option value="female">أنثى</option>
+                    </select>
+                </div>
+
+                <div id="femaleBox" style="display: none; margin-bottom: 10px; background: rgba(236,72,153,0.1); padding: 8px; border-radius: 8px;">
+                    <label class="checkbox-card">
+                        <input type="checkbox" id="periodCheck" onchange="renderWorkouts()">
+                        <span style="color: var(--female-color); font-weight: 700;">وضع الدورة الشهرية (تمارين خفيفة)</span>
+                    </label>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <div class="form-group">
+                        <label class="form-label">الوزن (كجم)</label>
+                        <input type="number" id="wInput" class="form-input" value="70">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">الطول (سم)</label>
+                        <input type="number" id="hInput" class="form-input" value="170">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">الهدف البدني</label>
+                    <select class="form-select" id="goalSelect">
+                        <option value="weight_loss">تخسيس وحرق دهون</option>
+                        <option value="weight_gain">زيادة الوزن والنصاحة (تضخيم)</option>
+                        <option value="muscle_gain">بناء عضلات وصقل الجسم</option>
+                        <option value="fitness">لياقة عامة والمحافظة</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">الأمراض المزمنة (إن وجدت)</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-card"><input type="checkbox" id="d_diabetes"> سكري</label>
+                        <label class="checkbox-card"><input type="checkbox" id="d_pressure"> ضغط</label>
+                        <label class="checkbox-card"><input type="checkbox" id="d_anemia"> فقر دم</label>
+                        <label class="checkbox-card"><input type="checkbox" id="d_joints"> مفاصل</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save"></i> حفظ وتحديث الخطة الذكية</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- DYNAMIC ALARM POPUP MODAL -->
+    <div class="alarm-modal" id="alarmModal">
+        <div class="alarm-box" id="alarmBoxContainer"></div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="showTab('home', this)"><i class="fa-solid fa-house"></i><span>الرئيسية</span></div>
+        <div class="nav-item" onclick="showTab('alarms', this)"><i class="fa-solid fa-bell"></i><span>المنبهات</span></div>
+        <div class="nav-item" onclick="showTab('nutrition', this)"><i class="fa-solid fa-camera"></i><span>الماسح</span></div>
+        <div class="nav-item" onclick="showTab('workout', this)"><i class="fa-solid fa-person-running"></i><span>التمارين</span></div>
+        <div class="nav-item" onclick="showTab('progress', this)"><i class="fa-solid fa-chart-line"></i><span>التقدم</span></div>
+        <div class="nav-item" onclick="showTab('profile', this)"><i class="fa-solid fa-user"></i><span>الملف</span></div>
+    </nav>
+</div>
+
+<script>
+    let user = {
+        gender: 'male',
+        weight: 70,
+        height: 170,
+        goal: 'weight_loss',
+        period: false,
+        diseases: { diabetes: false, pressure: false, anemia: false, joints: false }
+    };
+
+    let alarmsConfig = {
+        breakfastTime: "08:00",
+        lunchTime: "14:00",
+        dinnerTime: "20:00",
+        workoutTime: "17:00",
+        waterInterval: "2"
+    };
+
+    let totals = { cal: 0, prot: 0, carb: 0, fat: 0, water: 0 };
+    let weightHistory = [72, 71.5, 71.0, 70.5, 70.0];
+    let tempMeal = null;
+
+    let audioCtx = null;
+    let alarmOscillator = null;
+
+    const presets = {
+        chicken: { name: "دجاج مشوي مع أرز", cal: 520, prot: 45, carb: 50, fat: 10, img: "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=400&q=80" },
+        salad: { name: "سلطة سلمون", cal: 380, prot: 32, carb: 12, fat: 22, img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80" },
+        sweets: { name: "طبق حلويات", cal: 650, prot: 6, carb: 85, fat: 30, img: "https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=400&q=80" },
+        oats: { name: "شوفان وفاكهة", cal: 340, prot: 14, carb: 52, fat: 8, img: "https://images.unsplash.com/photo-1517673400267-0251440c45dc?auto=format&fit=crop&w=400&q=80" }
+    };
+
+    window.onload = function() {
+        document.getElementById('currentDate').innerText = new Date().toLocaleDateString('ar-EG', { weekday: 'long', day: 'numeric', month: 'short' });
+        
+        const saved = localStorage.getItem('fitai_db_data');
+        if(saved) {
+            loadLocalData();
+        } else {
+            showTab('profile', document.querySelectorAll('.nav-item')[5]);
+        }
+        
+        renderWorkouts();
+        renderAlerts();
+        drawChart();
+        updateGoalHeader();
+    };
+
+    function loadLocalData() {
+        const saved = localStorage.getItem('fitai_db_data');
+        if(saved) {
+            const data = JSON.parse(saved);
+            user = data.user || user;
+            totals = data.totals || totals;
+            weightHistory = data.weightHistory || weightHistory;
+            alarmsConfig = data.alarmsConfig || alarmsConfig;
+
+            document.getElementById('genderSelect').value = user.gender;
+            document.getElementById('wInput').value = user.weight;
+            document.getElementById('hInput').value = user.height;
+            document.getElementById('goalSelect').value = user.goal;
+            checkGender();
+            if(user.gender === 'female') document.getElementById('periodCheck').checked = user.period;
+
+            document.getElementById('d_diabetes').checked = user.diseases.diabetes;
+            document.getElementById('d_pressure').checked = user.diseases.pressure;
+            document.getElementById('d_anemia').checked = user.diseases.anemia;
+            document.getElementById('d_joints').checked = user.diseases.joints;
+
+            if(document.getElementById('breakfastTime')) document.getElementById('breakfastTime').value = alarmsConfig.breakfastTime || "08:00";
+            if(document.getElementById('lunchTime')) document.getElementById('lunchTime').value = alarmsConfig.lunchTime || "14:00";
+            if(document.getElementById('dinnerTime')) document.getElementById('dinnerTime').value = alarmsConfig.dinnerTime || "20:00";
+            if(document.getElementById('workoutAlarmTime')) document.getElementById('workoutAlarmTime').value = alarmsConfig.workoutTime || "17:00";
+            if(document.getElementById('waterAlarmInterval')) document.getElementById('waterAlarmInterval').value = alarmsConfig.waterInterval || "2";
+
+            updateTotalsUI();
+        }
+    }
+
+    function saveLocalData() {
+        localStorage.setItem('fitai_db_data', JSON.stringify({ user, totals, weightHistory, alarmsConfig }));
+    }
+
+    function saveAlarms() {
+        alarmsConfig.breakfastTime = document.getElementById('breakfastTime').value;
+        alarmsConfig.lunchTime = document.getElementById('lunchTime').value;
+        alarmsConfig.dinnerTime = document.getElementById('dinnerTime').value;
+        alarmsConfig.workoutTime = document.getElementById('workoutAlarmTime').value;
+        alarmsConfig.waterInterval = document.getElementById('waterAlarmInterval').value;
+        saveLocalData();
+    }
+
+    function showTab(id, el) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById('tab-' + id).classList.add('active');
+        if(el) el.classList.add('active');
+        if(id === 'progress') drawChart();
+    }
+
+    function checkGender() {
+        const val = document.getElementById('genderSelect').value;
+        document.getElementById('femaleBox').style.display = (val === 'female') ? 'block' : 'none';
+    }
+
+    function updateGoalHeader() {
+        const goalsText = { 
+            weight_loss: 'تخسيس وحرق دهون', 
+            weight_gain: 'زيادة الوزن والنصاحة', 
+            muscle_gain: 'بناء عضلات', 
+            fitness: 'لياقة عامة' 
+        };
+        document.getElementById('headerGoal').innerText = goalsText[user.goal] || 'خطة مخصصة';
+    }
+
+    function saveProfileData(e) {
+        e.preventDefault();
+        user.gender = document.getElementById('genderSelect').value;
+        user.weight = parseFloat(document.getElementById('wInput').value);
+        user.height = parseFloat(document.getElementById('hInput').value);
+        user.goal = document.getElementById('goalSelect').value;
+        user.period = document.getElementById('periodCheck')?.checked || false;
+
+        user.diseases.diabetes = document.getElementById('d_diabetes').checked;
+        user.diseases.pressure = document.getElementById('d_pressure').checked;
+        user.diseases.anemia = document.getElementById('d_anemia').checked;
+        user.diseases.joints = document.getElementById('d_joints').checked;
+
+        updateGoalHeader();
+        saveLocalData();
+        renderWorkouts();
+        renderAlerts();
+        alert('تم حفظ البيانات بنجاح وانتقالك للرئيسية!');
+        showTab('home', document.querySelectorAll('.nav-item')[0]);
+    }
+
+    function renderWorkouts() {
+        const box = document.getElementById('workoutList');
+        box.innerHTML = '';
+        let list = [];
+
+        if(user.gender === 'female' && user.period) {
+            list = [
+                { title: 'إطالات خفيفة لأسفل الظهر', reps: '10 دقائق', desc: 'لتخفيف تقلصات وآلام الدورة الشهرية', icon: 'fa-spa' },
+                { title: 'مشي خفيف مهدئ', reps: '15 دقيقة', desc: 'لتنشيط الدورة الدموية بدون إرهاق', icon: 'fa-person-walking' }
+            ];
+        } else {
+            if(user.diseases.joints) {
+                list.push({ title: 'سباحة أو تمارين حرة بدون أوزان', reps: '20 دقيقة', desc: 'لحماية المفصل من الضغط الزائد', icon: 'fa-person-swimming' });
+            } else if(user.goal === 'weight_loss') {
+                list.push({ title: 'تمارين كارديو وحرق سريع (HIIT)', reps: '25 دقيقة', desc: 'لحرق أعلى معدل سعرات حرارية', icon: 'fa-person-running' });
+            } else if(user.goal === 'weight_gain') {
+                list.push({ title: 'تمارين أوزان مركبّة مع راحة أطول', reps: '3 مجموعات × 8', desc: 'لتحفيز فتح الشهية وبناء كتلة صلبة', icon: 'fa-dumbbell' });
+            } else {
+                list.push({ title: 'تمارين أوزان ومقاومة', reps: '4 مجموعات × 10', desc: 'لتحفيز النمو العضلي', icon: 'fa-dumbbell' });
+            }
+
+            if(user.diseases.pressure) {
+                list.push({ title: 'تمارين سويدية بتنفس منتظم', reps: '3 مجموعات × 12', desc: 'تجنب حبس النفس للحفاظ على الضغط', icon: 'fa-heart-pulse' });
+            } else {
+                list.push({ title: 'تمارين ضغط وسكوات', reps: '3 مجموعات × 12', desc: 'تقوية العضلات والجذع الرئيسي', icon: 'fa-child' });
+            }
+        }
+
+        list.forEach(item => {
+            box.innerHTML += `
+                <div class="exercise-item">
+                    <div class="exercise-icon"><i class="fa-solid ${item.icon}"></i></div>
+                    <div>
+                        <div style="font-weight:700; font-size:0.9rem;">${item.title}</div>
+                        <div style="color:var(--primary); font-size:0.8rem; font-weight:700;">${item.reps}</div>
+                        <div style="color:var(--text-muted); font-size:0.75rem;">${item.desc}</div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function renderAlerts() {
+        const box = document.getElementById('healthAlertsBox');
+        box.innerHTML = '';
+        if(user.goal === 'weight_gain') box.innerHTML += `<div class="card health-alert" style="border-color: var(--primary); color: #6ee7b7;"><i class="fa-solid fa-bowl-food"></i> نظام زيادة الوزن: تأكد من إكمال جميع وجباتك اليومية وزيادة حصتك.</div>`;
+        if(user.diseases.diabetes) box.innerHTML += `<div class="card health-alert"><i class="fa-solid fa-triangle-exclamation"></i> نظام السكري فعال: يتم تقليل السكريات تلقائياً.</div>`;
+        if(user.diseases.pressure) box.innerHTML += `<div class="card health-alert"><i class="fa-solid fa-triangle-exclamation"></i> نظام الضغط فعال: تجنب الأطعمة العالية بالأملاح.</div>`;
+    }
+
+    function previewFile(e) {
+        const file = e.target.files[0];
+        if(file) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const img = document.getElementById('imgPreview');
+                img.src = evt.target.result;
+                img.style.display = 'block';
+                document.getElementById('camText').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function pickPreset(key) {
+        tempMeal = presets[key];
+        const img = document.getElementById('imgPreview');
+        img.src = tempMeal.img;
+        img.style.display = 'block';
+        document.getElementById('camText').style.display = 'none';
+        showMealResult(tempMeal);
+    }
+
+    function analyzeAI() {
+        if(!tempMeal) {
+            tempMeal = { name: "وجبة دجاج ومشويات وسلطة", cal: 480, prot: 35, carb: 40, fat: 18 };
+        }
+        showMealResult(tempMeal);
+    }
+
+    function showMealResult(meal) {
+        document.getElementById('resultCard').style.display = 'block';
+        document.getElementById('mealTitle').innerText = meal.name;
+        document.getElementById('rCal').innerText = meal.cal;
+        document.getElementById('rProt').innerText = meal.prot + 'g';
+        document.getElementById('rCarb').innerText = meal.carb + 'g';
+        document.getElementById('rFat').innerText = meal.fat + 'g';
+
+        let fb = "✅ الوجبة متوازنة ومناسبة لنظامك.";
+        if(user.goal === 'weight_gain') fb = "💡 لزيادة الوزن: أضف المكسرات أو الموز لزيادة السعرات الصحية.";
+        if(user.diseases.diabetes && meal.carb > 50) fb = "⚠️ تحذير السكري: نسبة الكاربوهيدرات مرتفعة بوجبتك.";
+        document.getElementById('healthFeedback').innerHTML = fb;
+    }
+
+    function addMealToHome() {
+        if(tempMeal) {
+            totals.cal += tempMeal.cal;
+            totals.prot += tempMeal.prot;
+            totals.carb += tempMeal.carb;
+            totals.fat += tempMeal.fat;
+
+            updateTotalsUI();
+            saveLocalData();
+
+            alert('تم اعتماد الوجبة وحفظها في بيانات اليوم!');
+            document.getElementById('resultCard').style.display = 'none';
+            showTab('home', document.querySelectorAll('.nav-item')[0]);
+        }
+    }
+
+    function updateTotalsUI() {
+        const targetCal = user.goal === 'weight_gain' ? 2800 : 2000;
+        document.getElementById('calVal').innerText = `${totals.cal}/${targetCal}`;
+        document.getElementById('protVal').innerText = `${totals.prot}g`;
+        document.getElementById('carbVal').innerText = `${totals.carb}g`;
+        document.getElementById('fatVal').innerText = `${totals.fat}g`;
+        document.getElementById('waterText').innerText = `${totals.water.toFixed(2)} / 2.5 لتر`;
+        document.getElementById('waterCount').innerText = `${Math.round(totals.water / 0.25)} أكواب`;
+    }
+
+    function addWater(val) {
+        totals.water = Math.max(0, totals.water + val);
+        updateTotalsUI();
+        saveLocalData();
+    }
+
+    // Dynamic Sound & Modal Logic
+    function startAlarmSound(type) {
+        const container = document.getElementById('alarmBoxContainer');
+        
+        if(type === 'food') {
+            container.innerHTML = `
+                <i class="fa-solid fa-utensils text-danger" style="font-size: 3rem;"></i>
+                <h2 style="color: var(--danger);">حان موعد الوجبة!</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">
+                    المنبه الصارم لن ينطفئ حتى تلتقط صورة طعامك بوضوح!
+                </p>
+                <button class="btn btn-danger" onclick="stopAlarmAndAction('food')">
+                    <i class="fa-solid fa-camera"></i> فتح الكاميرا وتصوير الوجبة
+                </button>
+            `;
+        } else if(type === 'workout') {
+            container.innerHTML = `
+                <i class="fa-solid fa-dumbbell text-primary" style="font-size: 3rem;"></i>
+                <h2 style="color: var(--primary);">حان موعد التمارين!</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">
+                    استعد لبدء جدول تمارينك اليومي للحفاظ على لياقتك وهدفك.
+                </p>
+                <button class="btn btn-primary" onclick="stopAlarmAndAction('workout')">
+                    <i class="fa-solid fa-dumbbell"></i> الانتقال لجدول التمارين
+                </button>
+            `;
+        } else if(type === 'water') {
+            container.innerHTML = `
+                <i class="fa-solid fa-droplet" style="font-size: 3rem; color: var(--water-color);"></i>
+                <h2 style="color: var(--water-color);">تذكير شرب الماء!</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">
+                    حافظ على ترطيب جسمك! اشرب كوباً من الماء الآن واضغطه هنا.
+                </p>
+                <button class="btn btn-water" onclick="stopAlarmAndAction('water')">
+                    <i class="fa-solid fa-plus"></i> تسجيل شرب كوب ماء (250 مل)
+                </button>
+            `;
+        }
+
+        document.getElementById('alarmModal').style.display = 'flex';
+
+        try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            alarmOscillator = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            alarmOscillator.type = (type === 'food') ? 'sawtooth' : 'sine';
+            alarmOscillator.frequency.setValueAtTime((type === 'water') ? 600 : 880, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            alarmOscillator.connect(gain);
+            gain.connect(audioCtx.destination);
+            alarmOscillator.start();
+        } catch(e) { console.log(e); }
+    }
+
+    function stopAlarmAndAction(type) {
+        if(alarmOscillator) {
+            alarmOscillator.stop();
+            alarmOscillator = null;
+        }
+        document.getElementById('alarmModal').style.display = 'none';
+
+        if(type === 'food') {
+            showTab('nutrition', document.querySelectorAll('.nav-item')[2]);
+            document.getElementById('imgInput').click();
+        } else if(type === 'workout') {
+            showTab('workout', document.querySelectorAll('.nav-item')[3]);
+        } else if(type === 'water') {
+            addWater(0.25);
+            showTab('home', document.querySelectorAll('.nav-item')[0]);
+        }
+    }
+
+    function drawChart() {
+        const canvas = document.getElementById('weightChart');
+        if(!canvas) return;
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.parentElement.clientWidth - 32;
+        canvas.height = 180;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if(weightHistory.length < 2) return;
+
+        const maxW = Math.max(...weightHistory) + 2;
+        const minW = Math.min(...weightHistory) - 2;
+        
+        ctx.beginPath();
+        ctx.strokeStyle = '#10b981';
+        ctx.lineWidth = 3;
+
+        const stepX = canvas.width / (weightHistory.length - 1);
+
+        weightHistory.forEach((w, i) => {
+            const x = i * stepX;
+            const y = canvas.height - ((w - minW) / (maxW - minW)) * (canvas.height - 40) - 20;
+
+            if(i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+
+            ctx.fillStyle = '#10b981';
+            ctx.fillRect(x - 3, y - 3, 6, 6);
+        });
+
+        ctx.stroke();
+    }
+
+    function recordWeight() {
+        const val = parseFloat(document.getElementById('newWeightInput').value);
+        if(val) {
+            weightHistory.push(val);
+            user.weight = val;
+            saveLocalData();
+            drawChart();
+            document.getElementById('newWeightInput').value = '';
+            alert('تم تسجيل الوزن الجديد وحفظ التغيير!');
+        }
+    }
+</script>
+</body>
+</html>
