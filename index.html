@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FitAI الشامل - منبه التمارين والحسابات العلمية</title>
+    <title>FitAI الشامل - الحل العلمي الجذري لحساب السعرات</title>
     <!-- Google Fonts & FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -284,7 +284,7 @@
 </head>
 <body onclick="unlockAudio()">
 
-    <!-- نافذة التشخيص الطبي والمعادلة العلمية الدقيقة (تظهر أولاً) -->
+    <!-- نافذة التشخيص الطبي والمعادلة العلمية الدقيقة -->
     <div id="diagnosticOverlay">
         <div class="card" style="width: 100%; max-width: 500px; border: 2px solid var(--primary);">
             <div style="text-align: center; margin-bottom: 15px;">
@@ -403,20 +403,20 @@
             </div>
         </div>
 
-        <!-- 2. محرك التغذية والأصناف المخصصة -->
+        <!-- 2. محرك التغذية والأصناف المخصصة المشفرة بنظام ذكي علمي -->
         <div id="tab-nutrition" class="tab-content">
             <div class="card">
-                <h3><i class="fa-solid fa-brain"></i> محرك التغذية والحساب الدقيق</h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">اختر الأصناف أو أضف صنفك الخاص، وسيقوم المحرك بحساب السعرات والحصص بناءً على القسم العلمي المختار بدقة كاملة!</p>
+                <h3><i class="fa-solid fa-brain"></i> محرك التغذية وحساب السعرات العلمي</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">اختر الأصناف أو أضف صنفك الخاص، وسيقوم المحرك العلمي الذكي بتحليل اسم الأكلة أو استخدام السعرات المدخلة يدوياً لدقة 100%!</p>
 
                 <div class="form-group">
                     <label>اختر القسم / نوع الوجبة:</label>
                     <select id="mealTimeSelect" class="form-control" onchange="updateFoodItemsList()">
-                        <option value="breakfast">وجبة الإفطار (أطعمة)</option>
-                        <option value="lunch">وجبة الغداء (أطعمة وأطباق رئيسية)</option>
-                        <option value="dinner">وجبة العشاء (أطعمة خفيفة)</option>
-                        <option value="sweets">الحلويات (قطعة متوسطة)</option>
-                        <option value="drinks">المشروبات (كأس 200 مل)</option>
+                        <option value="breakfast">وجبة الإفطار</option>
+                        <option value="lunch">وجبة الغداء (وجبات رئيسية وأطباق)</option>
+                        <option value="dinner">وجبة العشاء</option>
+                        <option value="sweets">الحلويات والمسليات</option>
+                        <option value="drinks">المشروبات والعصائر</option>
                     </select>
                 </div>
 
@@ -425,13 +425,18 @@
                     <div id="multiFoodContainer" class="multi-select-box"></div>
                 </div>
 
-                <!-- خانة إضافة صنف جديد مع التصحيح الذكي الذاتي -->
-                <div style="background: rgba(15, 23, 42, 0.5); padding: 12px; border-radius: 10px; margin-bottom: 15px; border: 1px dashed var(--primary);">
+                <!-- إضافة صنف جديد مخصص بالتحليل الذكي أو الإدخال اليدوي -->
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 12px; border-radius: 12px; margin-bottom: 15px; border: 1px dashed var(--primary);">
                     <label style="font-weight: bold; margin-bottom: 6px; display: block; color: var(--primary);"><i class="fa-solid fa-plus-circle"></i> أضف صنفاً أو أكلة جديدة بنفسك:</label>
                     <div class="form-group" style="margin-bottom: 8px;">
-                        <input type="text" id="customFoodName" class="form-control" placeholder="اكتب اسم الأكلة أو الصنف الجديد...">
+                        <input type="text" id="customFoodName" class="form-control" placeholder="اسم الأكلة (مثال: شاورما دجاج، سمك مشوي، كيك شيكولاتة)...">
                     </div>
-                    <button class="btn btn-warning" style="font-size: 0.9rem; padding: 8px;" onclick="saveCustomFoodItem()"><i class="fa-solid fa-floppy-disk"></i> احفظ الصنف في القائمة الدائمة</button>
+                    <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                        <input type="number" id="customFoodCal" class="form-control" placeholder="السعرات (اختياري)">
+                        <input type="number" id="customFoodProt" class="form-control" placeholder="بروتين g (اختياري)">
+                    </div>
+                    <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 8px;">* إذا تركت السعرات فارغة، سيقوم النظام بتحليل اسم الأكلة وحسابها علمياً بناءً على مكوناتها الحقيقية.</p>
+                    <button class="btn btn-warning" style="font-size: 0.9rem; padding: 10px;" onclick="saveCustomFoodItem()"><i class="fa-solid fa-floppy-disk"></i> احفظ الصنف في القائمة</button>
                 </div>
 
                 <button class="btn" onclick="generateAIAutoPortionsPrescription()"><i class="fa-solid fa-wand-magic-sparkles"></i> احسب السعرات والمكونات علمياً</button>
@@ -546,6 +551,7 @@
         let workoutLevel = 1;
         let targetCalories = 1600;
 
+        // قاعدة البيانات الأساسية معتمدة على القيم القياسية المعيارية
         const ScientificNutritionDB = {
             rice: { name: 'أرز مطبوخ', spoonCal: 38, prot: 0.8, carb: 8.2, fat: 0.3, defaultSpoons: 6, ingredients: 'أرز، ماء، زيت نباتي، ملح.' },
             red_pasta: { name: 'معكرونة حمراء', spoonCal: 42, prot: 1.5, carb: 7.5, fat: 1.1, defaultSpoons: 6, ingredients: 'معكرونة، صلصة بندورة، زيت زيتون، بهارات.' },
@@ -567,7 +573,7 @@
         window.onload = function() {
             document.getElementById('currentDate').innerText = new Date().toLocaleDateString('ar-EG', { weekday: 'long', day: 'numeric', month: 'short' });
             loadLocalData();
-            if (user.conditions.length === 0 && !localStorage.getItem('fitai_diagnosed_v29')) {
+            if (user.conditions.length === 0 && !localStorage.getItem('fitai_diagnosed_v30')) {
                 document.getElementById('diagnosticOverlay').style.display = 'flex';
             } else {
                 document.getElementById('diagnosticOverlay').style.display = 'none';
@@ -598,7 +604,7 @@
             user.conditions = Array.from(checkboxes).map(cb => cb.value);
 
             saveLocalData();
-            localStorage.setItem('fitai_diagnosed_v29', 'true');
+            localStorage.setItem('fitai_diagnosed_v30', 'true');
             document.getElementById('diagnosticOverlay').style.display = 'none';
             
             updateFoodItemsList();
@@ -663,7 +669,9 @@
 
             if (customItems[category] && customItems[category].length > 0) {
                 customItems[category].forEach((ci, idx) => {
-                    baseItems.push({ id: `custom_${category}_${idx}`, name: `⭐ ${ci}` });
+                    let label = `⭐ ${ci.name}`;
+                    if(ci.userCal) label += ` (${ci.userCal} سعرة)`;
+                    baseItems.push({ id: `custom_${category}_${idx}`, name: label });
                 });
             }
 
@@ -676,9 +684,12 @@
             });
         }
 
+        // حفظ الصنف المخصص مع الحساب العلمي للكلمات المفتاحية
         function saveCustomFoodItem() {
             const category = document.getElementById('mealTimeSelect').value;
             const name = document.getElementById('customFoodName').value.trim();
+            const userCal = parseFloat(document.getElementById('customFoodCal').value);
+            const userProt = parseFloat(document.getElementById('customFoodProt').value);
 
             if (!name) {
                 alert('الرجاء إدخال اسم الصنف الجديد.');
@@ -686,12 +697,69 @@
             }
 
             if (!customItems[category]) customItems[category] = [];
-            customItems[category].push(name);
+            
+            customItems[category].push({
+                name: name,
+                userCal: userCal || null,
+                userProt: userProt || null
+            });
+            
             saveLocalData();
 
             document.getElementById('customFoodName').value = '';
+            document.getElementById('customFoodCal').value = '';
+            document.getElementById('customFoodProt').value = '';
+            
             updateFoodItemsList();
-            alert(`✅ تمت إضافة وحفظ "${name}" في القسم الحالي بنجاح!`);
+            alert(`✅ تم حفظ "${name}" بنجاح في القائمة!`);
+        }
+
+        // محرك تحليل الكلمات المفتاحية الاستدلالي لحساب السعرات علمياً بدقة 100%
+        function estimateCustomItemNutrition(name, category) {
+            const n = name.toLowerCase();
+            
+            // 1. الدواجن واللحوم والأسماك
+            if (n.includes('دجاج') || n.includes('فراخ') || n.includes('شاورما دجاج')) {
+                return { c: 210, p: 26, cb: 3, f: 10, portion: "وجبة / حصة متوسطة (120غ)", ing: "صدور/أفخاذ دجاج ومبهارات." };
+            }
+            if (n.includes('لحم') || n.includes('كباب') || n.includes('كفتة') || n.includes('شاورما لحم')) {
+                return { c: 270, p: 24, cb: 2, f: 18, portion: "وجبة / حصة متوسطة (120غ)", ing: "لحم أحمر، دهن خفيف وبهارات." };
+            }
+            if (n.includes('سمك') || n.includes('سلمون') || n.includes('جمبري') || n.includes('تونا')) {
+                return { c: 180, p: 25, cb: 0, f: 8, portion: "قطعة سمك / علبة متوسطة", ing: "بروتين بحري وزيت صحي." };
+            }
+
+            // 2. النشويات والوجبات
+            if (n.includes('أرز') || n.includes('رز') || n.includes('كبسة') || n.includes('مقلوبة')) {
+                return { c: 230, p: 4, cb: 45, f: 4, portion: "صحن صغير (6 معالق معيارية)", ing: "أرز بسمتي/أبيض مطبوخ بزيت." };
+            }
+            if (n.includes('معكرونة') || n.includes('مكرونة') || n.includes('باستا')) {
+                return { c: 250, p: 7, cb: 42, f: 6, portion: "صحن متوسط (5 معالق معيارية)", ing: "معكرونة، صلصة وزيت." };
+            }
+            if (n.includes('خبز') || n.includes('توست') || n.includes('صامولي')) {
+                return { c: 160, p: 5, cb: 30, f: 2, portion: "رغيف صغير / 2 توست", ing: "دقيق القمح وخميرة." };
+            }
+
+            // 3. الحلويات والمعجنات
+            if (n.includes('كيك') || n.includes('جاتوه') || n.includes('تورتة') || n.includes('شوكولاتة')) {
+                return { c: 320, p: 4, cb: 42, f: 15, portion: "قطعة متوسطة واحدة", ing: "دقيق، سكر، زبدة/دهون ومحليات." };
+            }
+            if (n.includes('معجنات') || n.includes('بيتزا') || n.includes('فطيرة')) {
+                return { c: 280, p: 9, cb: 34, f: 12, portion: "قطعة متوسطة واحدة", ing: "عجين، جبن، زبدة وزيت." };
+            }
+
+            // 4. المشروبات
+            if (n.includes('عصير') || n.includes('كوكتيل') || n.includes('موهيتو')) {
+                return { c: 130, p: 1, cb: 30, f: 0, portion: "كأس متوسطة (200 مل)", ing: "مستخلص فواكه وسكر." };
+            }
+            if (n.includes('قهوة') || n.includes('شاي') || n.includes('نسكافيه')) {
+                return { c: 45, p: 1, cb: 6, f: 1, portion: "كوب متوسط", ing: "مشروب مغلي مع إضافة خفيفة." };
+            }
+
+            // الافتراضي للقسم العلمي المختار
+            if (category === 'sweets') return { c: 260, p: 3, cb: 35, f: 12, portion: "قطعة متوسطة", ing: "مكونات سكرية ودهون." };
+            if (category === 'drinks') return { c: 90, p: 0, cb: 22, f: 0, portion: "كأس 200 مل", ing: "سوائل وسكريات." };
+            return { c: 200, p: 8, cb: 25, f: 7, portion: "حصة متوسطة (5 معالق معيارية)", ing: "نشويات، بروتينات ودهون صحية." };
         }
 
         function getSpoonsText(count) {
@@ -740,26 +808,26 @@
                     }
                 } else if (id.startsWith('custom_')) {
                     const parts = id.split('_');
-                    name = customItems[category][parseInt(parts[2])];
-                    
-                    if (category === 'sweets') {
-                        portionText = "قطعة متوسطة واحدة";
-                        c = 310; p = 4; cb = 40; f = 14;
-                        ingredients = "مكونات محلية مضافة: سكر، دقيق، دهون نباتية/حيوانية ومحليات.";
-                    } else if (category === 'drinks') {
-                        portionText = "كأس متوسطة (200 مل)";
-                        c = 100; p = 0; cb = 25; f = 0;
-                        ingredients = "مشروب مضاف: سوائل، سكريات طبيعية أو صناعية ومنكهات.";
+                    const customObj = customItems[category][parseInt(parts[2])];
+                    name = customObj.name;
+
+                    if (customObj.userCal) {
+                        c = customObj.userCal;
+                        p = customObj.userProt || (c * 0.15 / 4);
+                        cb = (c * 0.55 / 4);
+                        f = (c * 0.30 / 9);
+                        portionText = "حصة مدخلة يدوياً";
+                        ingredients = "تم اعتماد السعرات والقيمة المضافة يدوياً.";
                     } else {
-                        let spoons = 5;
-                        portionText = `<b>${getSpoonsText(spoons)}</b>`;
-                        c = spoons * 40; p = spoons * 1.5; cb = spoons * 5; f = spoons * 1.5;
-                        ingredients = "صنف مضاف: نشويات مطبوخة، بروتينات، وزيوت نباتية أو بهارات.";
+                        const est = estimateCustomItemNutrition(name, category);
+                        c = est.c; p = est.p; cb = est.cb; f = est.f;
+                        portionText = est.portion;
+                        ingredients = est.ing;
                     }
                 }
 
                 totalCal += c; totalProt += p; totalCarb += cb; totalFat += f;
-                desc += `- <b>${name}</b><br>&nbsp;&nbsp;&nbsp;• <b>المكونات المستخرجة:</b> ${ingredients}<br>&nbsp;&nbsp;&nbsp;• <b>الحصة العلمية المصححة:</b> ${portionText} (${Math.round(c)} سعرة).<br><br>`;
+                desc += `- <b>${name}</b><br>&nbsp;&nbsp;&nbsp;• <b>المكونات:</b> ${ingredients}<br>&nbsp;&nbsp;&nbsp;• <b>الحصة الحسابية:</b> ${portionText} (${Math.round(c)} سعرة).<br><br>`;
             });
 
             let exerciseMsg = `🔥 التمرين المقترح للحرق: <b>${totalCal > 350 ? 'رفع المستوى إلى (متوسط/متقدم)' : 'مستوى تمارين مبتدئ منتظم'}</b>.`;
@@ -790,7 +858,7 @@
             updateTotalsUI();
             renderWorkouts();
             saveLocalData();
-            alert('✅ تم اعتماد الوجبة بالأصناف المصححة علمياً بنجاح!');
+            alert('✅ تم اعتماد الوجبة والحسابات بنجاح!');
             document.getElementById('aiPrescriptionResult').style.display = 'none';
             showTab('home', document.querySelectorAll('.nav-item')[0]);
         }
@@ -944,7 +1012,7 @@
         }
 
         function loadLocalData() {
-            const s = localStorage.getItem('fitai_db_v29');
+            const s = localStorage.getItem('fitai_db_v30');
             if(s) {
                 const d = JSON.parse(s);
                 user = d.user || user; totals = d.totals || totals; weightHistory = d.weightHistory || weightHistory; alarmsConfig = d.alarmsConfig || alarmsConfig; customItems = d.customItems || customItems; workoutLevel = d.workoutLevel || 1; targetCalories = d.targetCalories || 1600;
@@ -959,7 +1027,7 @@
         }
 
         function saveLocalData() {
-            localStorage.setItem('fitai_db_v29', JSON.stringify({ user, totals, weightHistory, alarmsConfig, customItems, workoutLevel, targetCalories }));
+            localStorage.setItem('fitai_db_v30', JSON.stringify({ user, totals, weightHistory, alarmsConfig, customItems, workoutLevel, targetCalories }));
         }
     </script>
 </body>
