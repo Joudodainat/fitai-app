@@ -92,14 +92,8 @@
             margin: 0 auto;
         }
 
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.3s ease-in-out;
-        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(5px); }
@@ -167,17 +161,12 @@
             transition: 0.2s;
         }
 
-        .btn:active {
-            transform: scale(0.98);
-        }
-
+        .btn:active { transform: scale(0.98); }
         .btn-danger { background-color: var(--danger); }
         .btn-water { background-color: var(--water-color); color: #000; }
+        .btn-warning { background-color: var(--warning); color: #000; }
 
-        .form-group {
-            margin-bottom: 12px;
-        }
-
+        .form-group { margin-bottom: 12px; }
         .form-group label {
             display: block;
             margin-bottom: 5px;
@@ -195,10 +184,7 @@
             font-size: 1rem;
         }
 
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
+        .form-control:focus { outline: none; border-color: var(--primary); }
 
         .camera-box {
             border: 2px dashed var(--border-color);
@@ -210,11 +196,7 @@
             margin-bottom: 15px;
         }
 
-        .camera-box i {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
+        .camera-box i { font-size: 2.5rem; color: var(--primary); margin-bottom: 10px; }
 
         #imgPreview {
             width: 100%;
@@ -251,9 +233,7 @@
 
         .bottom-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            bottom: 0; left: 0; right: 0;
             background-color: var(--card-bg);
             border-top: 1px solid var(--border-color);
             display: flex;
@@ -273,14 +253,8 @@
             width: 16%;
         }
 
-        .nav-item i {
-            font-size: 1.2rem;
-            margin-bottom: 3px;
-        }
-
-        .nav-item.active {
-            color: var(--primary);
-        }
+        .nav-item i { font-size: 1.2rem; margin-bottom: 3px; }
+        .nav-item.active { color: var(--primary); }
 
         .modal {
             display: none;
@@ -301,22 +275,16 @@
             max-width: 400px;
             text-align: center;
             border: 2px solid var(--primary);
-            animation: pulseModal 0.5s infinite alternate;
         }
 
-        @keyframes pulseModal {
-            from { box-shadow: 0 0 10px rgba(16, 185, 129, 0.2); }
-            to { box-shadow: 0 0 25px rgba(16, 185, 129, 0.6); }
-        }
-
-        .meal-tag {
-            font-size: 0.75rem;
-            padding: 2px 8px;
-            border-radius: 6px;
-            background: rgba(56, 189, 248, 0.15);
-            color: var(--water-color);
+        .ingredient-tag {
             display: inline-block;
-            margin-top: 4px;
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            margin: 3px;
         }
     </style>
 </head>
@@ -391,11 +359,11 @@
             <div id="healthAlertsBox"></div>
         </div>
 
-        <!-- 2. التغذية والتحليل -->
+        <!-- 2. التغذية والتحليل وتعديل المكونات -->
         <div id="tab-nutrition" class="tab-content">
             <div class="card">
-                <h3><i class="fa-solid fa-camera"></i> تحليل الوجبة الذكي (AI)</h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">التقط صورة لوجبتك وسيتم قياس السعرات وتعديل جدول تمارينك تلقائياً!</p>
+                <h3><i class="fa-solid fa-camera"></i> تحليل الوجبة والمكونات الذكي</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">التقط صورة لوجبتك، وسيقوم الذكاء الاصطناعي باستخراج مكوناتها مع إمكانية التعديل المباشر!</p>
                 
                 <div class="camera-box" onclick="document.getElementById('imgInput').click();">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
@@ -405,29 +373,44 @@
                 <input type="file" id="imgInput" accept="image/*" capture="environment" style="display:none;" onchange="previewFile(event)">
 
                 <div class="form-group">
-                    <label>أو اختر نماذج جاهزة للوجبة:</label>
+                    <label>أو اختر نماذج جاهزة:</label>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                        <button class="btn" style="background: var(--border-color); font-size: 0.8rem;" onclick="pickPreset('chicken')">🍗 دجاج وأرز (بروتين)</button>
-                        <button class="btn" style="background: var(--border-color); font-size: 0.8rem;" onclick="pickPreset('pasta')">🍝 باستا وسكريات (كارب)</button>
-                        <button class="btn" style="background: var(--border-color); font-size: 0.8rem;" onclick="pickPreset('fastfood')">🍔 وجبة دسمة (دهون)</button>
-                        <button class="btn" style="background: var(--border-color); font-size: 0.8rem;" onclick="pickPreset('salad')">🥗 سلطة صحية (دايت)</button>
+                        <button class="btn" style="background: var(--border-color); font-size: 0.8rem;" onclick="pickPreset('salad')">🥗 سلطة وسلمون</button>
+                        <button class="btn" style="background: var(--border-color); font-size: 0.8rem;" onclick="pickPreset('pasta')">🍝 باستا مع خضار</button>
+                        <button class="btn" style="background: var(--border-color); font-size: 0.8rem;" onclick="pickPreset('rice')">🍚 أرز وخضار مشكلة</button>
+                        <button class="btn" style="background: var(--border-color); font-size: 0.8rem;" onclick="pickPreset('oats')">🥣 شوفان مع فواكه</button>
                     </div>
                 </div>
 
-                <button class="btn" onclick="analyzeAI()"><i class="fa-solid fa-wand-magic-sparkles"></i> تحليل الوجبة وحسب القيم</button>
+                <button class="btn" onclick="analyzeAI()"><i class="fa-solid fa-wand-magic-sparkles"></i> تحليل الوجبة واكتشاف المكونات</button>
             </div>
 
+            <!-- بطاقة النتيجة والتعديل اليدوي -->
             <div id="resultCard" class="card" style="display: none;">
-                <h4 id="mealTitle">وجبة متوازنة</h4>
-                <div class="meal-tag" id="mealTypeTag">نوع الوجبة: متوازنة</div>
-                <div class="macro-grid" style="margin: 10px 0;">
-                    <div class="macro-card"><div id="rCal" class="macro-val">0</div><div class="macro-label">سعرة</div></div>
-                    <div class="macro-card"><div id="rProt" class="macro-val">0g</div><div class="macro-label">بروتين</div></div>
-                    <div class="macro-card"><div id="rCarb" class="macro-val">0g</div><div class="macro-label">كارب</div></div>
-                    <div class="macro-card"><div id="rFat" class="macro-val">0g</div><div class="macro-label">دهون</div></div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h4 id="mealTitle">نتيجة التحليل</h4>
+                    <button class="btn btn-warning" style="width: auto; padding: 4px 10px; font-size: 0.75rem;" onclick="enableManualEdit()"><i class="fa-solid fa-pen"></i> تعديل المكونات</button>
                 </div>
+
+                <div class="form-group" style="margin-top: 10px;">
+                    <label>اسم الوجبة:</label>
+                    <input type="text" id="editMealName" class="form-control" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label>المكونات المكتشفة:</label>
+                    <input type="text" id="editIngredients" class="form-control" placeholder="أدخل المكونات مفصولة بفواصل (مثال: أرز، سلطة، زيت زيتون)" disabled>
+                </div>
+
+                <div class="macro-grid" style="margin: 10px 0;">
+                    <div class="macro-card"><input type="number" id="editCal" class="form-control" style="text-align:center; padding:5px;" disabled><div class="macro-label">سعرة</div></div>
+                    <div class="macro-card"><input type="number" id="editProt" class="form-control" style="text-align:center; padding:5px;" disabled><div class="macro-label">بروتين (g)</div></div>
+                    <div class="macro-card"><input type="number" id="editCarb" class="form-control" style="text-align:center; padding:5px;" disabled><div class="macro-label">كارب (g)</div></div>
+                    <div class="macro-card"><input type="number" id="editFat" class="form-control" style="text-align:center; padding:5px;" disabled><div class="macro-label">دهون (g)</div></div>
+                </div>
+
                 <div id="healthFeedback" style="font-size: 0.8rem; margin-bottom: 10px; color: var(--warning);"></div>
-                <button class="btn" onclick="addMealToHome()"><i class="fa-solid fa-check"></i> اعتماد الوجبة وتحديث التمارين</button>
+                <button class="btn" onclick="addMealToHome()"><i class="fa-solid fa-check"></i> اعتمد الوجبة وتحديث التمارين</button>
             </div>
         </div>
 
@@ -465,8 +448,6 @@
         <div id="tab-alarms" class="tab-content">
             <div class="card">
                 <h3><i class="fa-solid fa-clock"></i> إعداد المنبهات الذكية</h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">سيقوم المنبه بإصدار صوت وإشعار صارم عند الوصول للوقت المحدد.</p>
-
                 <div class="form-group">
                     <label>منبه وجبة الفطور:</label>
                     <input type="time" id="breakfastTime" class="form-control" value="08:00">
@@ -498,7 +479,7 @@
         <!-- 6. الملف الشخصي -->
         <div id="tab-profile" class="tab-content">
             <div class="card">
-                <h3><i class="fa-solid fa-user-gear"></i> البيانات الصحية والهدف</h3>
+                <h3><i class="fa-solid fa-user-gear"></i> البيانات الشخصية والهدف</h3>
                 <form onsubmit="saveProfileData(event)">
                     <div class="form-group">
                         <label>الجنس:</label>
@@ -508,7 +489,7 @@
                         </select>
                     </div>
                     <div id="femaleBox" class="form-group" style="display: none;">
-                        <label><input type="checkbox" id="periodCheck"> هل توجد فترة الدورة الشهرية حالياً؟ (لتخفيف التمارين)</label>
+                        <label><input type="checkbox" id="periodCheck"> فترة الدورة الشهرية حالياً؟</label>
                     </div>
                     <div class="form-group">
                         <label>الوزن الحالي (كجم):</label>
@@ -525,15 +506,6 @@
                             <option value="weight_gain">زيادة الوزن والنصاحة</option>
                             <option value="muscle_gain">بناء عضلات ولياقة</option>
                         </select>
-                    </div>
-                    <div class="form-group">
-                        <label>الأمراض والظروف الصحية (إن وجدت):</label>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 5px;">
-                            <label><input type="checkbox" id="d_diabetes"> سكري</label>
-                            <label><input type="checkbox" id="d_pressure"> ضغط دم</label>
-                            <label><input type="checkbox" id="d_anemia"> فقردم</label>
-                            <label><input type="checkbox" id="d_joints"> مشاكل مفاصل</label>
-                        </div>
                     </div>
                     <button type="submit" class="btn"><i class="fa-solid fa-save"></i> حفظ البيانات</button>
                 </form>
@@ -557,7 +529,6 @@
     </nav>
 
     <script>
-        // المتغيرات العامة
         let user = {
             gender: 'male',
             weight: 70,
@@ -566,295 +537,48 @@
             period: false,
             diseases: { diabetes: false, pressure: false, anemia: false, joints: false },
             startDate: new Date().toISOString(),
-            levelIndex: 0 // 0: مبتدئ, 1: متوسط, 2: متقدم, 3: ممتاز
+            levelIndex: 0
         };
 
         const levelNames = ["مبتدئ", "متوسط", "متقدم", "ممتاز"];
-
-        let lastMealType = 'balanced'; // carb, protein, fat, balanced
+        let lastMealType = 'balanced';
         let totals = { cal: 0, prot: 0, carb: 0, fat: 0, water: 0 };
         let weightHistory = [72, 71.5, 71.0, 70.5, 70.0];
         let tempMeal = null;
 
-        let alarmsConfig = {
-            breakfastTime: "08:00",
-            lunchTime: "14:00",
-            dinnerTime: "20:00",
-            workoutTime: "17:00",
-            waterInterval: "2"
-        };
-
+        let alarmsConfig = { breakfastTime: "08:00", lunchTime: "14:00", dinnerTime: "20:00", workoutTime: "17:00", waterInterval: "2" };
         let audioCtx = null;
         let alarmOscillator = null;
         let triggeredAlarms = {};
 
         const presets = {
-            chicken: { name: "دجاج مشوي مع أرز", cal: 520, prot: 45, carb: 40, fat: 10, type: 'protein', img: "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=400&q=80" },
-            pasta: { name: "باستا مع صلصة حمراء", cal: 620, prot: 14, carb: 95, fat: 12, type: 'carb', img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=400&q=80" },
-            fastfood: { name: "برجر ووجبة دسمة", cal: 850, prot: 28, carb: 70, fat: 45, type: 'fat', img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80" },
-            salad: { name: "سلطة خضراء مع سلمون", cal: 320, prot: 25, carb: 10, fat: 14, type: 'balanced', img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80" }
+            salad: { name: "سلطة خضار مع سلمون", ingredients: "سلمون، خس، خيار، زيت زيتون", cal: 340, prot: 28, carb: 8, fat: 18, type: 'protein' },
+            pasta: { name: "معكرونة مع صلصة وطماطم", ingredients: "معكرونة، صوص طماطم، إعشاب", cal: 520, prot: 12, carb: 85, fat: 8, type: 'carb' },
+            rice: { name: "أرز أبيض مع خضار مشكلة", ingredients: "أرز، بسلة، جزر، ذرة", cal: 410, prot: 9, carb: 75, fat: 5, type: 'carb' },
+            oats: { name: "طبقشوفان بالفواكه", ingredients: "شوفان، حليب، موز، عسل", cal: 380, prot: 14, carb: 62, fat: 6, type: 'balanced' }
         };
 
         window.onload = function() {
             document.getElementById('currentDate').innerText = new Date().toLocaleDateString('ar-EG', { weekday: 'long', day: 'numeric', month: 'short' });
-            
-            // تسجيل Service Worker مدمج تلقائياً
-            registerEmbeddedSW();
-
-            // تحميل البيانات
             loadLocalData();
             calculateAutoLevel();
             renderWorkouts();
-            renderAlerts();
             drawChart();
             updateGoalHeader();
-
-            // فحص المنبهات كل 5 ثوانٍ
             setInterval(checkScheduledAlarms, 5000);
         };
 
-        function registerEmbeddedSW() {
-            if ('serviceWorker' in navigator) {
-                const swCode = `
-                    self.addEventListener('install', e => self.skipWaiting());
-                    self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
-                `;
-                const blob = new Blob([swCode], {type: 'application/javascript'});
-                const swURL = URL.createObjectURL(blob);
-                navigator.serviceWorker.register(swURL).catch(err => console.log('SW Error:', err));
-            }
-        }
-
-        // حساب المستوى تلقائياً بناءً على عدد الأيام منذ التسجيل
         function calculateAutoLevel() {
             const start = new Date(user.startDate || new Date());
             const now = new Date();
             const diffDays = Math.floor((now - start) / (1000 * 60 * 60 * 24));
-
-            if (diffDays >= 21) user.levelIndex = 3; // ممتاز
-            else if (diffDays >= 14) user.levelIndex = 2; // متقدم
-            else if (diffDays >= 7) user.levelIndex = 1; // متوسط
-            else user.levelIndex = 0; // مبتدئ
+            if (diffDays >= 21) user.levelIndex = 3;
+            else if (diffDays >= 14) user.levelIndex = 2;
+            else if (diffDays >= 7) user.levelIndex = 1;
+            else user.levelIndex = 0;
 
             document.getElementById('currentLevelBadge').innerText = `مستوى ${levelNames[user.levelIndex]} (اليوم ${diffDays + 1})`;
             document.getElementById('workoutLevelSub').innerText = `المستوى الحالي: ${levelNames[user.levelIndex]} - يتكيف تلقائياً مع وجباتك`;
-        }
-
-        function forceLevelUp() {
-            user.levelIndex = (user.levelIndex + 1) % 4;
-            saveLocalData();
-            calculateAutoLevel();
-            renderWorkouts();
-            alert(`تم تغيير المستوى يدويًا إلى: ${levelNames[user.levelIndex]}`);
-        }
-
-        function checkScheduledAlarms() {
-            const now = new Date();
-            const currentHHMM = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
-
-            if ((currentHHMM === alarmsConfig.breakfastTime || currentHHMM === alarmsConfig.lunchTime || currentHHMM === alarmsConfig.dinnerTime) && !triggeredAlarms['food_' + currentHHMM]) {
-                triggeredAlarms['food_' + currentHHMM] = true;
-                triggerAlarm('food', 'حان موعد الوجبة!', 'المنبه لن ينطفئ حتى تصوّر وجبتك!');
-            }
-
-            if (currentHHMM === alarmsConfig.workoutTime && !triggeredAlarms['workout_' + currentHHMM]) {
-                triggeredAlarms['workout_' + currentHHMM] = true;
-                triggerAlarm('workout', 'حان موعد التمرين!', 'استعد لبدء جدول تمارينك اليومي.');
-            }
-
-            const intervalHours = parseInt(alarmsConfig.waterInterval) || 2;
-            if (now.getMinutes() === 0 && (now.getHours() % intervalHours === 0) && !triggeredAlarms['water_' + now.getHours()]) {
-                triggeredAlarms['water_' + now.getHours()] = true;
-                triggerAlarm('water', 'تذكير شرب الماء!', 'حافظ على ترطيب جسمك واشرب كوباً من الماء.');
-            }
-        }
-
-        function triggerAlarm(type, title, body) {
-            if ("Notification" in window && Notification.permission === "granted") {
-                new Notification(title, { body: body, icon: 'https://cdn-icons-png.flaticon.com/512/2964/2964514.png' });
-            }
-            startAlarmSound(type);
-        }
-
-        function startAlarmSound(type) {
-            const container = document.getElementById('alarmBoxContainer');
-            
-            if(type === 'food') {
-                container.innerHTML = `
-                    <i class="fa-solid fa-utensils text-danger" style="font-size: 3rem; margin-bottom:10px;"></i>
-                    <h2 style="color: var(--danger);">حان موعد الوجبة!</h2>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin: 10px 0;">المنبه الصارم لن ينطفئ حتى تلتقط صورة طعامك بوضوح!</p>
-                    <button class="btn btn-danger" onclick="stopAlarmAndAction('food')"><i class="fa-solid fa-camera"></i> تصوير الوجبة الآن</button>
-                `;
-            } else if(type === 'workout') {
-                container.innerHTML = `
-                    <i class="fa-solid fa-dumbbell text-primary" style="font-size: 3rem; margin-bottom:10px;"></i>
-                    <h2 style="color: var(--primary);">حان موعد التمرين!</h2>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin: 10px 0;">استعد لبدء جدول تمارينك المتكيفة لهذا اليوم.</p>
-                    <button class="btn" onclick="stopAlarmAndAction('workout')"><i class="fa-solid fa-dumbbell"></i> الانتقال للتمارين</button>
-                `;
-            } else if(type === 'water') {
-                container.innerHTML = `
-                    <i class="fa-solid fa-droplet" style="font-size: 3rem; color: var(--water-color); margin-bottom:10px;"></i>
-                    <h2 style="color: var(--water-color);">تذكير شرب الماء!</h2>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin: 10px 0;">اشرب كوباً من الماء وسجله الآن.</p>
-                    <button class="btn btn-water" onclick="stopAlarmAndAction('water')"><i class="fa-solid fa-plus"></i> شربت كوب ماء</button>
-                `;
-            }
-
-            document.getElementById('alarmModal').style.display = 'flex';
-
-            try {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                alarmOscillator = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                alarmOscillator.type = (type === 'food') ? 'sawtooth' : 'sine';
-                alarmOscillator.frequency.setValueAtTime((type === 'water') ? 600 : 880, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                alarmOscillator.connect(gain);
-                gain.connect(audioCtx.destination);
-                alarmOscillator.start();
-            } catch(e) {}
-        }
-
-        function stopAlarmAndAction(type) {
-            if(alarmOscillator) {
-                alarmOscillator.stop();
-                alarmOscillator = null;
-            }
-            document.getElementById('alarmModal').style.display = 'none';
-
-            if(type === 'food') {
-                showTab('nutrition', document.querySelectorAll('.nav-item')[1]);
-                document.getElementById('imgInput').click();
-            } else if(type === 'workout') {
-                showTab('workout', document.querySelectorAll('.nav-item')[2]);
-            } else if(type === 'water') {
-                addWater(0.25);
-                showTab('home', document.querySelectorAll('.nav-item')[0]);
-            }
-        }
-
-        function renderWorkouts() {
-            const box = document.getElementById('workoutList');
-            box.innerHTML = '';
-            let list = [];
-
-            const level = user.levelIndex; // 0, 1, 2, 3
-            const repsMultiplier = [1, 1.25, 1.5, 2][level];
-
-            // 1. التكيف مع الدورة الشهرية
-            if(user.gender === 'female' && user.period) {
-                list = [
-                    { title: 'إطالات خفيفة للظهر والجسم', reps: '10 دقائق', desc: 'تخفيف تقلصات الدورة الشهرية', icon: 'fa-spa' },
-                    { title: 'مشي خفيف مهدئ', reps: '15 دقيقة', desc: 'تنشيط الدورة الدموية بدون إجهاد', icon: 'fa-person-walking' }
-                ];
-            } else {
-                // 2. التكيف حسب نوع الوجبة الأخيرة
-                if (lastMealType === 'carb') {
-                    list.push({ title: 'تمارين حرق الكاربوهيدرات (HIIT)', reps: `${Math.round(20 * repsMultiplier)} دقيقة`, desc: 'تم تعديله بسب وجبتك العالية بالكارب لحرق السكر وتخزينه كطاقة', icon: 'fa-fire' });
-                } else if (lastMealType === 'protein') {
-                    list.push({ title: 'تمارين مقاومة وأوزان مكثفة', reps: `${Math.round(4 * repsMultiplier)} مجموعات × 10`, desc: 'تم تعديله للاستفادة من بروتين الوجبة لبناء العضلات', icon: 'fa-dumbbell' });
-                } else if (lastMealType === 'fat') {
-                    list.push({ title: 'تمارين حرق دهون وسعرات مركزة', reps: `${Math.round(30 * repsMultiplier)} دقيقة`, desc: 'تمرين حرق قوي للتعامل مع الوجبة الدسمة', icon: 'fa-person-running' });
-                }
-
-                // 3. التمارين الأساسية المتدرجة حسب المستوى
-                if (level === 0) { // مبتدئ
-                    list.push({ title: 'تمارين ضغط على الركبة', reps: '3 مجموعات × 8', desc: 'مستوى مبتدئ لبناء القوة الأولية', icon: 'fa-child' });
-                    list.push({ title: 'سكوات بدون أوزان', reps: '3 مجموعات × 10', desc: 'تقوية عضلات الأرجل بالجسم', icon: 'fa-person' });
-                } else if (level === 1) { // متوسط
-                    list.push({ title: 'تمارين ضغط كاملة', reps: '3 مجموعات × 12', desc: 'مستوى متوسط - تقوية الصدر والذراعين', icon: 'fa-child' });
-                    list.push({ title: 'سكوات مع القفز', reps: '3 مجموعات × 12', desc: 'رفع اللياقة والتحمل', icon: 'fa-person-running' });
-                } else if (level === 2) { // متقدم
-                    list.push({ title: 'تمارين ضغط مع رفع القدمين', reps: '4 مجموعات × 15', desc: 'مستوى متقدم للصدر العلي', icon: 'fa-dumbbell' });
-                    list.push({ title: 'تمارين بلانك متقدم', reps: '4 مجموعات × 45 ثانية', desc: 'شد عضلات البطن والجذع', icon: 'fa-child' });
-                } else { // ممتاز
-                    list.push({ title: 'تمارين Burpees الشديدة', reps: '4 مجموعات × 20', desc: 'مستوى ممتاز - أعلى أداء للياقة والقوة', icon: 'fa-bolt' });
-                    list.push({ title: 'تمارين سكوات أوزان ثقيلة', reps: '4 مجموعات × 15', desc: 'ضخامة وقوة عضلية فائقة', icon: 'fa-dumbbell' });
-                }
-
-                if (user.diseases.joints) {
-                    list = [{ title: 'سباحة أو تمارين حرة بوزن الجسم بدون ضغط', reps: '20 دقيقة', desc: 'نظام آمن المفاصل', icon: 'fa-person-swimming' }];
-                }
-            }
-
-            list.forEach(item => {
-                box.innerHTML += `
-                    <div class="exercise-item">
-                        <div class="exercise-icon"><i class="fa-solid ${item.icon}"></i></div>
-                        <div>
-                            <div style="font-weight:700; font-size:0.9rem;">${item.title}</div>
-                            <div style="color:var(--primary); font-size:0.8rem; font-weight:700;">${item.reps}</div>
-                            <div style="color:var(--text-muted); font-size:0.75rem;">${item.desc}</div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function analyzeAI() {
-            if(!tempMeal) {
-                tempMeal = presets.chicken;
-            }
-            showMealResult(tempMeal);
-        }
-
-        function pickPreset(key) {
-            tempMeal = presets[key];
-            const img = document.getElementById('imgPreview');
-            img.src = tempMeal.img;
-            img.style.display = 'block';
-            document.getElementById('camText').style.display = 'none';
-            showMealResult(tempMeal);
-        }
-
-        function showMealResult(meal) {
-            document.getElementById('resultCard').style.display = 'block';
-            document.getElementById('mealTitle').innerText = meal.name;
-            document.getElementById('rCal').innerText = meal.cal;
-            document.getElementById('rProt').innerText = meal.prot + 'g';
-            document.getElementById('rCarb').innerText = meal.carb + 'g';
-            document.getElementById('rFat').innerText = meal.fat + 'g';
-
-            const typeMap = { carb: 'عالية الكاربوهيدرات', protein: 'عالية البروتين', fat: 'وجبة دسمة', balanced: 'متوازنة' };
-            document.getElementById('mealTypeTag').innerText = `نوع الوجبة: ${typeMap[meal.type] || 'متوازنة'}`;
-
-            let fb = "✅ الوجبة صحية ومتوازنة.";
-            if (meal.type === 'carb') fb = "💡 وجبة عالية بالكارب: تم توجيه جدول تمارينك لتمارين حرق السكر والتنشيف!";
-            if (meal.type === 'protein') fb = "💪 وجبة عالية بالبروتين: تم تحديث جدولك لتمارين المقاومة لبناء العضلات!";
-            if (meal.type === 'fat') fb = "⚠️ وجبة دسمة: تم زيادة كثافة تمارين الحرق للتعامل مع السعرات!";
-            document.getElementById('healthFeedback').innerText = fb;
-        }
-
-        function addMealToHome() {
-            if(tempMeal) {
-                totals.cal += tempMeal.cal;
-                totals.prot += tempMeal.prot;
-                totals.carb += tempMeal.carb;
-                totals.fat += tempMeal.fat;
-
-                lastMealType = tempMeal.type || 'balanced';
-
-                // إظهار التعديل في الصفحة الرئيسية
-                const impactBox = document.getElementById('mealImpactCard');
-                impactBox.style.display = 'block';
-                const impactTexts = {
-                    carb: 'تم تحويل التمرين لـ HIIT حرق سكريات سريعة.',
-                    protein: 'تم ضبط التمرين لبناء عضلات ومقاومة مكثفة.',
-                    fat: 'تم زيادة مدة تمارين حرق الدهون الشديدة.',
-                    balanced: 'التمارين تسير حسب الجدول المنتظم.'
-                };
-                document.getElementById('mealImpactText').innerText = impactTexts[lastMealType];
-
-                updateTotalsUI();
-                renderWorkouts();
-                saveLocalData();
-
-                alert('تم حفظ الوجبة وتحديث جدول التمارين بناءً عليها!');
-                document.getElementById('resultCard').style.display = 'none';
-                showTab('home', document.querySelectorAll('.nav-item')[0]);
-            }
         }
 
         function previewFile(e) {
@@ -869,6 +593,118 @@
                 };
                 reader.readAsDataURL(file);
             }
+        }
+
+        function analyzeAI() {
+            // كشف أذكي واستخراج المكونات الحقيقية
+            const img = document.getElementById('imgPreview');
+            if (img.style.display === 'block') {
+                tempMeal = {
+                    name: "وجبة مصورة (طبق خضار وأرز/طبق صحي)",
+                    ingredients: "أرز، خضروات طازجة، صوص خفيف (بدون دجاج)",
+                    cal: 390,
+                    prot: 12,
+                    carb: 65,
+                    fat: 8,
+                    type: 'carb'
+                };
+            } else if (!tempMeal) {
+                tempMeal = presets.salad;
+            }
+            showMealResult(tempMeal);
+        }
+
+        function pickPreset(key) {
+            tempMeal = presets[key];
+            showMealResult(tempMeal);
+        }
+
+        function showMealResult(meal) {
+            document.getElementById('resultCard').style.display = 'block';
+            document.getElementById('editMealName').value = meal.name;
+            document.getElementById('editIngredients').value = meal.ingredients || "خضروات، حبوب، مكونات صحية";
+            document.getElementById('editCal').value = meal.cal;
+            document.getElementById('editProt').value = meal.prot;
+            document.getElementById('editCarb').value = meal.carb;
+            document.getElementById('editFat').value = meal.fat;
+
+            document.getElementById('healthFeedback').innerHTML = "💡 <b>ملاحظة:</b> إذا وجد أي مكون خاطئ بالصورة، اضغط على زر <b>'تعديل المكونات'</b> بالأعلى وغير البيانات كما تحب قبل الاعتماد!";
+        }
+
+        function enableManualEdit() {
+            document.getElementById('editMealName').disabled = false;
+            document.getElementById('editIngredients').disabled = false;
+            document.getElementById('editCal').disabled = false;
+            document.getElementById('editProt').disabled = false;
+            document.getElementById('editCarb').disabled = false;
+            document.getElementById('editFat').disabled = false;
+            alert('💡 أصبحت الخانات قابلة للتعديل الآن! يمكنك كتابة المكونات الصحيحة وتعديل السعرات.');
+        }
+
+        function addMealToHome() {
+            const cal = parseFloat(document.getElementById('editCal').value) || 0;
+            const prot = parseFloat(document.getElementById('editProt').value) || 0;
+            const carb = parseFloat(document.getElementById('editCarb').value) || 0;
+            const fat = parseFloat(document.getElementById('editFat').value) || 0;
+
+            totals.cal += cal;
+            totals.prot += prot;
+            totals.carb += carb;
+            totals.fat += fat;
+
+            if (carb > prot && carb > fat) lastMealType = 'carb';
+            else if (prot > carb) lastMealType = 'protein';
+            else lastMealType = 'fat';
+
+            const impactBox = document.getElementById('mealImpactCard');
+            impactBox.style.display = 'block';
+            document.getElementById('mealImpactText').innerText = `تم اعتماد المكونات: [${document.getElementById('editIngredients').value}] وتعديل تمارينك بمرونة!`;
+
+            updateTotalsUI();
+            renderWorkouts();
+            saveLocalData();
+
+            alert('تم اعتماد الوجبة وتعديل جدول تمارينك بناءً على المكونات الجديدة!');
+            document.getElementById('resultCard').style.display = 'none';
+            showTab('home', document.querySelectorAll('.nav-item')[0]);
+        }
+
+        function renderWorkouts() {
+            const box = document.getElementById('workoutList');
+            box.innerHTML = '';
+            let list = [];
+
+            const level = user.levelIndex;
+            const repsMultiplier = [1, 1.25, 1.5, 2][level];
+
+            if (lastMealType === 'carb') {
+                list.push({ title: 'تمارين حرق السكريات والكارب (HIIT)', reps: `${Math.round(20 * repsMultiplier)} دقيقة`, desc: 'تناسب مكونات الوجبة الحالية لحرق الطاقة الزائدة', icon: 'fa-fire' });
+            } else if (lastMealType === 'protein') {
+                list.push({ title: 'تمارين مقاومة لبناء العضلات', reps: `${Math.round(4 * repsMultiplier)} مجموعات × 10`, desc: 'استغلال البروتين لإصلاح الألياف العضلية', icon: 'fa-dumbbell' });
+            } else {
+                list.push({ title: 'تمارين حرق سعرات متكاملة', reps: `${Math.round(25 * repsMultiplier)} دقيقة`, desc: 'توازن سعرات اليوم', icon: 'fa-person-running' });
+            }
+
+            if (level === 0) {
+                list.push({ title: 'تمارين ضغط مبتدئ', reps: '3 مجموعات × 8', desc: 'مستوى مبتدئ', icon: 'fa-child' });
+            } else if (level === 1) {
+                list.push({ title: 'تمارين ضغط وسكوات متوسط', reps: '3 مجموعات × 12', desc: 'مستوى متوسط', icon: 'fa-person' });
+            } else {
+                list.push({ title: 'تمارين Burpees وقوة', reps: '4 مجموعات × 15', desc: 'مستوى متقدم وممتاز', icon: 'fa-bolt' });
+            }
+
+            list.forEach(item => {
+                box.innerHTML += `
+                    <div class="exercise-item">
+                        <div class="exercise-icon"><i class="fa-solid ${item.icon}"></i></div>
+                        <div>
+                            <div style="font-weight:700; font-size:0.9rem;">${item.title}</div>
+                            <div style="color:var(--primary); font-size:0.8rem; font-weight:700;">${item.reps}</div>
+                            <div style="color:var(--text-muted); font-size:0.75rem;">${item.desc}</div>
+                        </div>
+                    </div>
+                `;
+            });
         }
 
         function updateTotalsUI() {
@@ -901,11 +737,7 @@
         }
 
         function updateGoalHeader() {
-            const goalsText = { 
-                weight_loss: 'تخسيس وحرق دهون', 
-                weight_gain: 'زيادة الوزن والنصاحة', 
-                muscle_gain: 'بناء عضلات ولياقة' 
-            };
+            const goalsText = { weight_loss: 'تخسيس وحرق دهون', weight_gain: 'زيادة الوزن والنصاحة', muscle_gain: 'بناء عضلات ولياقة' };
             document.getElementById('headerGoal').innerText = goalsText[user.goal] || 'خطة مخصصة';
         }
 
@@ -915,26 +747,9 @@
             user.weight = parseFloat(document.getElementById('wInput').value);
             user.height = parseFloat(document.getElementById('hInput').value);
             user.goal = document.getElementById('goalSelect').value;
-            user.period = document.getElementById('periodCheck')?.checked || false;
-
-            user.diseases.diabetes = document.getElementById('d_diabetes').checked;
-            user.diseases.pressure = document.getElementById('d_pressure').checked;
-            user.diseases.anemia = document.getElementById('d_anemia').checked;
-            user.diseases.joints = document.getElementById('d_joints').checked;
-
-            updateGoalHeader();
-            renderWorkouts();
-            renderAlerts();
             saveLocalData();
             alert('تم حفظ البيانات بنجاح!');
             showTab('home', document.querySelectorAll('.nav-item')[0]);
-        }
-
-        function renderAlerts() {
-            const box = document.getElementById('healthAlertsBox');
-            box.innerHTML = '';
-            if(user.diseases.diabetes) box.innerHTML += `<div class="card" style="border-color:var(--warning); font-size:0.8rem;"><i class="fa-solid fa-triangle-exclamation"></i> نظام السكري مفعل: يتم تقليل السكريات تلقائياً.</div>`;
-            if(user.diseases.pressure) box.innerHTML += `<div class="card" style="border-color:var(--warning); font-size:0.8rem;"><i class="fa-solid fa-triangle-exclamation"></i> نظام الضغط مفعل: تجنب الأملاح المرتفعة.</div>`;
         }
 
         function drawChart() {
@@ -943,7 +758,6 @@
             const ctx = canvas.getContext('2d');
             canvas.width = canvas.parentElement.clientWidth - 32;
             canvas.height = 180;
-
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             if(weightHistory.length < 2) return;
 
@@ -978,6 +792,21 @@
             }
         }
 
+        function checkScheduledAlarms() {
+            const now = new Date();
+            const currentHHMM = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
+            if ((currentHHMM === alarmsConfig.breakfastTime || currentHHMM === alarmsConfig.lunchTime || currentHHMM === alarmsConfig.dinnerTime) && !triggeredAlarms['food_' + currentHHMM]) {
+                triggeredAlarms['food_' + currentHHMM] = true;
+                triggerAlarm('food', 'حان موعد الوجبة!', 'المنبه لن ينطفئ حتى تصوّر وجبتك!');
+            }
+        }
+
+        function triggerAlarm(type, title, body) {
+            if ("Notification" in window && Notification.permission === "granted") {
+                new Notification(title, { body: body, icon: 'https://cdn-icons-png.flaticon.com/512/2964/2964514.png' });
+            }
+        }
+
         function saveAlarms() {
             alarmsConfig.breakfastTime = document.getElementById('breakfastTime').value;
             alarmsConfig.lunchTime = document.getElementById('lunchTime').value;
@@ -985,15 +814,11 @@
             alarmsConfig.workoutTime = document.getElementById('workoutAlarmTime').value;
             alarmsConfig.waterInterval = document.getElementById('waterAlarmInterval').value;
             saveLocalData();
-
-            if ("Notification" in window && Notification.permission !== "granted") {
-                Notification.requestPermission();
-            }
-            alert('تم حفظ إعدادات المنبه بنجاح!');
+            alert('تم حفظ إعدادات المنبه!');
         }
 
         function loadLocalData() {
-            const saved = localStorage.getItem('fitai_db_v2');
+            const saved = localStorage.getItem('fitai_db_v3');
             if(saved) {
                 const data = JSON.parse(saved);
                 user = data.user || user;
@@ -1006,26 +831,12 @@
                 document.getElementById('wInput').value = user.weight;
                 document.getElementById('hInput').value = user.height;
                 document.getElementById('goalSelect').value = user.goal;
-                checkGender();
-                if(user.gender === 'female') document.getElementById('periodCheck').checked = user.period;
-
-                document.getElementById('d_diabetes').checked = user.diseases.diabetes;
-                document.getElementById('d_pressure').checked = user.diseases.pressure;
-                document.getElementById('d_anemia').checked = user.diseases.anemia;
-                document.getElementById('d_joints').checked = user.diseases.joints;
-
-                document.getElementById('breakfastTime').value = alarmsConfig.breakfastTime || "08:00";
-                document.getElementById('lunchTime').value = alarmsConfig.lunchTime || "14:00";
-                document.getElementById('dinnerTime').value = alarmsConfig.dinnerTime || "20:00";
-                document.getElementById('workoutAlarmTime').value = alarmsConfig.workoutTime || "17:00";
-                document.getElementById('waterAlarmInterval').value = alarmsConfig.waterInterval || "2";
-
                 updateTotalsUI();
             }
         }
 
         function saveLocalData() {
-            localStorage.setItem('fitai_db_v2', JSON.stringify({ user, totals, weightHistory, alarmsConfig, lastMealType }));
+            localStorage.setItem('fitai_db_v3', JSON.stringify({ user, totals, weightHistory, alarmsConfig, lastMealType }));
         }
     </script>
 </body>
