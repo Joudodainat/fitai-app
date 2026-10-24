@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FitAI الشامل - الحل العلمي الجذري لحساب السعرات</title>
+    <title>FitAI Pro - نظام السعرات والتمارين العلمي</title>
     <!-- Google Fonts & FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
         (function() {
             const manifestData = {
-                "name": "FitAI الشامل",
+                "name": "FitAI Pro",
                 "short_name": "FitAI",
                 "start_url": "./index.html",
                 "display": "standalone",
@@ -20,8 +21,7 @@
                 "icons": [{
                     "src": "https://cdn-icons-png.flaticon.com/512/2964/2964514.png",
                     "sizes": "512x512",
-                    "type": "image/png",
-                    "purpose": "any maskable"
+                    "type": "image/png"
                 }]
             };
             const stringManifest = JSON.stringify(manifestData);
@@ -64,7 +64,7 @@
         }
 
         header {
-            background: rgba(30, 41, 59, 0.9);
+            background: rgba(30, 41, 59, 0.95);
             backdrop-filter: blur(10px);
             padding: 15px 20px;
             position: sticky;
@@ -163,6 +163,7 @@
         .btn:active { transform: scale(0.98); }
         .btn-water { background-color: var(--water-color); color: #000; }
         .btn-warning { background-color: var(--warning); color: #000; }
+        .btn-danger { background-color: var(--danger); color: #fff; }
 
         .form-group { margin-bottom: 12px; }
         .form-group label {
@@ -184,40 +185,43 @@
 
         .form-control:focus { outline: none; border-color: var(--primary); }
 
-        .ai-prescription-box {
-            background: rgba(16, 185, 129, 0.1);
-            border: 2px solid var(--primary);
-            border-radius: 14px;
-            padding: 15px;
-            margin-top: 15px;
-            display: none;
+        .unit-tag {
+            font-size: 0.75rem;
+            color: var(--warning);
+            font-weight: bold;
+            margin-right: 5px;
         }
 
-        .checkbox-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            background: var(--bg-dark);
+        .food-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             padding: 10px;
+            background: rgba(15, 23, 42, 0.6);
             border-radius: 10px;
+            margin-bottom: 8px;
             border: 1px solid var(--border-color);
         }
 
-        .checkbox-item {
+        .food-item-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .food-item-qty {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.85rem;
-            cursor: pointer;
         }
 
-        .multi-select-box {
-            max-height: 180px;
-            overflow-y: auto;
-            background: var(--bg-dark);
+        .qty-input {
+            width: 60px;
+            padding: 6px;
+            text-align: center;
+            border-radius: 8px;
             border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 10px;
+            background: var(--bg-dark);
+            color: white;
         }
 
         .exercise-item {
@@ -284,13 +288,13 @@
 </head>
 <body onclick="unlockAudio()">
 
-    <!-- نافذة التشخيص الطبي والمعادلة العلمية الدقيقة -->
+    <!-- نافذة التشخيص الطبي والمعادلة العلمية -->
     <div id="diagnosticOverlay">
         <div class="card" style="width: 100%; max-width: 500px; border: 2px solid var(--primary);">
             <div style="text-align: center; margin-bottom: 15px;">
                 <i class="fa-solid fa-calculator" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 8px;"></i>
-                <h2>معادلة حساب السعرات الطبية العلمية 100%</h2>
-                <p style="font-size: 0.8rem; color: var(--text-muted);">أدخل بياناتك بدقة لتطبيق معادلة Mifflin-St Jeor المعتمدة طبياً.</p>
+                <h2>حساب السعرات بالطريقة العلمية المعتمدة</h2>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">أدخل بياناتك بدقة لتطبيق معادلة Mifflin-St Jeor الطبية.</p>
             </div>
 
             <form onsubmit="completeDiagnosticWizard(event)">
@@ -330,28 +334,16 @@
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label>5. الحالات الصحية (إن وجدت):</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item"><input type="checkbox" name="diagCond" value="diabetes"> مريض سكري</label>
-                        <label class="checkbox-item"><input type="checkbox" name="diagCond" value="pressure"> ضغط دم</label>
-                        <label class="checkbox-item"><input type="checkbox" name="diagCond" value="anemia"> فقر دم</label>
-                        <label class="checkbox-item"><input type="checkbox" name="diagCond" value="pcos"> تكيس المبايض</label>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn"><i class="fa-solid fa-square-root-variable"></i> احسب سعراتي بالمعادلة العلمية</button>
+                <button type="submit" class="btn"><i class="fa-solid fa-check-circle"></i> احسب سعراتي العلمية</button>
             </form>
         </div>
     </div>
 
     <header>
         <div class="brand">
-            <i class="fa-solid fa-heart-pulse"></i> FitAI الشامل
+            <i class="fa-solid fa-heart-pulse"></i> FitAI Pro
         </div>
-        <div id="targetGoalBadge" class="badge-level">
-            الهدف: توازن صحي
-        </div>
+        <div id="targetGoalBadge" class="badge-level">الهدف: تنحيف علمي</div>
     </header>
 
     <div class="container">
@@ -360,7 +352,7 @@
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
-                        <h3 id="headerGoal">مؤشر السعرات والوجبات اليومية</h3>
+                        <h3>مؤشر السعرات والوجبات اليومية</h3>
                         <p id="currentDate" style="color: var(--text-muted); font-size: 0.8rem;"></p>
                     </div>
                     <i class="fa-solid fa-scale-balanced" style="font-size: 1.8rem; color: var(--primary);"></i>
@@ -375,14 +367,14 @@
 
             <div class="card" style="border-color: var(--primary);">
                 <div style="font-weight: bold; margin-bottom: 8px;"><i class="fa-solid fa-notes-medical"></i> التحليل الطبي وحساب BMR / TDEE العلمي:</div>
-                <div id="weightGoalInfo" style="font-size: 0.85rem; color: var(--text-light); line-height: 1.6;">جاري التحميل...</div>
+                <div id="weightGoalInfo" style="font-size: 0.85rem; color: var(--text-light); line-height: 1.6;">جاري الحساب...</div>
             </div>
 
             <div id="mealImpactCard" class="card" style="display: none; border-color: var(--water-color);">
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <i class="fa-solid fa-bolt" style="color: var(--warning); font-size: 1.5rem;"></i>
                     <div>
-                        <div style="font-weight: bold; font-size: 0.9rem;">أحدث وجبة معتمدة والتمارين الخاصة بها:</div>
+                        <div style="font-weight: bold; font-size: 0.9rem;">أحدث وجبة تسجيلها:</div>
                         <div id="mealImpactText" style="font-size: 0.8rem; color: var(--text-muted);">لم يتم تسجيل وجبة بعد.</div>
                     </div>
                 </div>
@@ -391,7 +383,7 @@
             <div class="card" style="border-color: var(--water-color);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                     <div>
-                        <div style="font-weight: bold; color: var(--water-color);"><i class="fa-solid fa-glass-water"></i> تذكير وتتبع شرب الماء</div>
+                        <div style="font-weight: bold; color: var(--water-color);"><i class="fa-solid fa-glass-water"></i> تتبع شرب الماء</div>
                         <div id="waterText" style="font-size: 0.8rem; color: var(--text-muted);">0.0 / 2.5 لتر</div>
                     </div>
                     <span id="waterCount" style="font-weight: bold; color: var(--water-color);">0 أكواب</span>
@@ -403,90 +395,93 @@
             </div>
         </div>
 
-        <!-- 2. محرك التغذية والأصناف المخصصة المشفرة بنظام ذكي علمي -->
+        <!-- 2. محرك التغذية والحساب بالوحدات العلمية -->
         <div id="tab-nutrition" class="tab-content">
             <div class="card">
-                <h3><i class="fa-solid fa-brain"></i> محرك التغذية وحساب السعرات العلمي</h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">اختر الأصناف أو أضف صنفك الخاص، وسيقوم المحرك العلمي الذكي بتحليل اسم الأكلة أو استخدام السعرات المدخلة يدوياً لدقة 100%!</p>
+                <h3><i class="fa-solid fa-utensils"></i> محرك التغذية وتسجيل الوجبات</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">
+                    وحدات القياس العلمية الدقيقة:<br>
+                    • <b>الطعام والأطباق:</b> بالمعلقة الكبيرة.<br>
+                    • <b>الحلويات:</b> بالقطعة المتوسطة.<br>
+                    • <b>المشروبات:</b> بالكأس المتوسطة (200 مل / 200 غرام).
+                </p>
 
                 <div class="form-group">
-                    <label>اختر القسم / نوع الوجبة:</label>
-                    <select id="mealTimeSelect" class="form-control" onchange="updateFoodItemsList()">
-                        <option value="breakfast">وجبة الإفطار</option>
-                        <option value="lunch">وجبة الغداء (وجبات رئيسية وأطباق)</option>
-                        <option value="dinner">وجبة العشاء</option>
-                        <option value="sweets">الحلويات والمسليات</option>
-                        <option value="drinks">المشروبات والعصائر</option>
+                    <label>اختر القسم:</label>
+                    <select id="mealTypeSelect" class="form-control" onchange="renderFoodSelectionList()">
+                        <option value="meals">الأطعمة والأطباق الرئيسية (القياس: بالمعلقة الكبيرة)</option>
+                        <option value="sweets">الحلويات والمسليات (القياس: بالقطعة المتوسطة)</option>
+                        <option value="drinks">المشروبات والعصائر (القياس: بالكأس 200مل)</option>
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label>اختر الأصناف (اختيار متعدد):</label>
-                    <div id="multiFoodContainer" class="multi-select-box"></div>
+                <div id="foodSelectionList" style="margin-bottom: 15px;">
+                    <!-- تعبئة ديناميكية للأصناف وقيمها -->
                 </div>
 
-                <!-- إضافة صنف جديد مخصص بالتحليل الذكي أو الإدخال اليدوي -->
+                <!-- إمكانية إضافة صنف جديد مخصص -->
                 <div style="background: rgba(15, 23, 42, 0.6); padding: 12px; border-radius: 12px; margin-bottom: 15px; border: 1px dashed var(--primary);">
-                    <label style="font-weight: bold; margin-bottom: 6px; display: block; color: var(--primary);"><i class="fa-solid fa-plus-circle"></i> أضف صنفاً أو أكلة جديدة بنفسك:</label>
-                    <div class="form-group" style="margin-bottom: 8px;">
-                        <input type="text" id="customFoodName" class="form-control" placeholder="اسم الأكلة (مثال: شاورما دجاج، سمك مشوي، كيك شيكولاتة)...">
+                    <label style="font-weight: bold; margin-bottom: 6px; display: block; color: var(--primary);"><i class="fa-solid fa-plus-circle"></i> أضف صنفاً جديداً مخصصاً:</label>
+                    <div class="form-group">
+                        <input type="text" id="customName" class="form-control" placeholder="اسم الصنف (مثال: عسل طبيعي، كيك شيكولاتة)...">
                     </div>
-                    <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-                        <input type="number" id="customFoodCal" class="form-control" placeholder="السعرات (اختياري)">
-                        <input type="number" id="customFoodProt" class="form-control" placeholder="بروتين g (اختياري)">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+                        <div>
+                            <label id="unitLabelDynamic">السعرات لكل معلقة/قطعة/كأس:</label>
+                            <input type="number" id="customCal" class="form-control" placeholder="السعرات (مثال: 76)">
+                        </div>
+                        <div>
+                            <label>الكارب (غرام):</label>
+                            <input type="number" id="customCarb" class="form-control" placeholder="كارب (مثال: 20.5)">
+                        </div>
                     </div>
-                    <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 8px;">* إذا تركت السعرات فارغة، سيقوم النظام بتحليل اسم الأكلة وحسابها علمياً بناءً على مكوناتها الحقيقية.</p>
-                    <button class="btn btn-warning" style="font-size: 0.9rem; padding: 10px;" onclick="saveCustomFoodItem()"><i class="fa-solid fa-floppy-disk"></i> احفظ الصنف في القائمة</button>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px;">
+                        <div>
+                            <label>البروتين (غرام):</label>
+                            <input type="number" id="customProt" class="form-control" placeholder="بروتين">
+                        </div>
+                        <div>
+                            <label>الدهون (غرام):</label>
+                            <input type="number" id="customFat" class="form-control" placeholder="دهون">
+                        </div>
+                    </div>
+                    <button class="btn btn-warning" onclick="saveCustomFood()"><i class="fa-solid fa-floppy-disk"></i> حفظ الصنف في القائمة</button>
                 </div>
 
-                <button class="btn" onclick="generateAIAutoPortionsPrescription()"><i class="fa-solid fa-wand-magic-sparkles"></i> احسب السعرات والمكونات علمياً</button>
-            </div>
-
-            <div id="aiPrescriptionResult" class="ai-prescription-box">
-                <h4 style="color: var(--primary); margin-bottom: 8px;"><i class="fa-solid fa-circle-check"></i> التحليل العلمي الدقيق للمكونات والحصص:</h4>
-                <div id="prescriptionDesc" style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 12px; color: var(--text-light);"></div>
-                
-                <div class="macro-grid" style="margin-bottom: 15px;">
-                    <div class="macro-card"><div id="presCal" class="macro-val">0</div><div class="macro-label">سعرة</div></div>
-                    <div class="macro-card"><div id="presProt" class="macro-val">0g</div><div class="macro-label">بروتين</div></div>
-                    <div class="macro-card"><div id="presCarb" class="macro-val">0g</div><div class="macro-label">كارب</div></div>
-                    <div class="macro-card"><div id="presFat" class="macro-val">0g</div><div class="macro-label">دهون</div></div>
-                </div>
-
-                <div id="presExercise" style="background: rgba(15, 23, 42, 0.6); padding: 10px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 15px; color: var(--warning);"></div>
-
-                <button class="btn" onclick="acceptPrescription()"><i class="fa-solid fa-check-double"></i> اعتماد الوجبة وتحديث السعرات</button>
+                <button class="btn" onclick="calculateAndLogMeal()"><i class="fa-solid fa-calculator"></i> احسب واعتمد الوجبة المختارة</button>
             </div>
         </div>
 
-        <!-- 3. التمارين المتكيفة -->
+        <!-- 3. التمارين الرياضية المتدرجة -->
         <div id="tab-workout" class="tab-content">
             <div class="card">
                 <h3><i class="fa-solid fa-dumbbell"></i> جدول التمارين المتدرج</h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted);">يتطور تدريجياً بناءً على وجباتك وسعراتك.</p>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">يتكيف المستوى تلقائياً بناءً على وجباتك وسعراتك المستهلكة.</p>
             </div>
             <div id="workoutList"></div>
         </div>
 
-        <!-- 4. التقدم والوزن -->
+        <!-- 4. متابعة الوزن والتقدم -->
         <div id="tab-progress" class="tab-content">
             <div class="card">
-                <h3><i class="fa-solid fa-chart-line"></i> متابعة الوزن</h3>
+                <h3><i class="fa-solid fa-chart-line"></i> متابعة الوزن والتقدم</h3>
                 <div class="form-group" style="margin-top: 15px;">
-                    <label>سجّل وزنك الحالي (كجم):</label>
+                    <label>تسجيل وزن جديد (كجم):</label>
                     <div style="display: flex; gap: 10px;">
-                        <input type="number" id="newWeightInput" class="form-control" placeholder="67.5">
+                        <input type="number" step="0.1" id="newWeightInput" class="form-control" placeholder="67.5">
                         <button class="btn" style="width: 100px;" onclick="recordWeight()">حفظ</button>
                     </div>
                 </div>
-                <canvas id="weightChart" style="width: 100%; height: 160px; margin-top: 10px;"></canvas>
+                <div style="height: 200px; margin-top: 15px;">
+                    <canvas id="weightChartCanvas"></canvas>
+                </div>
             </div>
         </div>
 
-        <!-- 5. المنبهات ومنبه التمارين -->
+        <!-- 5. المنبهات والتذكيرات -->
         <div id="tab-alarms" class="tab-content">
             <div class="card">
-                <h3><i class="fa-solid fa-clock"></i> المنبهات ومنبه التمارين والماء</h3>
+                <h3><i class="fa-solid fa-clock"></i> المنبهات وتذكير الماء والتمارين</h3>
                 <div class="form-group"><label>موعد الإفطار:</label><input type="time" id="breakfastTime" class="form-control" value="08:00"></div>
                 <div class="form-group"><label>موعد الغداء:</label><input type="time" id="lunchTime" class="form-control" value="14:00"></div>
                 <div class="form-group"><label>موعد العشاء:</label><input type="time" id="dinnerTime" class="form-control" value="20:00"></div>
@@ -497,14 +492,14 @@
                         <option value="2">كل ساعتين</option>
                     </select>
                 </div>
-                <button class="btn" onclick="saveAlarms()"><i class="fa-solid fa-floppy-disk"></i> حفظ المواعيد والمنبهات</button>
+                <button class="btn" onclick="saveAlarms()"><i class="fa-solid fa-floppy-disk"></i> حفظ المنبهات</button>
             </div>
         </div>
 
         <!-- 6. الملف الشخصي -->
         <div id="tab-profile" class="tab-content">
             <div class="card">
-                <h3><i class="fa-solid fa-user-gear"></i> الملف الشخصي والمعادلة العلمية</h3>
+                <h3><i class="fa-solid fa-user-gear"></i> الملف الشخصي والحسابات</h3>
                 <form onsubmit="saveProfileData(event)">
                     <div class="form-group"><label>الجنس:</label>
                         <select id="genderInput" class="form-control">
@@ -513,27 +508,27 @@
                         </select>
                     </div>
                     <div class="form-group"><label>العمر:</label><input type="number" id="ageInput" class="form-control" value="30" required></div>
-                    <div class="form-group"><label>الوزن (كجم):</label><input type="number" id="wInput" class="form-control" value="67" required></div>
+                    <div class="form-group"><label>الوزن (كجم):</label><input type="number" step="0.1" id="wInput" class="form-control" value="67" required></div>
                     <div class="form-group"><label>الطول (سم):</label><input type="number" id="hInput" class="form-control" value="155" required></div>
-                    <button type="submit" class="btn"><i class="fa-solid fa-save"></i> تحديث وحساب السعرات</button>
+                    <button type="submit" class="btn"><i class="fa-solid fa-save"></i> إعادة حساب السعرات المستهدفة</button>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- نافذة المنبه -->
+    <!-- نافذة المنبه المنبثقة -->
     <div id="alarmModal" class="modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.85); z-index:4000; align-items:center; justify-content:center; padding:20px;">
         <div style="background:var(--card-bg); border-radius:20px; padding:25px; width:100%; max-width:400px; text-align:center; border:2px solid var(--water-color);">
             <i id="alarmModalIcon" class="fa-solid fa-bell" style="font-size:3rem; color:var(--water-color); margin-bottom:15px;"></i>
-            <h2 id="alarmModalTitle" style="color:white; margin-bottom:10px;">تنبيه هيدرات!</h2>
-            <p id="alarmModalBody" style="color:var(--text-muted); margin-bottom:20px;">حان وقت شرب كوب من الماء.</p>
+            <h2 id="alarmModalTitle" style="color:white; margin-bottom:10px;">تنبيه!</h2>
+            <p id="alarmModalBody" style="color:var(--text-muted); margin-bottom:20px;">تذكير الموعد.</p>
             <button class="btn btn-water" onclick="stopAlarmSound()">إيقاف التنبيه</button>
         </div>
     </div>
 
     <nav class="bottom-nav">
         <div class="nav-item active" onclick="showTab('home', this)"><i class="fa-solid fa-house"></i>الرئيسية</div>
-        <div class="nav-item" onclick="showTab('nutrition', this)"><i class="fa-solid fa-brain"></i>الموجه</div>
+        <div class="nav-item" onclick="showTab('nutrition', this)"><i class="fa-solid fa-utensils"></i>التغذية</div>
         <div class="nav-item" onclick="showTab('workout', this)"><i class="fa-solid fa-dumbbell"></i>التمارين</div>
         <div class="nav-item" onclick="showTab('progress', this)"><i class="fa-solid fa-chart-line"></i>التقدم</div>
         <div class="nav-item" onclick="showTab('alarms', this)"><i class="fa-solid fa-clock"></i>المنبهات</div>
@@ -541,47 +536,51 @@
     </nav>
 
     <script>
-        let user = { gender: 'female', age: 30, conditions: [], goal: 'weight_loss', weight: 67, height: 155, activity: 1.375 };
+        // المتغيرات الأساسية للمستخدم
+        let user = { gender: 'female', age: 30, goal: 'weight_loss', weight: 67, height: 155, activity: 1.375 };
         let totals = { cal: 0, prot: 0, carb: 0, fat: 0, water: 0 };
-        let weightHistory = [68, 67.5, 67.0];
-        let currentPrescription = null;
+        let weightHistory = [{ date: '10/20', weight: 68 }, { date: '10/22', weight: 67.5 }, { date: '10/24', weight: 67.0 }];
         let alarmsConfig = { breakfastTime: "08:00", lunchTime: "14:00", dinnerTime: "20:00", workoutTime: "17:00", waterInterval: 1 };
-        let customItems = { breakfast: [], lunch: [], dinner: [], sweets: [], drinks: [] };
         let audioCtx = null, triggeredAlarms = {}, lastWaterAlertTime = Date.now();
         let workoutLevel = 1;
         let targetCalories = 1600;
+        let chartInstance = null;
 
-        // قاعدة البيانات الأساسية معتمدة على القيم القياسية المعيارية
-        const ScientificNutritionDB = {
-            rice: { name: 'أرز مطبوخ', spoonCal: 38, prot: 0.8, carb: 8.2, fat: 0.3, defaultSpoons: 6, ingredients: 'أرز، ماء، زيت نباتي، ملح.' },
-            red_pasta: { name: 'معكرونة حمراء', spoonCal: 42, prot: 1.5, carb: 7.5, fat: 1.1, defaultSpoons: 6, ingredients: 'معكرونة، صلصة بندورة، زيت زيتون، بهارات.' },
-            mansaf: { name: 'منسف أردني', spoonCal: 65, prot: 3.2, carb: 5.5, fat: 3.4, defaultSpoons: 6, ingredients: 'أرز، جميد، لحم ضأن، سمن بلدي، لوز/صنوبر.' },
-            chicken: { name: 'دجاج مطبوخ/مشوي', spoonCal: 35, prot: 4.5, carb: 0.1, fat: 1.8, defaultSpoons: 4, ingredients: 'دجاج، بهارات، زيت زيتون.' },
-            meat: { name: 'لحم أحمر', spoonCal: 45, prot: 4.8, carb: 0.0, fat: 2.8, defaultSpoons: 4, ingredients: 'لحم بقر/غنم، بهارات وبصل.' },
-            ful: { name: 'فول مدمس', spoonCal: 25, prot: 1.6, carb: 4.0, fat: 0.4, defaultSpoons: 5, ingredients: 'فول، طحينة، زيت زيتون، ليمون.' },
-            hummus: { name: 'حمص بطحينة', spoonCal: 35, prot: 1.2, carb: 3.0, fat: 2.1, defaultSpoons: 4, ingredients: 'حمص، طحينة، زيت زيتون.' },
-            eggs: { name: 'بيض مطبوخ', spoonCal: 75, prot: 6.3, carb: 0.4, fat: 5.3, defaultSpoons: 1, ingredients: 'بيض، زيت خفيف أو سمن.' },
-            kunafa: { name: 'كنافة نابلسية', pieceCal: 360, prot: 7.0, carb: 45.0, fat: 18.0, ingredients: 'شعرية كنافة، جبنة نابلسية، سمنة، قطر.' },
-            baklava: { name: 'بقلاوة مكسرات', pieceCal: 280, prot: 4.0, carb: 32.0, fat: 16.0, ingredients: 'عجينة فيلو، مكسرات، سمنة، قطر.' },
-            chocolate: { name: 'شوكولاتة داكنة', pieceCal: 170, prot: 2.0, carb: 18.0, fat: 10.0, ingredients: 'ككاو، زبدة كاكاو، سكر.' },
-            coffee: { name: 'قهوة (بدون سكر)', cupCal: 5, prot: 0.3, carb: 0.0, fat: 0.0, ingredients: 'بن مطحونة، ماء، هيل.' },
-            tea: { name: 'شاي أخضر/أسود', cupCal: 2, prot: 0.0, carb: 0.5, fat: 0.0, ingredients: 'شاي طبيعي، ماء مغلي.' },
-            juice: { name: 'عصير فواكه طازج (200مل)', cupCal: 110, prot: 1.0, carb: 26.0, fat: 0.2, ingredients: 'فاكهة طبيعية معصورة.' },
-            soda: { name: 'مشروب غازي (200مل)', cupCal: 95, prot: 0.0, carb: 24.0, fat: 0.0, ingredients: 'مياه غازية، سكر مركز.' }
+        // قاعدة البيانات المعيارية العلمية المعتمدة
+        let FoodDatabase = {
+            meals: [
+                { id: 'honey', name: 'عسل طبيعي', unit: 'معلقة كبيرة (25غ)', cal: 76, carb: 20.5, prot: 0.1, fat: 0 },
+                { id: 'rice', name: 'أرز مطبوخ', unit: 'معلقة كبيرة', cal: 38, carb: 8.2, prot: 0.8, fat: 0.3 },
+                { id: 'red_pasta', name: 'معكرونة بالصلصة', unit: 'معلقة كبيرة', cal: 42, carb: 7.5, prot: 1.5, fat: 1.1 },
+                { id: 'chicken', name: 'دجاج مطبوخ مفروم/مقطع', unit: 'معلقة كبيرة', cal: 35, carb: 0.1, prot: 4.5, fat: 1.8 },
+                { id: 'meat', name: 'لحم مفروم مطبوخ', unit: 'معلقة كبيرة', cal: 45, carb: 0.0, prot: 4.8, fat: 2.8 },
+                { id: 'ful', name: 'فول مدمس', unit: 'معلقة كبيرة', cal: 25, carb: 4.0, prot: 1.6, fat: 0.4 },
+                { id: 'hummus', name: 'حمص بطحينة', unit: 'معلقة كبيرة', cal: 35, carb: 3.0, prot: 1.2, fat: 2.1 }
+            ],
+            sweets: [
+                { id: 'kunafa', name: 'كنافة نابلسية', unit: 'قطعة متوسطة', cal: 360, carb: 45.0, prot: 7.0, fat: 18.0 },
+                { id: 'baklava', name: 'بقلاوة بالمكسرات', unit: 'قطعة متوسطة', cal: 280, carb: 32.0, prot: 4.0, fat: 16.0 },
+                { id: 'chocolate', name: 'شوكولاتة داكنة', unit: 'قطعة متوسطة (20غ)', cal: 110, carb: 12.0, prot: 1.5, fat: 7.0 }
+            ],
+            drinks: [
+                { id: 'juice', name: 'عصير فواكه طازج', unit: 'كأس متوسطة (200مل)', cal: 110, carb: 26.0, prot: 1.0, fat: 0.2 },
+                { id: 'soda', name: 'مشروب غازي', unit: 'كأس متوسطة (200مل)', cal: 95, carb: 24.0, prot: 0.0, fat: 0.0 },
+                { id: 'coffee', name: 'قهوة سادة / شاي بدونه سكر', unit: 'كأس متوسطة (200مل)', cal: 5, carb: 0.5, prot: 0.2, fat: 0.0 }
+            ]
         };
 
         window.onload = function() {
             document.getElementById('currentDate').innerText = new Date().toLocaleDateString('ar-EG', { weekday: 'long', day: 'numeric', month: 'short' });
             loadLocalData();
-            if (user.conditions.length === 0 && !localStorage.getItem('fitai_diagnosed_v30')) {
+            if (!localStorage.getItem('fitai_diagnosed_p2')) {
                 document.getElementById('diagnosticOverlay').style.display = 'flex';
             } else {
                 document.getElementById('diagnosticOverlay').style.display = 'none';
-                updateFoodItemsList();
-                calculateScientificCaloriesAndAdvice();
+                calculateScientificCalories();
             }
+            renderFoodSelectionList();
             renderWorkouts();
-            drawChart();
+            initWeightChart();
             setInterval(checkAlarms, 4000);
             setInterval(checkWaterReminder, 60000);
         };
@@ -600,20 +599,16 @@
             user.activity = parseFloat(document.getElementById('diagActivity').value) || 1.375;
             user.goal = document.getElementById('diagGoal').value;
 
-            const checkboxes = document.querySelectorAll('input[name="diagCond"]:checked');
-            user.conditions = Array.from(checkboxes).map(cb => cb.value);
-
             saveLocalData();
-            localStorage.setItem('fitai_diagnosed_v30', 'true');
+            localStorage.setItem('fitai_diagnosed_p2', 'true');
             document.getElementById('diagnosticOverlay').style.display = 'none';
-            
-            updateFoodItemsList();
-            calculateScientificCaloriesAndAdvice();
+            calculateScientificCalories();
             renderWorkouts();
-            alert('✨ تمت الحسابات بالمعادلة العلمية بدقة 100%!');
+            alert('✨ تم حساب الاحتياج اليومي واستهداف السعرات بنجاح!');
         }
 
-        function calculateScientificCaloriesAndAdvice() {
+        // معادلة Mifflin-St Jeor العلمية الدقيقة
+        function calculateScientificCalories() {
             let bmr = (10 * user.weight) + (6.25 * user.height) - (5 * user.age);
             if (user.gender === 'male') { bmr += 5; } else { bmr -= 161; }
             const tdee = bmr * user.activity;
@@ -624,261 +619,145 @@
 
             const bmi = user.weight / Math.pow(user.height/100, 2);
             let advice = `الجنس: <b>${user.gender === 'male' ? 'ذكر' : 'أنثى'}</b> | الطول: ${user.height} سم | الوزن: ${user.weight} كجم (BMI: ${bmi.toFixed(1)})<br>
-            🔬 <b>BMR:</b> ${Math.round(bmr)} سعرة | <b>TDEE:</b> ${Math.round(tdee)} سعرة.<br>
-            🎯 <b>السعرات المستهدفة لهدفك:</b> <b>${targetCalories} سعرة يومياً</b>.`;
+            🔬 <b>BMR (حرق الراحة):</b> ${Math.round(bmr)} سعرة | <b>TDEE (حرق النشاط):</b> ${Math.round(tdee)} سعرة.<br>
+            🎯 <b>السعرات اليومية المستهدفة لهدفك:</b> <b>${targetCalories} سعرة/يوم</b>.`;
 
             document.getElementById('weightGoalInfo').innerHTML = advice;
-            document.getElementById('targetGoalBadge').innerText = user.goal === 'weight_gain' ? 'الهدف: زيادة الوزن' : 'الهدف: التنحيف العلمي';
+            document.getElementById('targetGoalBadge').innerText = user.goal === 'weight_gain' ? 'الهدف: زيادة الوزن' : 'الهدف: تنحيف علمي';
             updateTotalsUI();
         }
 
-        function updateFoodItemsList() {
-            const category = document.getElementById('mealTimeSelect').value;
-            const container = document.getElementById('multiFoodContainer');
+        function renderFoodSelectionList() {
+            const category = document.getElementById('mealTypeSelect').value;
+            const container = document.getElementById('foodSelectionList');
             container.innerHTML = '';
 
-            let baseItems = [];
-            if (category === 'breakfast') {
-                baseItems = [
-                    { id: 'eggs', name: '🍳 بيض مطبوخ' },
-                    { id: 'ful', name: '🧆 فول مدمس' },
-                    { id: 'hummus', name: '🥣 حمص بطحينة' }
-                ];
-            } else if (category === 'lunch') {
-                baseItems = [
-                    { id: 'rice', name: '🍚 أرز مطبوخ' },
-                    { id: 'red_pasta', name: '🍝 معكرونة حمراء' },
-                    { id: 'mansaf', name: '🍛 منسف أردني' },
-                    { id: 'chicken', name: '🍗 دجاج مطبوخ/مشوي' },
-                    { id: 'meat', name: '🥩 لحم أحمر' }
-                ];
-            } else if (category === 'sweets') {
-                baseItems = [
-                    { id: 'kunafa', name: '🍮 كنافة نابلسية' },
-                    { id: 'baklava', name: '🥮 بقلاوة مكسرات' },
-                    { id: 'chocolate', name: '🍫 شوكولاتة داكنة' }
-                ];
-            } else if (category === 'drinks') {
-                baseItems = [
-                    { id: 'coffee', name: '☕ قهوة' },
-                    { id: 'tea', name: '🍵 شاي' },
-                    { id: 'juice', name: '🧃 عصير فواكه (200مل)' },
-                    { id: 'soda', name: '🥤 مشروب غازي (200مل)' }
-                ];
-            }
+            const items = FoodDatabase[category] || [];
+            
+            // تحديث نص العناوين للمدخل المخصص
+            const dynamicLabel = document.getElementById('unitLabelDynamic');
+            if(category === 'meals') dynamicLabel.innerText = "السعرات لكل معلقة كبيرة:";
+            else if(category === 'sweets') dynamicLabel.innerText = "السعرات لكل قطعة متوسطة:";
+            else dynamicLabel.innerText = "السعرات لكل كأس 200مل:";
 
-            if (customItems[category] && customItems[category].length > 0) {
-                customItems[category].forEach((ci, idx) => {
-                    let label = `⭐ ${ci.name}`;
-                    if(ci.userCal) label += ` (${ci.userCal} سعرة)`;
-                    baseItems.push({ id: `custom_${category}_${idx}`, name: label });
-                });
-            }
-
-            baseItems.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'checkbox-item';
-                div.style.marginBottom = '6px';
-                div.innerHTML = `<input type="checkbox" name="selectedFood" value="${item.id}"> ${item.name}`;
-                container.appendChild(div);
+            items.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'food-item-row';
+                row.innerHTML = `
+                    <div class="food-item-info">
+                        <span style="font-weight: bold;">${item.name}</span>
+                        <span class="unit-tag">${item.unit} | ${item.cal} سعرة (${item.carb}g كارب)</span>
+                    </div>
+                    <div class="food-item-qty">
+                        <input type="number" min="0" value="0" id="qty_${item.id}" class="qty-input">
+                    </div>
+                `;
+                container.appendChild(row);
             });
         }
 
-        // حفظ الصنف المخصص مع الحساب العلمي للكلمات المفتاحية
-        function saveCustomFoodItem() {
-            const category = document.getElementById('mealTimeSelect').value;
-            const name = document.getElementById('customFoodName').value.trim();
-            const userCal = parseFloat(document.getElementById('customFoodCal').value);
-            const userProt = parseFloat(document.getElementById('customFoodProt').value);
+        function saveCustomFood() {
+            const category = document.getElementById('mealTypeSelect').value;
+            const name = document.getElementById('customName').value.trim();
+            const cal = parseFloat(document.getElementById('customCal').value) || 0;
+            const carb = parseFloat(document.getElementById('customCarb').value) || 0;
+            const prot = parseFloat(document.getElementById('customProt').value) || 0;
+            const fat = parseFloat(document.getElementById('customFat').value) || 0;
 
-            if (!name) {
-                alert('الرجاء إدخال اسم الصنف الجديد.');
+            if (!name || cal <= 0) {
+                alert('الرجاء إدخال اسم الصنف والسعرات الحرارية بشكل صحيح.');
                 return;
             }
 
-            if (!customItems[category]) customItems[category] = [];
-            
-            customItems[category].push({
+            let unitName = 'معلقة كبيرة';
+            if (category === 'sweets') unitName = 'قطعة متوسطة';
+            if (category === 'drinks') unitName = 'كأس متوسطة (200مل)';
+
+            const newItem = {
+                id: 'custom_' + Date.now(),
                 name: name,
-                userCal: userCal || null,
-                userProt: userProt || null
-            });
-            
+                unit: unitName,
+                cal: cal,
+                carb: carb,
+                prot: prot,
+                fat: fat
+            };
+
+            FoodDatabase[category].push(newItem);
             saveLocalData();
 
-            document.getElementById('customFoodName').value = '';
-            document.getElementById('customFoodCal').value = '';
-            document.getElementById('customFoodProt').value = '';
-            
-            updateFoodItemsList();
-            alert(`✅ تم حفظ "${name}" بنجاح في القائمة!`);
+            document.getElementById('customName').value = '';
+            document.getElementById('customCal').value = '';
+            document.getElementById('customCarb').value = '';
+            document.getElementById('customProt').value = '';
+            document.getElementById('customFat').value = '';
+
+            renderFoodSelectionList();
+            alert(`✅ تم حفظ "${name}" في القائمة الدائمة لـ ${unitName}!`);
         }
 
-        // محرك تحليل الكلمات المفتاحية الاستدلالي لحساب السعرات علمياً بدقة 100%
-        function estimateCustomItemNutrition(name, category) {
-            const n = name.toLowerCase();
-            
-            // 1. الدواجن واللحوم والأسماك
-            if (n.includes('دجاج') || n.includes('فراخ') || n.includes('شاورما دجاج')) {
-                return { c: 210, p: 26, cb: 3, f: 10, portion: "وجبة / حصة متوسطة (120غ)", ing: "صدور/أفخاذ دجاج ومبهارات." };
-            }
-            if (n.includes('لحم') || n.includes('كباب') || n.includes('كفتة') || n.includes('شاورما لحم')) {
-                return { c: 270, p: 24, cb: 2, f: 18, portion: "وجبة / حصة متوسطة (120غ)", ing: "لحم أحمر، دهن خفيف وبهارات." };
-            }
-            if (n.includes('سمك') || n.includes('سلمون') || n.includes('جمبري') || n.includes('تونا')) {
-                return { c: 180, p: 25, cb: 0, f: 8, portion: "قطعة سمك / علبة متوسطة", ing: "بروتين بحري وزيت صحي." };
-            }
+        function calculateAndLogMeal() {
+            const category = document.getElementById('mealTypeSelect').value;
+            const items = FoodDatabase[category] || [];
+            let mealCal = 0, mealCarb = 0, mealProt = 0, mealFat = 0;
+            let countLogged = 0;
 
-            // 2. النشويات والوجبات
-            if (n.includes('أرز') || n.includes('رز') || n.includes('كبسة') || n.includes('مقلوبة')) {
-                return { c: 230, p: 4, cb: 45, f: 4, portion: "صحن صغير (6 معالق معيارية)", ing: "أرز بسمتي/أبيض مطبوخ بزيت." };
-            }
-            if (n.includes('معكرونة') || n.includes('مكرونة') || n.includes('باستا')) {
-                return { c: 250, p: 7, cb: 42, f: 6, portion: "صحن متوسط (5 معالق معيارية)", ing: "معكرونة، صلصة وزيت." };
-            }
-            if (n.includes('خبز') || n.includes('توست') || n.includes('صامولي')) {
-                return { c: 160, p: 5, cb: 30, f: 2, portion: "رغيف صغير / 2 توست", ing: "دقيق القمح وخميرة." };
-            }
+            items.forEach(item => {
+                const qtyInput = document.getElementById(`qty_${item.id}`);
+                if (qtyInput) {
+                    const qty = parseFloat(qtyInput.value) || 0;
+                    if (qty > 0) {
+                        mealCal += item.cal * qty;
+                        mealCarb += item.carb * qty;
+                        mealProt += item.prot * qty;
+                        mealFat += item.fat * qty;
+                        countLogged++;
+                        qtyInput.value = 0; // إعادة التصفير بعد الاعتماد
+                    }
+                }
+            });
 
-            // 3. الحلويات والمعجنات
-            if (n.includes('كيك') || n.includes('جاتوه') || n.includes('تورتة') || n.includes('شوكولاتة')) {
-                return { c: 320, p: 4, cb: 42, f: 15, portion: "قطعة متوسطة واحدة", ing: "دقيق، سكر، زبدة/دهون ومحليات." };
-            }
-            if (n.includes('معجنات') || n.includes('بيتزا') || n.includes('فطيرة')) {
-                return { c: 280, p: 9, cb: 34, f: 12, portion: "قطعة متوسطة واحدة", ing: "عجين، جبن، زبدة وزيت." };
-            }
-
-            // 4. المشروبات
-            if (n.includes('عصير') || n.includes('كوكتيل') || n.includes('موهيتو')) {
-                return { c: 130, p: 1, cb: 30, f: 0, portion: "كأس متوسطة (200 مل)", ing: "مستخلص فواكه وسكر." };
-            }
-            if (n.includes('قهوة') || n.includes('شاي') || n.includes('نسكافيه')) {
-                return { c: 45, p: 1, cb: 6, f: 1, portion: "كوب متوسط", ing: "مشروب مغلي مع إضافة خفيفة." };
-            }
-
-            // الافتراضي للقسم العلمي المختار
-            if (category === 'sweets') return { c: 260, p: 3, cb: 35, f: 12, portion: "قطعة متوسطة", ing: "مكونات سكرية ودهون." };
-            if (category === 'drinks') return { c: 90, p: 0, cb: 22, f: 0, portion: "كأس 200 مل", ing: "سوائل وسكريات." };
-            return { c: 200, p: 8, cb: 25, f: 7, portion: "حصة متوسطة (5 معالق معيارية)", ing: "نشويات، بروتينات ودهون صحية." };
-        }
-
-        function getSpoonsText(count) {
-            if (count === 1) return "معلقة واحدة";
-            if (count === 2) return "معلقتين";
-            if (count >= 3 && count <= 10) return `${count} معالق`;
-            return `${count} معلقة`;
-        }
-
-        function generateAIAutoPortionsPrescription() {
-            const category = document.getElementById('mealTimeSelect').value;
-            const checkboxes = document.querySelectorAll('input[name="selectedFood"]:checked');
-            const selectedIds = Array.from(checkboxes).map(cb => cb.value);
-
-            if (selectedIds.length === 0) {
-                alert('الرجاء اختيار صنف واحد على الأقل.');
+            if (countLogged === 0) {
+                alert('الرجاء تحديد كمية صنف واحد على الأقل (أدخل عدداً أكبر من 0).');
                 return;
             }
 
-            const conds = user.conditions;
-            let desc = `🎯 <b>التحليل العلمي الدقيق والمصحح للمكونات والحصص:</b><br>`;
-            let totalCal = 0, totalProt = 0, totalCarb = 0, totalFat = 0;
+            totals.cal += mealCal;
+            totals.carb += mealCarb;
+            totals.prot += mealProt;
+            totals.fat += mealFat;
 
-            selectedIds.forEach(id => {
-                let dbItem = ScientificNutritionDB[id];
-                let name = "";
-                let ingredients = "";
-                let c = 0, p = 0, cb = 0, f = 0;
-                let portionText = "";
-
-                if (dbItem) {
-                    name = dbItem.name;
-                    ingredients = dbItem.ingredients;
-                    if (category === 'sweets') {
-                        portionText = conds.includes('diabetes') || conds.includes('weight_loss') ? "نصف قطعة متوسطة" : "قطعة متوسطة واحدة";
-                        let mult = portionText.includes('نصف') ? 0.5 : 1;
-                        c = dbItem.pieceCal * mult; p = dbItem.prot * mult; cb = dbItem.carb * mult; f = dbItem.fat * mult;
-                    } else if (category === 'drinks') {
-                        portionText = "كأس متوسطة (200 مل)";
-                        c = dbItem.cupCal; p = dbItem.prot; cb = dbItem.carb; f = dbItem.fat;
-                    } else {
-                        let spoons = user.goal === 'weight_loss' ? (dbItem.defaultSpoons - 2) : dbItem.defaultSpoons;
-                        spoons = Math.max(2, spoons);
-                        portionText = `<b>${getSpoonsText(spoons)}</b>`;
-                        c = dbItem.spoonCal * spoons; p = dbItem.prot * spoons; cb = dbItem.carb * spoons; f = dbItem.fat * spoons;
-                    }
-                } else if (id.startsWith('custom_')) {
-                    const parts = id.split('_');
-                    const customObj = customItems[category][parseInt(parts[2])];
-                    name = customObj.name;
-
-                    if (customObj.userCal) {
-                        c = customObj.userCal;
-                        p = customObj.userProt || (c * 0.15 / 4);
-                        cb = (c * 0.55 / 4);
-                        f = (c * 0.30 / 9);
-                        portionText = "حصة مدخلة يدوياً";
-                        ingredients = "تم اعتماد السعرات والقيمة المضافة يدوياً.";
-                    } else {
-                        const est = estimateCustomItemNutrition(name, category);
-                        c = est.c; p = est.p; cb = est.cb; f = est.f;
-                        portionText = est.portion;
-                        ingredients = est.ing;
-                    }
-                }
-
-                totalCal += c; totalProt += p; totalCarb += cb; totalFat += f;
-                desc += `- <b>${name}</b><br>&nbsp;&nbsp;&nbsp;• <b>المكونات:</b> ${ingredients}<br>&nbsp;&nbsp;&nbsp;• <b>الحصة الحسابية:</b> ${portionText} (${Math.round(c)} سعرة).<br><br>`;
-            });
-
-            let exerciseMsg = `🔥 التمرين المقترح للحرق: <b>${totalCal > 350 ? 'رفع المستوى إلى (متوسط/متقدم)' : 'مستوى تمارين مبتدئ منتظم'}</b>.`;
-
-            currentPrescription = { name: `وجبة (${category})`, cal: totalCal, prot: totalProt, carb: totalCarb, fat: totalFat, exerciseMsg, desc };
-
-            if (totalCal > 400) workoutLevel = Math.min(3, workoutLevel + 1);
-
-            document.getElementById('prescriptionDesc').innerHTML = desc;
-            document.getElementById('presCal').innerText = Math.round(totalCal);
-            document.getElementById('presProt').innerText = totalProt.toFixed(1) + 'g';
-            document.getElementById('presCarb').innerText = totalCarb.toFixed(1) + 'g';
-            document.getElementById('presFat').innerText = totalFat.toFixed(1) + 'g';
-            document.getElementById('presExercise').innerHTML = exerciseMsg;
-            document.getElementById('aiPrescriptionResult').style.display = 'block';
-        }
-
-        function acceptPrescription() {
-            if (!currentPrescription) return;
-            totals.cal += currentPrescription.cal;
-            totals.prot += currentPrescription.prot;
-            totals.carb += currentPrescription.carb;
-            totals.fat += currentPrescription.fat;
+            if (mealCal > 400) workoutLevel = Math.min(3, workoutLevel + 1);
 
             document.getElementById('mealImpactCard').style.display = 'block';
-            document.getElementById('mealImpactText').innerHTML = `<b>${currentPrescription.name}</b><br>${currentPrescription.exerciseMsg}`;
+            document.getElementById('mealImpactText').innerHTML = `تم إضافة <b>${Math.round(mealCal)} سعرة حرارية</b> (${Math.round(mealCarb)}g كارب). تم تحديث مستوى التمارين تلقائياً.`;
 
             updateTotalsUI();
             renderWorkouts();
             saveLocalData();
-            alert('✅ تم اعتماد الوجبة والحسابات بنجاح!');
-            document.getElementById('aiPrescriptionResult').style.display = 'none';
+            alert('✅ تم اعتماد الوجبة بنجاح!');
             showTab('home', document.querySelectorAll('.nav-item')[0]);
         }
 
         function renderWorkouts() {
             const box = document.getElementById('workoutList');
-            let levelTitle = "🟢 المستوى الأول: مبتدئ (تأسيس اللياقة)";
+            let levelTitle = "🟢 المستوى الأول: مبتدئ (تأسيس وحرق خفيف)";
             let exercises = `
-                <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-person-walking"></i></div><div><div style="font-weight:700;">المشي الخفيف (بعد الأكل)</div><div style="color:var(--primary); font-size:0.8rem; font-weight:700;">15 دقيقة</div><div style="color:var(--text-muted); font-size:0.75rem;">تخفيف سكر الدم وتنشيط الدورة الدموية</div></div></div>
+                <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-person-walking"></i></div><div><div style="font-weight:700;">المشي الخفيف (بعد الوجبات)</div><div style="color:var(--primary); font-size:0.8rem; font-weight:700;">15 دقيقة</div><div style="color:var(--text-muted); font-size:0.75rem;">تخفيف السكر وتنشيط الأيض</div></div></div>
+                <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-child-reaching"></i></div><div><div style="font-weight:700;">إطالة وإحماء مفاصل</div><div style="color:var(--primary); font-size:0.8rem; font-weight:700;">5 دقائق</div><div style="color:var(--text-muted); font-size:0.75rem;">تنشيط المرونة</div></div></div>
             `;
 
-            if (workoutLevel === 2) {
-                levelTitle = "🟡 المستوى الثاني: متوسط (حرق السعرات وشد الجسم)";
+            if (workoutLevel === 2 || totals.cal > 1100) {
+                levelTitle = "🟡 المستوى الثاني: متوسط (حرق وشد الجسم)";
                 exercises = `
-                    <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-person-running"></i></div><div><div style="font-weight:700;">مشي سريع أو كارديو خفيف</div><div style="color:var(--warning); font-size:0.8rem; font-weight:700;">25 دقيقة</div><div style="color:var(--text-muted); font-size:0.75rem;">رفع نبضات القلب لحرق السعرات</div></div></div>
+                    <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-person-running"></i></div><div><div style="font-weight:700;">مشي سريع أو كارديو خفيف</div><div style="color:var(--warning); font-size:0.8rem; font-weight:700;">25 دقيقة</div><div style="color:var(--text-muted); font-size:0.75rem;">رفع الحرق المستهدف</div></div></div>
+                    <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-dumbbell"></i></div><div><div style="font-weight:700;">تمارين سكوات بدون وزن</div><div style="color:var(--warning); font-size:0.8rem; font-weight:700;">3 مجموعات × 12 تكرار</div><div style="color:var(--text-muted); font-size:0.75rem;">تقوية الأرجل والأرداف</div></div></div>
                 `;
-            } else if (workoutLevel === 3) {
+            } else if (workoutLevel === 3 || totals.cal > 1700) {
                 levelTitle = "🔴 المستوى الثالث: متقدم (أقصى حرق دهون)";
                 exercises = `
-                    <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-fire"></i></div><div><div style="font-weight:700;">تمارين هيت (HIIT) المكثفة</div><div style="color:var(--danger); font-size:0.8rem; font-weight:700;">20 دقيقة مكثفة</div><div style="color:var(--text-muted); font-size:0.75rem;">حرق دهون عنيف وبناء عضلات</div></div></div>
+                    <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-fire"></i></div><div><div style="font-weight:700;">تمارين هيت مكثفة (HIIT)</div><div style="color:var(--danger); font-size:0.8rem; font-weight:700;">20 دقيقة</div><div style="color:var(--text-muted); font-size:0.75rem;">أقصى معدل حرق بالسعرات</div></div></div>
+                    <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-dumbbell"></i></div><div><div style="font-weight:700;">ضغط وبطن متقدم</div><div style="color:var(--danger); font-size:0.8rem; font-weight:700;">4 مجموعات × 15 تكرار</div><div style="color:var(--text-muted); font-size:0.75rem;">نحت وتقوية العضلات</div></div></div>
                 `;
             }
 
@@ -910,7 +789,7 @@
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById('tab-' + id).classList.add('active');
             if(el) el.classList.add('active');
-            if(id === 'progress') drawChart();
+            if(id === 'progress') updateWeightChart();
             if(id === 'workout') renderWorkouts();
         }
 
@@ -921,43 +800,67 @@
             user.weight = parseFloat(document.getElementById('wInput').value);
             user.height = parseFloat(document.getElementById('hInput').value);
             saveLocalData();
-            calculateScientificCaloriesAndAdvice();
+            calculateScientificCalories();
             renderWorkouts();
-            alert('تمت إعادة حساب السعرات بالمعادلة العلمية بنجاح!');
+            alert('تم إعادة حساب السعرات المستهدفة بالمعادلة العلمية بنجاح!');
             showTab('home', document.querySelectorAll('.nav-item')[0]);
         }
 
-        function drawChart() {
-            const canvas = document.getElementById('weightChart');
-            if(!canvas) return;
-            const ctx = canvas.getContext('2d');
-            canvas.width = canvas.parentElement.clientWidth - 32;
-            canvas.height = 160;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            if(weightHistory.length < 2) return;
-            const maxW = Math.max(...weightHistory) + 2, minW = Math.min(...weightHistory) - 2;
-            const stepX = canvas.width / (weightHistory.length - 1);
-            ctx.beginPath(); ctx.strokeStyle = '#10b981'; ctx.lineWidth = 3;
-            weightHistory.forEach((w, i) => {
-                const x = i * stepX, y = canvas.height - ((w - minW) / (maxW - minW)) * (canvas.height - 40) - 20;
-                if(i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-                ctx.fillStyle = '#10b981'; ctx.fillRect(x - 3, y - 3, 6, 6);
+        function initWeightChart() {
+            const ctx = document.getElementById('weightChartCanvas').getContext('2d');
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: weightHistory.map(w => w.date),
+                    datasets: [{
+                        label: 'الوزن (كجم)',
+                        data: weightHistory.map(w => w.weight),
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
             });
-            ctx.stroke();
+        }
+
+        function updateWeightChart() {
+            if (chartInstance) {
+                chartInstance.data.labels = weightHistory.map(w => w.date);
+                chartInstance.data.datasets[0].data = weightHistory.map(w => w.weight);
+                chartInstance.update();
+            }
         }
 
         function recordWeight() {
             const val = parseFloat(document.getElementById('newWeightInput').value);
-            if(val) { weightHistory.push(val); user.weight = val; saveLocalData(); drawChart(); document.getElementById('newWeightInput').value = ''; alert('تم تسجيل الوزن الجديد!'); }
+            if (val) {
+                const nowStr = (new Date().getMonth()+1) + '/' + new Date().getDate();
+                weightHistory.push({ date: nowStr, weight: val });
+                user.weight = val;
+                saveLocalData();
+                updateWeightChart();
+                document.getElementById('newWeightInput').value = '';
+                alert('تم تسجيل الوزن الجديد بنجاح!');
+            }
         }
 
         function checkAlarms() {
             const now = new Date();
             const hhmm = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
-            if (hhmm === alarmsConfig.breakfastTime && !triggeredAlarms['b_'+hhmm]) { triggeredAlarms['b_'+hhmm] = true; fireAlarm('الإفطار', 'حان موعد الإفطار!'); }
-            if (hhmm === alarmsConfig.lunchTime && !triggeredAlarms['l_'+hhmm]) { triggeredAlarms['l_'+hhmm] = true; fireAlarm('الغداء', 'حان موعد الغداء الصحي!'); }
-            if (hhmm === alarmsConfig.dinnerTime && !triggeredAlarms['d_'+hhmm]) { triggeredAlarms['d_'+hhmm] = true; fireAlarm('العشاء', 'حان موعد العشاء الخفيف!'); }
-            if (hhmm === alarmsConfig.workoutTime && !triggeredAlarms['w_'+hhmm]) { triggeredAlarms['w_'+hhmm] = true; fireAlarm('التمارين 🏋️‍♂️', 'حان موعد حصة التمارين اليومية!'); }
+            if (hhmm === alarmsConfig.breakfastTime && !triggeredAlarms['b_'+hhmm]) { triggeredAlarms['b_'+hhmm] = true; fireAlarm('الإفطار 🍳', 'حان موعد وجبة الإفطار!'); }
+            if (hhmm === alarmsConfig.lunchTime && !triggeredAlarms['l_'+hhmm]) { triggeredAlarms['l_'+hhmm] = true; fireAlarm('الغداء 🍲', 'حان موعد وجبة الغداء الصحية!'); }
+            if (hhmm === alarmsConfig.dinnerTime && !triggeredAlarms['d_'+hhmm]) { triggeredAlarms['d_'+hhmm] = true; fireAlarm('العشاء 🥗', 'حان موعد وجبة العشاء الخفيفة!'); }
+            if (hhmm === alarmsConfig.workoutTime && !triggeredAlarms['w_'+hhmm]) { triggeredAlarms['w_'+hhmm] = true; fireAlarm('التمارين 🏋️‍♂️', 'حان موعد تمارينك اليومية!'); }
         }
 
         function checkWaterReminder() {
@@ -980,7 +883,7 @@
         function fireAlarm(title, body) {
             playSound();
             document.getElementById('alarmModalIcon').className = "fa-solid fa-bell";
-            document.getElementById('alarmModalTitle').innerText = 'تنبيه ' + title;
+            document.getElementById('alarmModalTitle').innerText = title;
             document.getElementById('alarmModalBody').innerText = body;
             document.getElementById('alarmModal').style.display = 'flex';
         }
@@ -1012,22 +915,30 @@
         }
 
         function loadLocalData() {
-            const s = localStorage.getItem('fitai_db_v30');
-            if(s) {
+            const s = localStorage.getItem('fitai_pro_db_v1');
+            if (s) {
                 const d = JSON.parse(s);
-                user = d.user || user; totals = d.totals || totals; weightHistory = d.weightHistory || weightHistory; alarmsConfig = d.alarmsConfig || alarmsConfig; customItems = d.customItems || customItems; workoutLevel = d.workoutLevel || 1; targetCalories = d.targetCalories || 1600;
-                document.getElementById('wInput').value = user.weight; 
+                user = d.user || user;
+                totals = d.totals || totals;
+                weightHistory = d.weightHistory || weightHistory;
+                alarmsConfig = d.alarmsConfig || alarmsConfig;
+                FoodDatabase = d.FoodDatabase || FoodDatabase;
+                workoutLevel = d.workoutLevel || 1;
+                targetCalories = d.targetCalories || 1600;
+
+                document.getElementById('wInput').value = user.weight;
                 document.getElementById('hInput').value = user.height;
                 if(document.getElementById('ageInput')) document.getElementById('ageInput').value = user.age;
                 if(document.getElementById('genderInput')) document.getElementById('genderInput').value = user.gender;
                 if(alarmsConfig.workoutTime && document.getElementById('workoutAlarmTime')) document.getElementById('workoutAlarmTime').value = alarmsConfig.workoutTime;
-                if(alarmsConfig.waterInterval) document.getElementById('waterInterval').value = alarmsConfig.waterInterval;
                 updateTotalsUI();
             }
         }
 
         function saveLocalData() {
-            localStorage.setItem('fitai_db_v30', JSON.stringify({ user, totals, weightHistory, alarmsConfig, customItems, workoutLevel, targetCalories }));
+            localStorage.setItem('fitai_pro_db_v1', JSON.stringify({
+                user, totals, weightHistory, alarmsConfig, FoodDatabase, workoutLevel, targetCalories
+            }));
         }
     </script>
 </body>
