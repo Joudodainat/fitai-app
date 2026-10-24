@@ -351,8 +351,17 @@
         <div id="tab-nutrition" class="tab-content">
             <div class="card">
                 <h3><i class="fa-solid fa-camera"></i> تحليل الوجبة بالرؤية البصرية (AI Vision)</h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">التقط صورة لطعامك بوضوح، وسيقوم الذكاء الاصطناعي برؤيتها وتحليل محتواها الفعلي بدقة تامة!</p>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">التقط صورة لطعامك بدقة، وسيقرأ الذكاء الاصطناعي مكوناتها الحقيقية!</p>
                 
+                <div class="form-group" style="background: rgba(16, 185, 129, 0.1); padding: 10px; border-radius: 10px; margin-bottom: 12px;">
+                    <label style="color: var(--primary); font-weight: bold;"><i class="fa-solid fa-key"></i> أدخل مفتاح التحليل المجاني (Gemini API Key):</label>
+                    <div style="display: flex; gap: 8px; margin-top: 5px;">
+                        <input type="password" id="apiKeyInput" class="form-control" placeholder="AIzaSy...">
+                        <button class="btn" style="width: 100px; font-size: 0.8rem;" onclick="saveApiKey()">حفظ المفتاح</button>
+                    </div>
+                    <small style="color: var(--text-muted); font-size: 0.7rem; display: block; margin-top: 4px;">احصل عليه مجاناً من Google AI Studio والصقه هنا ليعمل التحليل البصري الحقيقي 100%.</small>
+                </div>
+
                 <div class="camera-box" onclick="document.getElementById('imgInput').click();">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
                     <div id="camText">اضغط هنا لتصوير الوجبة الحقيقية</div>
@@ -360,12 +369,12 @@
                 </div>
                 <input type="file" id="imgInput" accept="image/*" capture="environment" style="display:none;" onchange="previewFile(event)">
 
-                <button class="btn" onclick="analyzeRealVisionAI()"><i class="fa-solid fa-wand-magic-sparkles"></i> تحليل الصورة بالذكاء الاصطناعي</button>
+                <button class="btn" onclick="analyzeRealVisionAI()"><i class="fa-solid fa-wand-magic-sparkles"></i> تحليل الصورة الحقيقية بالذكاء الاصطناعي</button>
             </div>
 
             <div id="resultCard" class="card" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h4 id="mealTitle">نتيجة التحليل البصري</h4>
+                    <h4 id="mealTitle">نتيجة التحليل الحقيقي</h4>
                     <button class="btn btn-warning" style="width: auto; padding: 4px 10px; font-size: 0.75rem;" onclick="enableManualEdit()"><i class="fa-solid fa-pen"></i> تعديل المكونات</button>
                 </div>
 
@@ -375,7 +384,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>المكونات الظاهرة في الصورة:</label>
+                    <label>المكونات الظاهرة في الطبق:</label>
                     <input type="text" id="editIngredients" class="form-control" disabled>
                 </div>
 
@@ -520,6 +529,7 @@
         let totals = { cal: 0, prot: 0, carb: 0, fat: 0, water: 0 };
         let weightHistory = [72, 71.5, 71.0, 70.5, 70.0];
         let tempMeal = null;
+        let geminiApiKey = "";
 
         let alarmsConfig = { breakfastTime: "08:00", lunchTime: "14:00", dinnerTime: "20:00", workoutTime: "17:00", waterInterval: "2" };
         let audioCtx = null;
@@ -533,8 +543,15 @@
             renderWorkouts();
             drawChart();
             updateGoalHeader();
+            if(geminiApiKey) document.getElementById('apiKeyInput').value = geminiApiKey;
             setInterval(checkScheduledAlarms, 5000);
         };
+
+        function saveApiKey() {
+            geminiApiKey = document.getElementById('apiKeyInput').value.trim();
+            saveLocalData();
+            alert('✅ تم حفظ مفتاح التحليل البصري بنجاح!');
+        }
 
         function calculateAutoLevel() {
             const start = new Date(user.startDate || new Date());
@@ -563,41 +580,51 @@
             }
         }
 
-        // تحليل حقيقي بالرؤية البصرية للذكاء الاصطناعي (Gemini Vision)
+        // تحليل حقيقي 100% عبر اتصال مباشر بـ Gemini Vision AI
         async function analyzeRealVisionAI() {
             const img = document.getElementById('imgPreview');
             if (img.style.display !== 'block' || !img.src) {
-                alert('⚠️ يرجى التقاط صورة للطعام أولاً!');
+                alert('⚠️ يرجى التقاط أو إرفاق صورة للوجبة أولاً!');
                 return;
             }
 
-            alert('⏳ جاري تحليل الصورة عبر شبكة الذكاء الاصطناعي البصري...');
+            if (!geminiApiKey) {
+                alert('⚠️ يرجى إدخال مفتاح التحليل (Gemini API Key) في الخانة المخصصة بالأعلى لكي يتمكن الذكاء الاصطناعي من رؤية وتحليل الصورة بدقة!');
+                return;
+            }
+
+            alert('⏳ جاري إرسال الصورة وتحليلها عبر شبكة الذكاء الاصطناعي البصري...');
 
             try {
-                // استخراج بيانات الصورة Base64
                 const base64Data = img.src.split(',')[1];
                 const mimeType = img.src.substring(img.src.indexOf(':') + 1, img.src.indexOf(';'));
 
-                // استخدام مفتاح النظام البرمجي الآمن للرؤية البصرية
-                const apiKey = "AIzaSyD" + "W3N0_ExampleKey_FitAI_Vision_Engine"; // مفتاح الرؤية المدمج المباشر
+                const response = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`;
                 
-                // بما أن المتصفح يتطلب مفتاحاً صالحاً، سنستخدم محاكاة بصرية ذكية متقدمة تفحص محتويات الألوان بدقة عالية جداً للوجبة، أو يمكن ربطه بمحركك الفعلي
-                // لحل المشكلة فوراً بدون توقف، قمنا بتضمين كشف ذكي لخصائص الصور الحقيقية:
-                setTimeout(() => {
-                    tempMeal = {
-                        name: "طبق طعام صحي محلل بالرؤية البصرية",
-                        ingredients: "مكونات طازجة مطابقة للصورة الملتقطة",
-                        cal: 440,
-                        prot: 30,
-                        carb: 45,
-                        fat: 12,
-                        type: 'protein'
-                    };
-                    showMealResult(tempMeal);
-                }, 1000);
+                const res = await fetch(response, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [
+                                { text: "قم بتحليل هذه الصورة للطعام بدقة تامة. استخرج اسم الوجبة، المكونات بالتفصيل الموجودة في الطبق، السعرات الحرارية التقريبية، غرامات البروتين، غرامات الكارب، غرامات الدهون. أجب بصيغة JSON فقط بهذا الشكل وبدون أي نص آخر: {\"name\": \"اسم الوجبة\", \"ingredients\": \"المكونات بالتفصيل\", \"cal\": سعرات_رقمية, \"prot\": بروتين_رقمي, \"carb\": كارب_رقمي, \"fat\": دهون_رقمي, \"type\": \"carb أو protein أو fat أو balanced\"}" },
+                                { inline_data: { mime_type: mimeType, data: base64Data } }
+                            ]
+                        }]
+                    })
+                });
+
+                const data = await res.json();
+                const textResult = data.candidates[0].content.parts[0].text;
+                const cleanJson = textResult.replace(/```json/g, '').replace(/```/g, '').trim();
+                const mealData = JSON.parse(cleanJson);
+
+                tempMeal = mealData;
+                showMealResult(tempMeal);
 
             } catch (err) {
-                alert('❌ تعذر الاتصال بخدمة الرؤية البصرية.');
+                alert('❌ تعذر التحليل. تأكد من صحة مفتاح الرموز (API Key) أو من وضوح الصورة.');
+                console.error(err);
             }
         }
 
@@ -610,7 +637,7 @@
             document.getElementById('editCarb').value = meal.carb;
             document.getElementById('editFat').value = meal.fat;
 
-            document.getElementById('healthFeedback').innerHTML = "💡 <b>تم التحليل بنجاح!</b> يمكنك تعديل أي مكون أو قيمة يدوياً إذا احتجت لذلك.";
+            document.getElementById('healthFeedback').innerHTML = "💡 <b>تم التحليل البصري بنجاح!</b> استعرض المكونات والسعرات، ويمكنك تعديل أي شيء يدوياً إذا أردت.";
         }
 
         function enableManualEdit() {
@@ -646,7 +673,7 @@
             renderWorkouts();
             saveLocalData();
 
-            alert('تم اعتماد الوجبة وتحديث جدول تمارينك بنجاح!');
+            alert('تم اعتماد الوجبة وتحديث جدول تمارينك بناءً على محتوى الطبق الحقيقي!');
             document.getElementById('resultCard').style.display = 'none';
             showTab('home', document.querySelectorAll('.nav-item')[0]);
         }
@@ -800,7 +827,7 @@
         }
 
         function loadLocalData() {
-            const saved = localStorage.getItem('fitai_db_v7');
+            const saved = localStorage.getItem('fitai_db_v8');
             if(saved) {
                 const data = JSON.parse(saved);
                 user = data.user || user;
@@ -808,6 +835,7 @@
                 weightHistory = data.weightHistory || weightHistory;
                 alarmsConfig = data.alarmsConfig || alarmsConfig;
                 lastMealType = data.lastMealType || 'balanced';
+                geminiApiKey = data.geminiApiKey || '';
 
                 document.getElementById('genderSelect').value = user.gender;
                 document.getElementById('wInput').value = user.weight;
@@ -818,7 +846,7 @@
         }
 
         function saveLocalData() {
-            localStorage.setItem('fitai_db_v7', JSON.stringify({ user, totals, weightHistory, alarmsConfig, lastMealType }));
+            localStorage.setItem('fitai_db_v8', JSON.stringify({ user, totals, weightHistory, alarmsConfig, lastMealType, geminiApiKey }));
         }
     </script>
 </body>
