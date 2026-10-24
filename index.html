@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FitAI - موجه الإفطار الذكي للحالات الصحية</title>
+    <title>FitAI - الموجه الذكي الشامل للتغذية والتمارين والحالات الطبية</title>
     <!-- Google Fonts & FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,7 +11,7 @@
     <script>
         (function() {
             const manifestData = {
-                "name": "FitAI - موجه الإفطار الذكي",
+                "name": "FitAI - الموجه الذكي الشامل",
                 "short_name": "FitAI",
                 "start_url": "./index.html",
                 "display": "standalone",
@@ -266,10 +266,10 @@
 
     <header>
         <div class="brand">
-            <i class="fa-solid fa-mug-hot"></i> FitAI - إفطارك الذكي
+            <i class="fa-solid fa-heart-pulse"></i> FitAI الشامل
         </div>
         <div id="targetGoalBadge" class="badge-level">
-            الهدف: حساب الوزن
+            الهدف: توازن صحي
         </div>
     </header>
 
@@ -279,7 +279,7 @@
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
-                        <h3 id="headerGoal">مؤشر الإفطار والسعرات اليومية</h3>
+                        <h3 id="headerGoal">مؤشر السعرات والوجبات اليومية</h3>
                         <p id="currentDate" style="color: var(--text-muted); font-size: 0.8rem;"></p>
                     </div>
                     <i class="fa-solid fa-scale-balanced" style="font-size: 1.8rem; color: var(--primary);"></i>
@@ -293,16 +293,16 @@
             </div>
 
             <div class="card" style="border-color: var(--primary);">
-                <div style="font-weight: bold; margin-bottom: 8px;"><i class="fa-solid fa-notes-medical"></i> تحليل الـ AI لحالتك والوزن المستهدف:</div>
-                <div id="weightGoalInfo" style="font-size: 0.85rem; color: var(--text-light); line-height: 1.5;">يرجى إدخال طولك ووزنك وأهدافك المتعددة في تبويب (حسابي) ليقوم الـ AI بحساب الوزن المثالي وحصص الإفطار بدقة.</div>
+                <div style="font-weight: bold; margin-bottom: 8px;"><i class="fa-solid fa-notes-medical"></i> تحليل الـ AI لأهدافك والوزن المثالي:</div>
+                <div id="weightGoalInfo" style="font-size: 0.85rem; color: var(--text-light); line-height: 1.5;">يرجى إدخال طولك، وزنك، وأهدافك (مثل التنحيف وتكيس المبايض أو زيادة الوزن) في تبويب (حسابي).</div>
             </div>
 
             <div id="mealImpactCard" class="card" style="display: none; border-color: var(--water-color);">
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <i class="fa-solid fa-bolt" style="color: var(--warning); font-size: 1.5rem;"></i>
                     <div>
-                        <div style="font-weight: bold; font-size: 0.9rem;">أحدث وجبة إفطار معتمدة:</div>
-                        <div id="mealImpactText" style="font-size: 0.8rem; color: var(--text-muted);">لم يتم تسجيل فطور بعد.</div>
+                        <div style="font-weight: bold; font-size: 0.9rem;">أحدث وجبة معتمدة والتمارين الخاصة بها:</div>
+                        <div id="mealImpactText" style="font-size: 0.8rem; color: var(--text-muted);">لم يتم تسجيل وجبة بعد.</div>
                     </div>
                 </div>
             </div>
@@ -310,7 +310,7 @@
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                     <div>
-                        <div style="font-weight: bold;"><i class="fa-solid fa-glass-water text-info"></i> تتبع شرب الماء صباحاً ومساءً</div>
+                        <div style="font-weight: bold;"><i class="fa-solid fa-glass-water text-info"></i> تتبع شرب الماء</div>
                         <div id="waterText" style="font-size: 0.8rem; color: var(--text-muted);">0.0 / 2.5 لتر</div>
                     </div>
                     <span id="waterCount" style="font-weight: bold; color: var(--water-color);">0 أكواب</span>
@@ -322,39 +322,39 @@
             </div>
         </div>
 
-        <!-- 2. موجه وجبة الإفطار الحصري والشامل -->
+        <!-- 2. موجه الوجبات والحصص الذكي (إفطار، غداء، عشاء) -->
         <div id="tab-nutrition" class="tab-content">
             <div class="card">
-                <h3><i class="fa-solid fa-utensils"></i> خيارات وجبة الإفطار (بالمقادير والمعالق)</h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">اختر صنف الإفطار، وسيحسب الـ AI الكمية المسموحة بالمعالق والقطع والرغيف بناءً على حالتك الصحية!</p>
+                <h3><i class="fa-solid fa-brain"></i> موجه الكميات الذكي (للإفطار، الغداء، والعشاء)</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">حدد الوجبة والصنف، وسيقوم الـ AI بتحديد الكمية المناسبة بالمعالق والقطع والجرامات بناءً على أهدافك وحالتك الطبية!</p>
 
                 <div class="form-group">
-                    <label>اختر صنف الإفطار:</label>
-                    <select id="breakfastItemSelect" class="form-control" onchange="updateBreakfastSubOptions()">
-                        <option value="eggs">بيض (مسلوق، مقلي بزيت/زبدة)</option>
-                        <option value="ful">فول مدمس (بالملعقة)</option>
-                        <option value="falafel">فلافل / طعمية (بالقطعة)</option>
-                        <option value="hummus">حمص بيتي / متبل (بالملعقة)</option>
-                        <option value="labneh">لبنة (حلوة، حامضة، دايت)</option>
-                        <option value="cheese">أجبان (عتاوي، حلوم، قريش، مثلثات)</option>
-                        <option value="bread">خبز الإفطار (أبيض، أسمر، نخالة)</option>
-                        <option value="olive_oil">زيت وزعتر / زيتون</option>
-                        <option value="sweet_spread">قشطة، عسل، أو مربى</option>
-                        <option value="morning_drink">مشروب الصباح (قهوة، شاي، حليب)</option>
+                    <label>اختر الوجبة:</label>
+                    <select id="mealTimeSelect" class="form-control" onchange="updateFoodItemsList()">
+                        <option value="breakfast">وجبة الإفطار</option>
+                        <option value="lunch">وجبة الغداء</option>
+                        <option value="dinner">وجبة العشاء</option>
                     </select>
                 </div>
 
-                <div class="form-group" id="breakfastSubGroup" style="display: none;">
-                    <label id="breakfastSubLabel">التفصيل أو النوع:</label>
-                    <select id="breakfastSubSelect" class="form-control"></select>
+                <div class="form-group">
+                    <label>اختر الصنف الغذائي:</label>
+                    <select id="foodItemSelect" class="form-control" onchange="updateSubOptions()">
+                        <!-- يتم تعبئتها ديناميكياً حسب الوجبة -->
+                    </select>
                 </div>
 
-                <button class="btn" onclick="generateBreakfastPrescription()"><i class="fa-solid fa-wand-magic-sparkles"></i> احسب حصة الإفطار المناسبة لأهدافي</button>
+                <div class="form-group" id="subOptionGroup" style="display: none;">
+                    <label id="subOptionLabel">التفصيل أو النوع:</label>
+                    <select id="foodSubSelect" class="form-control"></select>
+                </div>
+
+                <button class="btn" onclick="generateAIPortionPrescription()"><i class="fa-solid fa-wand-magic-sparkles"></i> احسب الحصة والكمية المناسبة لأهدافي</button>
             </div>
 
-            <!-- نتيجة وصفة الإفطار من الـ AI -->
+            <!-- نتيجة وصفة الـ AI -->
             <div id="aiPrescriptionResult" class="ai-prescription-box">
-                <h4 style="color: var(--primary); margin-bottom: 8px;"><i class="fa-solid fa-circle-check"></i> حصة الإفطار الموصى بها:</h4>
+                <h4 style="color: var(--primary); margin-bottom: 8px;"><i class="fa-solid fa-circle-check"></i> الوصفة المخصصة لك:</h4>
                 <div id="prescriptionDesc" style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 12px; color: var(--text-light);"></div>
                 
                 <div class="macro-grid" style="margin-bottom: 15px;">
@@ -366,15 +366,15 @@
 
                 <div id="presExercise" style="background: rgba(15, 23, 42, 0.6); padding: 10px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 15px; color: var(--warning);"></div>
 
-                <button class="btn" onclick="acceptPrescription()"><i class="fa-solid fa-check-double"></i> اعتماد الفطور وتحديث السجل</button>
+                <button class="btn" onclick="acceptPrescription()"><i class="fa-solid fa-check-double"></i> اعتماد الوجبة وتحديث سجلي</button>
             </div>
         </div>
 
         <!-- 3. التمارين المتكيفة -->
         <div id="tab-workout" class="tab-content">
             <div class="card">
-                <h3><i class="fa-solid fa-dumbbell"></i> التمارين المخصصة الآمنة</h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted);">تتكيف تلقائياً مع خطة الإفطار والبروتوكول الصحي.</p>
+                <h3><i class="fa-solid fa-dumbbell"></i> جدول التمارين المخصصة لحرق السعرات</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">تتغير التمارين تلقائياً حسب الوجبات والهدف (تنحيف، زيادة وزن، تكيس مبايض).</p>
             </div>
             <div id="workoutList"></div>
         </div>
@@ -393,40 +393,42 @@
                 <canvas id="weightChart" style="width: 100%; height: 160px; margin-top: 10px;"></canvas>
 
                 <div style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 15px;">
-                    <label style="font-weight: bold; margin-bottom: 8px; display: block;"><i class="fa-solid fa-heart-pulse"></i> قياس مستوى استجابة الجسم بعد الإفطار:</label>
+                    <label style="font-weight: bold; margin-bottom: 8px; display: block;"><i class="fa-solid fa-heart-pulse"></i> قياس استجابة الجسم للأكل والتمارين:</label>
                     <select id="bodyResponseSelect" class="form-control" onchange="saveBodyResponse()">
                         <option value="good">ممتازة (طاقة عالية، هضم ممتاز، بدون انتفاخ)</option>
-                        <option value="bloated">انتفاخ أو خمول بسيط (يحتاج تعديل نوع الخبز أو الكمية)</option>
-                        <option value="fatigue">إرهاق أو جوع سريع (يحتاج زيادة البروتين بالفطور)</option>
+                        <option value="bloated">انتفاخ أو خمول بسيط (يقترح الـ AI تعديل الكمية غداً)</option>
+                        <option value="fatigue">إرهاق أو جوع سريع (يقترح الـ AI زيادة البروتين)</option>
                     </select>
                 </div>
             </div>
         </div>
 
-        <!-- 5. المنبهات والإنذارات -->
+        <!-- 5. المنبهات والإنذارات (للإفطار، الغداء، العشاء، والتمارين) -->
         <div id="tab-alarms" class="tab-content">
             <div class="card">
-                <h3><i class="fa-solid fa-clock"></i> منبه وجبة الإفطار والنشاط</h3>
+                <h3><i class="fa-solid fa-clock"></i> المنبهات والإنذارات للوجبات والرياضة</h3>
                 <div style="margin-bottom: 15px; padding: 10px; background: rgba(16, 185, 129, 0.1); border-radius: 10px;">
                     <button class="btn btn-warning" onclick="testAlarmNow()"><i class="fa-solid fa-bell"></i> تجربة صوت المنبه الصارم</button>
                 </div>
-                <div class="form-group"><label>موعد الإفطار الصباحي:</label><input type="time" id="breakfastTime" class="form-control" value="08:00"></div>
-                <div class="form-group"><label>موعد رياضة الصباح:</label><input type="time" id="workoutAlarmTime" class="form-control" value="09:00"></div>
-                <button class="btn" onclick="saveAlarms()"><i class="fa-solid fa-floppy-disk"></i> حفظ المواعيد</button>
+                <div class="form-group"><label>موعد الإفطار:</label><input type="time" id="breakfastTime" class="form-control" value="08:00"></div>
+                <div class="form-group"><label>موعد الغداء:</label><input type="time" id="lunchTime" class="form-control" value="14:00"></div>
+                <div class="form-group"><label>موعد العشاء:</label><input type="time" id="dinnerTime" class="form-control" value="20:00"></div>
+                <div class="form-group"><label>موعد التمرين:</label><input type="time" id="workoutAlarmTime" class="form-control" value="17:00"></div>
+                <button class="btn" onclick="saveAlarms()"><i class="fa-solid fa-floppy-disk"></i> حفظ المواعيد والمنبهات</button>
             </div>
         </div>
 
-        <!-- 6. الملف الشخصي والأهداف المتعددة (متعدد الاختيارات) -->
+        <!-- 6. الملف الشخصي والأهداف المتعددة -->
         <div id="tab-profile" class="tab-content">
             <div class="card">
-                <h3><i class="fa-solid fa-user-gear"></i> الملف الشخصي والأهداف والحالات الطبية</h3>
+                <h3><i class="fa-solid fa-user-gear"></i> الملف الشخصي والأهداف الطبية المتعددة</h3>
                 <form onsubmit="saveProfileData(event)">
                     <div class="form-group">
-                        <label>حدد حالتك أو أهدافك (يمكنك اختيار أكثر من خيار بالجمع بينها):</label>
+                        <label>اختر أهدافك وحالتك (يمكنك اختيار عدة خيارات معاً):</label>
                         <div class="checkbox-group">
                             <label class="checkbox-item"><input type="checkbox" name="cond" value="weight_loss"> تنحيف / تخسيس</label>
                             <label class="checkbox-item"><input type="checkbox" name="cond" value="weight_gain"> زيادة الوزن والنحافة</label>
-                            <label class="checkbox-item"><input type="checkbox" name="cond" value="pcos"> متلازمة تكيس المبايض (PCOS)</label>
+                            <label class="checkbox-item"><input type="checkbox" name="cond" value="pcos"> تكيس المبايض (PCOS)</label>
                             <label class="checkbox-item"><input type="checkbox" name="cond" value="diabetes"> مريض سكري</label>
                             <label class="checkbox-item"><input type="checkbox" name="cond" value="pressure"> ضغط دم مرتفع</label>
                             <label class="checkbox-item"><input type="checkbox" name="cond" value="ibs"> القولون العصبي</label>
@@ -442,7 +444,7 @@
                         <label>الطول (سم):</label>
                         <input type="number" id="hInput" class="form-control" value="170" required>
                     </div>
-                    <button type="submit" class="btn"><i class="fa-solid fa-save"></i> احسب الوزن المثالي وحصص الإفطار</button>
+                    <button type="submit" class="btn"><i class="fa-solid fa-save"></i> احسب الوزن المثالي وحصص الوجبات</button>
                 </form>
             </div>
         </div>
@@ -452,15 +454,15 @@
     <div id="alarmModal" class="modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.85); z-index:2000; align-items:center; justify-content:center; padding:20px;">
         <div style="background:var(--card-bg); border-radius:20px; padding:25px; width:100%; max-width:400px; text-align:center; border:2px solid var(--danger);">
             <i class="fa-solid fa-bell" style="font-size:3rem; color:var(--danger); margin-bottom:15px;"></i>
-            <h2 id="alarmModalTitle" style="color:white; margin-bottom:10px;">تنبيه الإفطار!</h2>
-            <p id="alarmModalBody" style="color:var(--text-muted); margin-bottom:20px;">حان وقت وجبة الإفطار حسب خطتك.</p>
-            <button class="btn btn-danger" onclick="stopAlarmSound()">إيقاف التنبيه واختيار الفطور</button>
+            <h2 id="alarmModalTitle" style="color:white; margin-bottom:10px;">تنبيه وجبة!</h2>
+            <p id="alarmModalBody" style="color:var(--text-muted); margin-bottom:20px;">حان وقت الوجبة حسب خطتك العلاجية.</p>
+            <button class="btn btn-danger" onclick="stopAlarmSound()">إيقاف التنبيه واختيار الحصة</button>
         </div>
     </div>
 
     <nav class="bottom-nav">
         <div class="nav-item active" onclick="showTab('home', this)"><i class="fa-solid fa-house"></i>الرئيسية</div>
-        <div class="nav-item" onclick="showTab('nutrition', this)"><i class="fa-solid fa-utensils"></i>الإفطار</div>
+        <div class="nav-item" onclick="showTab('nutrition', this)"><i class="fa-solid fa-brain"></i>الموجه</div>
         <div class="nav-item" onclick="showTab('workout', this)"><i class="fa-solid fa-dumbbell"></i>التمارين</div>
         <div class="nav-item" onclick="showTab('progress', this)"><i class="fa-solid fa-chart-line"></i>التقدم</div>
         <div class="nav-item" onclick="showTab('alarms', this)"><i class="fa-solid fa-clock"></i>المنبهات</div>
@@ -472,13 +474,13 @@
         let totals = { cal: 0, prot: 0, carb: 0, fat: 0, water: 0 };
         let weightHistory = [72, 71.5, 71.0, 70.5, 70.0];
         let currentPrescription = null;
-        let alarmsConfig = { breakfastTime: "08:00", workoutTime: "09:00" };
+        let alarmsConfig = { breakfastTime: "08:00", lunchTime: "14:00", dinnerTime: "20:00", workoutTime: "17:00" };
         let audioCtx = null, alarmInterval = null, triggeredAlarms = {};
 
         window.onload = function() {
             document.getElementById('currentDate').innerText = new Date().toLocaleDateString('ar-EG', { weekday: 'long', day: 'numeric', month: 'short' });
             loadLocalData();
-            updateBreakfastSubOptions();
+            updateFoodItemsList();
             calculateWeightGoalsAndAdvice();
             renderWorkouts();
             drawChart();
@@ -490,52 +492,73 @@
             if (audioCtx.state === 'suspended') audioCtx.resume();
         }
 
-        function updateBreakfastSubOptions() {
-            const main = document.getElementById('breakfastItemSelect').value;
-            const group = document.getElementById('breakfastSubGroup');
-            const label = document.getElementById('breakfastSubLabel');
-            const select = document.getElementById('breakfastSubSelect');
+        function updateFoodItemsList() {
+            const meal = document.getElementById('mealTimeSelect').value;
+            const select = document.getElementById('foodItemSelect');
             select.innerHTML = '';
 
-            if (main === 'eggs') {
-                group.style.display = 'block'; label.innerText = 'طريقة الطبخ:';
-                select.innerHTML = `<option value="boiled">بيض مسلوق (بالحبة)</option><option value="fried_oil">بيض مقلي بزيت زيتون (بالحبة)</option><option value="butter">بيض مقلي بالزبدة الطبيعية</option>`;
-            } else if (main === 'ful') {
-                group.style.display = 'block'; label.innerText = 'التحضير:';
-                select.innerHTML = `<option value="normal">فول مدمس بالملعقة (الملعقة الكبيرة = 20 جم)</option><option value="cumin_oil">فول مع كمون وزيت زيتون</option>`;
-            } else if (main === 'falafel') {
-                group.style.display = 'block'; label.innerText = 'النوع والحجم:';
-                select.innerHTML = `<option value="baked">فلافل في الفرن (بالقطعة)</option><option value="fried">فلافل مقلية عادية (بالقطعة)</option>`;
-            } else if (main === 'hummus') {
-                group.style.display = 'block'; label.innerText = 'التقديم:';
-                select.innerHTML = `<option value="plate">حمص بيتي / متبل (بالملعقة الكبيرة)</option>`;
-            } else if (main === 'labneh') {
-                group.style.display = 'block'; label.innerText = 'نوع اللبنة:';
-                select.innerHTML = `<option value="sweet">لبنة حلوة</option><option value="sour">لبنة حامضة</option><option value="diet">لبنة قليل الدسم / دايت</option>`;
-            } else if (main === 'cheese') {
-                group.style.display = 'block'; label.innerText = 'نوع الجبن:';
-                select.innerHTML = `<option value="halloumi">جبن حلوم (مشوي أو طازج)</option><option value="akkawi">جبن عتاوي / عكاوي</option><option value="cottage">جبن قريش (ممتاز للرجيم وتكيس المبايض)</option><option value="triangles">جبن مثلثات / مربعات</option>`;
-            } else if (main === 'bread') {
+            if (meal === 'breakfast') {
+                select.innerHTML = `
+                    <option value="eggs">بيض (مسلوق، مقلي بزيت/زبدة)</option>
+                    <option value="ful">فول مدمس (بالملعقة الكبيرة)</option>
+                    <option value="falafel">فلافل / طعمية (بالقطعة)</option>
+                    <option value="hummus">حمص بيتي / متبل (بالملعقة)</option>
+                    <option value="labneh">لبنة (حلوة، حامضة، دايت)</option>
+                    <option value="cheese">أجبان (حلوم، قريش، عكاوي)</option>
+                    <option value="bread">خبز الإفطار (أبيض، أسمر، نخالة)</option>
+                    <option value="olive_oil">زيت وزعتر / زيتون</option>
+                    <option value="sweet_spread">قشطة، عسل، أو مربى</option>
+                `;
+            } else if (meal === 'lunch') {
+                select.innerHTML = `
+                    <option value="rice">أرز / بسمتي (بالملعقة الكبيرة)</option>
+                    <option value="chicken">دجاج (صدر، فخذ - بالقطعة أو الجرام)</option>
+                    <option value="meat">لحم أحمر / ستيك (بالقطعة)</option>
+                    <option value="sauce">صوص بندورة / صلصة (بالملعقة)</option>
+                    <option value="salad">سلطة خضراء (بالمعلقة أو الصحن)</option>
+                    <option value="soup">شوربة عدس / خضار (بالمغرفة)</option>
+                `;
+            } else if (meal === 'dinner') {
+                select.innerHTML = `
+                    <option value="bread_dinner">خبز عشاء (أبيض، أسمر، نخالة)</option>
+                    <option value="tuna">تونة (بالعلبة أو الملعقة)</option>
+                    <option value="labneh_dinner">لبنة أو جبن خفيف للعشاء</option>
+                    <option value="eggs_dinner">بيض عينة أو مسلوق</option>
+                    <option value="yogurt">زبادي / لبن رائب (بالعلبة)</option>
+                `;
+            }
+            updateSubOptions();
+        }
+
+        function updateSubOptions() {
+            const main = document.getElementById('foodItemSelect').value;
+            const group = document.getElementById('subOptionGroup');
+            const label = document.getElementById('subOptionLabel');
+            const select = document.getElementById('foodSubSelect');
+            select.innerHTML = '';
+
+            if (main === 'bread' || main === 'bread_dinner') {
                 group.style.display = 'block'; label.innerText = 'نوع الخبز:';
                 select.innerHTML = `<option value="bran">خبز نخالة / أسمر (ممتاز لمقاومة الأنسولين)</option><option value="white">خبز أبيض عادي</option>`;
-            } else if (main === 'olive_oil') {
-                group.style.display = 'block'; label.innerText = 'المقدار:';
-                select.innerHTML = `<option value="zaatar">زيت وزعتر (بالملعقة الكبيرة)</option><option value="olives">زيتون أخضر / أسود (بالحبة)</option>`;
-            } else if (main === 'sweet_spread') {
-                group.style.display = 'block'; label.innerText = 'الصنف:';
-                select.innerHTML = `<option value="honey">عسل طبيعي (بالملعقة الصغيرة)</option><option value="jam">مربى (بالملعقة الصغيرة)</option><option value="cream">قشطة طازجة</option>`;
-            } else if (main === 'morning_drink') {
-                group.style.display = 'block'; label.innerText = 'المشروب:';
-                select.innerHTML = `<option value="coffee_milk">قهوة بالحليب (بدون سكر أو بسكر دايت)</option><option value="tea_mint">شاي بالنعناع</option><option value="matcha">شاي ماتشا / أخضر</option>`;
+            } else if (main === 'labneh' || main === 'labneh_dinner') {
+                group.style.display = 'block'; label.innerText = 'نوع اللبنة:';
+                select.innerHTML = `<option value="sweet">لبنة حلوة</option><option value="sour">لبنة حامضة</option><option value="diet">لبنة قليل الدسم / دايت</option>`;
+            } else if (main === 'rice') {
+                group.style.display = 'block'; label.innerText = 'نوع الأرز:';
+                select.innerHTML = `<option value="white">أرز أبيض مطبوخ (الملعقة = 15 جم)</option><option value="brown">أرز بني / أسمر (ألياف عالية)</option>`;
+            } else if (main === 'eggs' || main === 'eggs_dinner') {
+                group.style.display = 'block'; label.innerText = 'طريقة الطبخ:';
+                select.innerHTML = `<option value="boiled">بيض مسلوق</option><option value="fried">بيض مقلي بزيت زيتون</option>`;
             } else {
                 group.style.display = 'none';
             }
         }
 
-        // حساب الأهداف المتعددة وتحديد حصص الإفطار
-        function generateBreakfastPrescription() {
-            const item = document.getElementById('breakfastItemSelect').value;
-            const sub = document.getElementById('breakfastSubSelect').value;
+        // حساب الوجبة والكميات بدقة مع الأخذ بالاعتبار الأهداف المتعددة
+        function generateAIPortionPrescription() {
+            const meal = document.getElementById('mealTimeSelect').value;
+            const item = document.getElementById('foodItemSelect').value;
+            const sub = document.getElementById('foodSubSelect').value;
             const conds = user.conditions;
 
             let desc = "";
@@ -545,77 +568,111 @@
             const isPCOSOrDiabetes = conds.includes('pcos') || conds.includes('diabetes');
             const isWeightLoss = conds.includes('weight_loss');
             const isWeightGain = conds.includes('weight_gain');
-            const isIBS = conds.includes('ibs');
 
-            if (item === 'eggs') {
-                let count = isWeightLoss || isPCOSOrDiabetes ? 2 : 3;
-                if (isWeightGain) count = 4;
-                desc = `🍳 <b>توجيه الـ AI لإفطار البيض:</b> مسموح لك بـ <b>${count} حبات بيض</b> (${sub === 'boiled' ? 'مسلوق' : 'مقلي بزيت زيتون خفيف'}) لزيادة البروتين الخالي من النشويات الضارة.`;
-                cal = count * 78; prot = count * 6.3; carb = 0.6; fat = count * 5;
-                exerciseMsg = `🔥 لحرق وجبة البيض: <b>15 دقيقة مشي صباحي نشط</b>.`;
-            } else if (item === 'ful') {
-                let spoons = isPCOSOrDiabetes || isWeightLoss ? 4 : 7;
-                desc = `🧆 <b>توجيه الـ AI للفول:</b> مسموح بـ <b>${spoons} معالق كبيرة من الفول المدمس</b> المتبل بالكمون والليمون (ألياف ممتازة تشعرك بالشبع الطويل).`;
-                cal = spoons * 35; prot = spoons * 2.2; carb = spoons * 5; fat = spoons * 0.5;
-                exerciseMsg = `🔥 لحرق طاقة الفول: <b>20 دقيقة تمارين خفيفة</b>.`;
-            } else if (item === 'falafel') {
-                let pcs = isPCOSOrDiabetes || isWeightLoss ? 2 : 4;
-                desc = `🧆 <b>توجيه الـ AI للفلافل:</b> نظراً لأنها مقلية وتحتوي كارب، مسموح بـ <b>${pcs} قطع فقط</b> (يفضل المحضرة بالفرن لتجنب امتصاص الزيوت).`;
-                cal = pcs * 65; prot = pcs * 2; carb = pcs * 6; fat = pcs * 4;
-                exerciseMsg = `🔥 لحرق دهون الفلافل: <b>25 دقيقة كاردو أو نط حبل</b>.`;
-            } else if (item === 'hummus') {
-                let spoons = isPCOSOrDiabetes || isWeightLoss ? 3 : 6;
-                desc = `🥣 <b>توجيه الـ AI للحمص:</b> مسموح بـ <b>${spoons} معالق كبيرة من الحمص البيتي</b> الغني بالبروتين النباتي والطاقة.`;
-                cal = spoons * 40; prot = spoons * 2; carb = spoons * 5; fat = spoons * 1.5;
-                exerciseMsg = `🔥 نشاط مقترح: <b>15 دقيقة مشي</b>.`;
-            } else if (item === 'labneh') {
-                let spoons = isPCOSOrDiabetes || isWeightLoss ? 2 : 4;
-                desc = `🥛 <b>توجيه الـ AI لللبنة:</b> مسموح بـ <b>${spoons} معالق كبيرة</b> (${sub === 'diet' ? 'قليلة الدسم' : 'عادية'}).`;
-                cal = spoons * 45; prot = spoons * 3; carb = spoons * 2; fat = spoons * 3;
-                exerciseMsg = `🔥 نشاط مقترح: <b>10 دقائق إطالة وحركة</b>.`;
-            } else if (item === 'cheese') {
-                desc = `🧀 <b>توجيه الـ AI للأجبان:</b> مسموح بـ <b>شريحتين أو 40 جراماً</b> (${sub === 'cottage' ? 'جبن قريش ممتاز لتكيس المبايض والرجيم' : 'جبن حلوم/عكاوي مشلل مسبقاً من الملح'}).`;
-                cal = 110; prot = 8; carb = 1; fat = 8;
-                exerciseMsg = `🔥 حركة خفيفة لحرق السعرات الصباحية.`;
-            } else if (item === 'bread') {
-                if (isPCOSOrDiabetes || isWeightLoss) {
-                    desc = `🍞 <b>توجيه الـ AI للخبز (حسب تكيس المبايض/الرجيم):</b> ممنوع الخبز الأبيض تماماً؛ ومسموح فقط بـ <b>نصف رغيف (30 جم) من خبز النخالة أو الأسمر</b> لضبط مقاومة الأنسولين.`;
+            // منطق حساب الـ AI للوجبات الثلاث (إفطار، غداء، عشاء)
+            if (meal === 'breakfast') {
+                if (item === 'eggs') {
+                    let count = isWeightLoss || isPCOSOrDiabetes ? 2 : 3;
+                    if (isWeightGain) count = 4;
+                    desc = `🍳 <b>توجيه الـ AI للإفطار:</b> مسموح بـ <b>${count} حبات بيض</b> (${sub === 'boiled' ? 'مسلوق' : 'مقلي بزيت زيتون خفيف'}).`;
+                    cal = count * 78; prot = count * 6.3; carb = 0.6; fat = count * 5;
+                    exerciseMsg = `🔥 لحرق وجبة الإفطار: <b>15 دقيقة مشي صباحي نشط</b>.`;
+                } else if (item === 'ful') {
+                    let spoons = isPCOSOrDiabetes || isWeightLoss ? 4 : 7;
+                    desc = `🧆 <b>توجيه الـ AI:</b> مسموح بـ <b>${spoons} معالق كبيرة من الفول المدمس</b> المتبل بالكمون والليمون.`;
+                    cal = spoons * 35; prot = spoons * 2.2; carb = spoons * 5; fat = spoons * 0.5;
+                    exerciseMsg = `🔥 لحرق طاقة الفول: <b>20 دقيقة حركة خفيفة</b>.`;
+                } else if (item === 'falafel') {
+                    let pcs = isPCOSOrDiabetes || isWeightLoss ? 2 : 4;
+                    desc = `🧆 مسموح بـ <b>${pcs} قطع فلافل فقط</b> (تفضل في الفرن).`;
+                    cal = pcs * 65; prot = pcs * 2; carb = pcs * 6; fat = pcs * 4;
+                    exerciseMsg = `🔥 حركة مقترحة: <b>25 دقيقة كاردو</b>.`;
+                } else if (item === 'hummus') {
+                    desc = `🥣 مسموح بـ <b>4 معالق كبيرة من الحمص البيتي</b>.`;
+                    cal = 160; prot = 8; carb = 20; fat = 6;
+                    exerciseMsg = `🔥 نشاط مقترح: <b>15 دقيقة مشي</b>.`;
+                } else if (item === 'labneh') {
+                    desc = `🥛 مسموح بـ <b>3 معالق كبيرة لبنة</b>.`;
+                    cal = 135; prot = 9; carb = 5; fat = 9;
+                    exerciseMsg = `🔥 نشاط مقترح: <b>10 دقائق إطالة</b>.`;
+                } else if (item === 'cheese') {
+                    desc = `🧀 مسموح بـ <b>شريحتين جبن حلوم أو عكاوي مشلل من الملح</b>.`;
+                    cal = 120; prot = 8; carb = 1; fat = 9;
+                    exerciseMsg = `🔥 حركة خفيفة صباحية.`;
+                } else if (item === 'bread') {
+                    let bText = isPCOSOrDiabetes || isWeightLoss ? 'نصف رغيف (30 جم) خبز نخالة أو أسمر' : 'رغيف خبز كامل (60 جم)';
+                    desc = `🍞 <b>توجيه الـ AI:</b> مسموح بـ <b>${bText}</b> لضبط سكر الدم والأنسولين.`;
+                    cal = isPCOSOrDiabetes || isWeightLoss ? 75 : 150;
+                    prot = 3; carb = isPCOSOrDiabetes || isWeightLoss ? 13 : 28; fat = 1;
+                    exerciseMsg = `🔥 لحرق الكارب: <b>20 دقيقة تمارين تنشيطية</b>.`;
+                } else if (item === 'olive_oil') {
+                    desc = `🫒 مسموح بـ <b>ملعقتين زيت زيتون مع زعتر</b> (ممتاز لصحة الهرمونات وتكيس المبايض).`;
+                    cal = 240; prot = 0; carb = 0; fat = 28;
+                    exerciseMsg = `🔥 نشاط خفيف لحرق الدهون الصحية.`;
+                } else if (item === 'sweet_spread') {
+                    desc = `🍯 <b>تنبيه طبي:</b> السكريات تزيد تكيس المبايض؛ مسموح <b>ملعقة صغيرة جداً كحد أقصى</b> من العسل أو المربى.`;
+                    cal = 60; prot = 0; carb = 14; fat = 0;
+                    exerciseMsg = `🔥 حركة سريعة لمدة 20 دقيقة.`;
+                }
+            } else if (meal === 'lunch') {
+                if (item === 'rice') {
+                    let spoons = isPCOSOrDiabetes || isWeightLoss ? 3 : (isWeightGain ? 10 : 6);
+                    desc = `🍚 <b>توجيه الـ AI للغداء:</b> مسموح بـ <b>${spoons} معالق كبيرة من الأرز</b> (${sub === 'brown' ? 'أرز بني مفضل' : 'أرز أبيض'}).`;
+                    cal = spoons * 20; prot = spoons * 0.4; carb = spoons * 4.5; fat = spoons * 0.1;
+                    exerciseMsg = `🔥 لحرق نشويات الغداء: <b>25 دقيقة مشي سريع أو تمارين مقاومة</b>.`;
+                } else if (item === 'chicken') {
+                    let grams = isWeightGain ? 200 : 130;
+                    desc = `🍗 مسموح بـ <b>صدر أو فخذ دجاج مشوي بوزن ${grams} جرام</b> (بروتين صافي يبني العضلات ويشبع طويلاً).`;
+                    cal = grams * 1.5; prot = grams * 0.3; carb = 0; fat = grams * 0.05;
+                    exerciseMsg = `🔥 بناء وتغذية عضلية ممتازة مع مشي خفيف.`;
+                } else if (item === 'meat') {
+                    desc = `🥩 مسموح بـ <b>قطعة لحم أحمر مشوي (120 جرام)</b>.`;
+                    cal = 250; prot = 26; carb = 0; fat = 15;
+                    exerciseMsg = `🔥 حرق طاقة اللحوم بـ <b>20 دقيقة حركة</b>.`;
+                } else if (item === 'sauce') {
+                    desc = `🍅 ملعقة طعام واحدة من صلصة وبندورة الغداء (خالية من الزيوت المهدرجة).`;
+                    cal = 20; prot = 1; carb = 4; fat = 0.2;
+                    exerciseMsg = `🔥 طاقة بسيطة جداً.`;
+                } else if (item === 'salad') {
+                    desc = `🥗 <b>صحن سلطة خضراء كبير مفتوح</b> (خيار، جرجير، خس، ليمون، وملعقة زيت زيتون) لزيادة الألياف وملء المعدة.`;
+                    cal = 70; prot = 2; carb = 6; fat = 5;
+                    exerciseMsg = `🔥 يحرق سريعاً ويدعم الهضم.`;
+                } else if (item === 'soup') {
+                    desc = `🥣 مغرفة واحدة كبيرة (200 مل) من شوربة العدس أو الخضار الدافئة.`;
+                    cal = 120; prot = 7; carb = 18; fat = 2;
+                    exerciseMsg = `🔥 حركة خفيفة بعد الغداء.`;
+                }
+            } else if (meal === 'dinner') {
+                if (item === 'bread_dinner') {
+                    desc = `🍞 <b>توجيه الـ AI للعشاء:</b> مسموح بـ <b>نصف رغيف أسمر أو نخالة (30 جم)</b> لتجنب تخزين الدهون ليلاً.`;
                     cal = 75; prot = 3; carb = 13; fat = 0.5;
-                } else if (isWeightGain) {
-                    desc = `🍞 <b>توجيه الـ AI لزيادة الوزن:</b> مسموح رغيف خبز كامل (60 جم) مع إضافات صحية.`;
-                    cal = 150; prot = 5; carb = 28; fat = 1;
-                } else {
-                    desc = `🍞 <b>توجيه الـ AI:</b> رغيف خبز أسمر أو نخالة واحد (60 جم).`;
-                    cal = 140; prot = 5; carb = 26; fat = 1;
+                    exerciseMsg = `🔥 لحرق كارب العشاء: <b>15 دقيقة مشي مسائي هادئ</b>.`;
+                } else if (item === 'tuna') {
+                    desc = `🐟 علبة تونة واحدة مصفاة من الزيت (100 جرام) مع ليمون ورشة كمون.`;
+                    cal = 110; prot = 24; carb = 0; fat = 1;
+                    exerciseMsg = `🔥 بروتين عالي يغذيك ليلاً.`;
+                } else if (item === 'labneh_dinner') {
+                    desc = `🥣 <b>ملعقتان كبيرتان من اللبنة أو الجبن القريش</b> الخفيف للعشاء الهادئ.`;
+                    cal = 90; prot = 7; carb = 3; fat = 4;
+                    exerciseMsg = `🔥 هضم مريح ونوم هادئ.`;
+                } else if (item === 'eggs_dinner') {
+                    desc = `🥚 حبتان بيض مسلوق للعشاء الخفيف والسريع.`;
+                    cal = 156; prot = 12; carb = 1; fat = 10;
+                    exerciseMsg = `🔥 إحراق السعرات الليلية بنشاط خفيف.`;
+                } else if (item === 'yogurt') {
+                    desc = `🥛 علبة زبادي / لبن رائب واحدة (150 مل) تدعم ميكروبيوم الأمعاء والقولون.`;
+                    cal = 95; prot = 6; carb = 8; fat = 3;
+                    exerciseMsg = `🔥 مريح للقولون والهضم.`;
                 }
-                exerciseMsg = `🔥 لحرق كارب الخبز: <b>20 دقيقة تمارين تنشيطية</b>.`;
-            } else if (item === 'olive_oil') {
-                let spoons = isPCOSOrDiabetes ? 1 : 2;
-                desc = `🫒 <b>توجيه الـ AI للزيتون والزيت:</b> مسموح بـ <b>${spoons} ملعقة كبيرة زيت زيتون صافي</b> (ممتاز لصحة الهرمونات وتكيس المبايض والقلب).`;
-                cal = spoons * 120; prot = 0; carb = 0; fat = spoons * 14;
-                exerciseMsg = `🔥 نشاط خفيف لحرق الدهون الصحية المفيدة.`;
-            } else if (item === 'sweet_spread') {
-                if (isPCOSOrDiabetes || isWeightLoss) {
-                    desc = `⚠️ <b>توجيه طبي خاص (تكيس المبايض / تنحيف):</b> القشطة والعسل والمربى ترفع الأنسولين بسرعة وتفاقم التكيسات؛ المسموح <b>ملعقة صغيرة جداً كحد أقصى</b> أو تجنبها تماماً.`;
-                    cal = 60; prot = 0.2; carb = 14; fat = 0.5;
-                } else {
-                    desc = `🍯 مسموح ملعقة كبيرة من العسل الطبيعي مع القشطة.`;
-                    cal = 120; prot = 1; carb = 20; fat = 4;
-                }
-                exerciseMsg = `🔥 لحرق سكريات الصباح: <b>25 دقيقة كارديو وسرعة</b>.`;
-            } else if (item === 'morning_drink') {
-                desc = `☕ <b>مشروب الصباح:</b> كوب واحد (${sub === 'coffee_milk' ? 'قهوة بالحليب بدون سكر' : 'شاي أخضر/نعناع'}) منشط للأيض.`;
-                cal = 30; prot = 1; carb = 3; fat = 1;
-                exerciseMsg = `🔥 يحرق بالحركة اليومية المعتادة.`;
             }
 
-            currentPrescription = { name: `إفطار: ${item} (${sub || 'عادي'})`, cal, prot, carb, fat, exerciseMsg, desc };
+            currentPrescription = { name: `${meal === 'breakfast' ? 'إفطار' : (meal === 'lunch' ? 'غداء' : 'عشاء')}: ${item}`, cal, prot, carb, fat, exerciseMsg, desc };
 
             document.getElementById('prescriptionDesc').innerHTML = desc;
             document.getElementById('presCal').innerText = cal;
-            document.getElementById('presProt').innerText = prot + 'g';
-            document.getElementById('presCarb').innerText = carb + 'g';
-            document.getElementById('presFat').innerText = fat + 'g';
+            document.getElementById('presProt').innerText = prot.toFixed(1) + 'g';
+            document.getElementById('presCarb').innerText = carb.toFixed(1) + 'g';
+            document.getElementById('presFat').innerText = fat.toFixed(1) + 'g';
             document.getElementById('presExercise').innerHTML = exerciseMsg;
             document.getElementById('aiPrescriptionResult').style.display = 'block';
         }
@@ -632,7 +689,7 @@
 
             updateTotalsUI();
             saveLocalData();
-            alert('✅ تم اعتماد وجبة الإفطار المخصصة لأهدافك بنجاح!');
+            alert('✅ تم اعتماد الوجبة وحساب السعرات بنجاح!');
             document.getElementById('aiPrescriptionResult').style.display = 'none';
             showTab('home', document.querySelectorAll('.nav-item')[0]);
         }
@@ -643,15 +700,15 @@
             const idealMin = 18.5 * Math.pow(h/100, 2);
             const idealMax = 24.9 * Math.pow(h/100, 2);
             
-            let advice = `وزنك الحالي: ${w} كجم | طولك: ${h} سم (BMI: ${bmi.toFixed(1)})<br>
+            let advice = `وزنك الحالي: ${w} كجم | طولك: ${h} سم (مؤشر كتلة الجسم: ${bmi.toFixed(1)})<br>
             <b>الوزن المثالي الموصى به طبياً:</b> بين ${idealMin.toFixed(1)} إلى ${idealMax.toFixed(1)} كجم.<br>`;
 
             if (user.conditions.includes('weight_loss') && user.conditions.includes('pcos')) {
-                advice += `🎯 <b>الهدف المزدوج (تنحيف + تكيس مبايض):</b> التركيز على البروتينات، الدهون الصحية (زيت الزيتون)، وتقليل الكارب الأبيض تماماً لتقليل مقاومة الأنسولين وحرق دهون البطن.`;
+                advice += `🎯 <b>الهدف (تنحيف + تكيس مبايض):</b> تقنين النشويات والسكريات في الإفطار الغداء والعشاء لتقليل مقاومة الأنسولين وحرق الدهون.`;
             } else if (user.conditions.includes('weight_gain')) {
-                advice += `🎯 <b>الهدف (زيادة الوزن والنحافة):</b> رفع السعرات بوجبات فطور غنية بالدهون المفيدة والبروتين وزيادة الحصص.`;
+                advice += `🎯 <b>الهدف (زيادة الوزن):</b> زيادة الحصص في الوجبات الثلاث مع التركيز على الكارب النظيف والبروتين.`;
             } else {
-                advice += `🎯 <b>الهدف الحالي:</b> اتباع حصص فطور متوازنة وصحية.`;
+                advice += `🎯 <b>الهدف:</b> تغذية متوازنة ومنتظمة على مدار اليوم.`;
             }
 
             document.getElementById('weightGoalInfo').innerHTML = advice;
@@ -661,17 +718,17 @@
         function renderWorkouts() {
             const box = document.getElementById('workoutList');
             box.innerHTML = `
-                <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-person-walking"></i></div><div><div style="font-weight:700;">المشي الصباحي المنشط</div><div style="color:var(--primary); font-size:0.8rem; font-weight:700;">20 دقيقة</div><div style="color:var(--text-muted); font-size:0.75rem;">ممتاز لتوازن الهرمونات وتكيس المبايض وحرق الفطور</div></div></div>
-                <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-dumbbell"></i></div><div><div style="font-weight:700;">تمارين مقاومة خفيفة بالمنزل</div><div style="color:var(--primary); font-size:0.8rem; font-weight:700;">3 مجموعات × 10</div><div style="color:var(--text-muted); font-size:0.75rem;">لتحسين حساسية الأنسولين وبناء العضلات</div></div></div>
+                <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-person-walking"></i></div><div><div style="font-weight:700;">المشي اليومي (بعد الغداء أو العشاء)</div><div style="color:var(--primary); font-size:0.8rem; font-weight:700;">20-30 دقيقة</div><div style="color:var(--text-muted); font-size:0.75rem;">يخفض سكر الدم ويساعد على حرق الوجبات مباشرة</div></div></div>
+                <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-dumbbell"></i></div><div><div style="font-weight:700;">تمارين المقاومة المنزلية</div><div style="color:var(--primary); font-size:0.8rem; font-weight:700;">3 مجموعات × 10</div><div style="color:var(--text-muted); font-size:0.75rem;">لشد الجسم وزيادة معدل الحرق الأيضي</div></div></div>
             `;
         }
 
         function updateTotalsUI() {
             const targetCal = user.conditions.includes('weight_gain') ? 2500 : 1800;
-            document.getElementById('calVal').innerText = `${totals.cal}/${targetCal}`;
-            document.getElementById('protVal').innerText = `${totals.prot}g`;
-            document.getElementById('carbVal').innerText = `${totals.carb}g`;
-            document.getElementById('fatVal').innerText = `${totals.fat}g`;
+            document.getElementById('calVal').innerText = `${Math.round(totals.cal)}/${targetCal}`;
+            document.getElementById('protVal').innerText = `${Math.round(totals.prot)}g`;
+            document.getElementById('carbVal').innerText = `${Math.round(totals.carb)}g`;
+            document.getElementById('fatVal').innerText = `${Math.round(totals.fat)}g`;
             document.getElementById('waterText').innerText = `${totals.water.toFixed(2)} / 2.5 لتر`;
             document.getElementById('waterCount').innerText = `${Math.round(totals.water / 0.25)} أكواب`;
         }
@@ -700,15 +757,15 @@
             user.height = parseFloat(document.getElementById('hInput').value);
             saveLocalData();
             calculateWeightGoalsAndAdvice();
-            alert('تم حفظ الأهداف المتعددة وتحديث النظام الذكي بنجاح!');
+            alert('تم حفظ أهدافك وحالتك وتحديث النظام بنجاح!');
             showTab('home', document.querySelectorAll('.nav-item')[0]);
         }
 
         function saveBodyResponse() {
             const resp = document.getElementById('bodyResponseSelect').value;
-            if(resp === 'bloated') alert('💡 نصيحة الـ AI: شعرْت بانتفاخ؟ سنقوم بتوجيهك غداً لخبز النخالة وتقليل المعالق قليلاً لتناسب هضمك.');
-            else if(resp === 'fatigue') alert('💡 نصيحة الـ AI: شعرْت بجوع سريع؟ سنقترح زيادة بيضة إضافية في الفطور لرفع بروتين الشبع.');
-            else alert(' ممتاز! استجابة الجسم مثالية لهذه الوجبة.');
+            if(resp === 'bloated') alert('💡 استجابة الـ سنقوم بتخفيف كميات الكارب في وجبة الغداء والعشاء القادمة لراحة معدتك.');
+            else if(resp === 'fatigue') alert('💡 استجابة الـ AI: شعرْت بإرهاق؟ سنقترح زيادة حصة بروتين ودجاج أو بيض في وجبتك القادمة.');
+            else alert(' ممتاز! الاستجابة ممتازة للوجبات والتمارين.');
         }
 
         function drawChart() {
@@ -738,7 +795,10 @@
         function checkAlarms() {
             const now = new Date();
             const hhmm = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
-            if (hhmm === alarmsConfig.breakfastTime && !triggeredAlarms['b_'+hhmm]) { triggeredAlarms['b_'+hhmm] = true; fireAlarm('الإفطار', 'حان وقت وجبة الإفطار وتحديد الحصص!'); }
+            if (hhmm === alarmsConfig.breakfastTime && !triggeredAlarms['b_'+hhmm]) { triggeredAlarms['b_'+hhmm] = true; fireAlarm('الإفطار', 'حان موعد الإفطار وتحديد الحصص!'); }
+            if (hhmm === alarmsConfig.lunchTime && !triggeredAlarms['l_'+hhmm]) { triggeredAlarms['l_'+hhmm] = true; fireAlarm('الغداء', 'حان موعد الغداء الصحي وحساب الحصص!'); }
+            if (hhmm === alarmsConfig.dinnerTime && !triggeredAlarms['d_'+hhmm]) { triggeredAlarms['d_'+hhmm] = true; fireAlarm('العشاء', 'حان موعد العشاء الخفيف!'); }
+            if (hhmm === alarmsConfig.workoutTime && !triggeredAlarms['w_'+hhmm]) { triggeredAlarms['w_'+hhmm] = true; fireAlarm('التمارين', 'حان موعد التمارين وحرق السعرات!'); }
         }
 
         function fireAlarm(title, body) {
@@ -761,17 +821,19 @@
             showTab('nutrition', document.querySelectorAll('.nav-item')[1]);
         }
 
-        function testAlarmNow() { fireAlarm('فطور', 'صوت المنبه الصارم يعمل بكفاءة!'); }
+        function testAlarmNow() { fireAlarm('تجريبي', 'صوت المنبه الصارم يعمل بكفاءة!'); }
 
         function saveAlarms() {
             alarmsConfig.breakfastTime = document.getElementById('breakfastTime').value;
+            alarmsConfig.lunchTime = document.getElementById('lunchTime').value;
+            alarmsConfig.dinnerTime = document.getElementById('dinnerTime').value;
             alarmsConfig.workoutTime = document.getElementById('workoutAlarmTime').value;
             saveLocalData();
-            alert('تم حفظ مواعيد المنبهات!');
+            alert('تم حفظ جميع المواعيد والمنبهات بنجاح!');
         }
 
         function loadLocalData() {
-            const s = localStorage.getItem('fitai_db_v16');
+            const s = localStorage.getItem('fitai_db_v17');
             if(s) {
                 const d = JSON.parse(s);
                 user = d.user || user; totals = d.totals || totals; weightHistory = d.weightHistory || weightHistory; alarmsConfig = d.alarmsConfig || alarmsConfig;
@@ -781,7 +843,7 @@
         }
 
         function saveLocalData() {
-            localStorage.setItem('fitai_db_v16', JSON.stringify({ user, totals, weightHistory, alarmsConfig }));
+            localStorage.setItem('fitai_db_v17', JSON.stringify({ user, totals, weightHistory, alarmsConfig }));
         }
     </script>
 </body>
