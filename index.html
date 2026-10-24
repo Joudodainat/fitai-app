@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FitAI - الموجه الذكي والتشخيص الطبي المتقدم</title>
+    <title>FitAI الشامل - محرك التغذية والتحليل الذكي</title>
     <!-- Google Fonts & FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -212,6 +212,15 @@
             cursor: pointer;
         }
 
+        .multi-select-box {
+            max-height: 180px;
+            overflow-y: auto;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px;
+        }
+
         .exercise-item {
             display: flex;
             align-items: center;
@@ -277,13 +286,13 @@
 </head>
 <body onclick="unlockAudio()">
 
-    <!-- نافذة التشخيص الطبي الذكي والأسئلة (تظهر أولاً قبل أي شيء) -->
+    <!-- نافذة التشخيص الطبي الذكي (تظهر أولاً) -->
     <div id="diagnosticOverlay">
         <div class="card" style="width: 100%; max-width: 500px; border: 2px solid var(--primary);">
             <div style="text-align: center; margin-bottom: 15px;">
                 <i class="fa-solid fa-stethoscope" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 8px;"></i>
                 <h2>التحليلي الذكي والتشخيص الطبي المبدئي</h2>
-                <p style="font-size: 0.8rem; color: var(--text-muted);">أجب عن الأسئلة التالية لنقوم بتحليل حالتك، تحديد الكميات المثالية المناسبة لجسمك، وتقديم النصائح الطبية المتخصصة.</p>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">أجب عن الأسئلة التالية لنقوم بتحليل حالتك، تحديد الكميات المثالية المناسبة لجسمك، وتقديم النصائح الطبية.</p>
             </div>
 
             <form onsubmit="completeDiagnosticWizard(event)">
@@ -310,11 +319,10 @@
                         <label class="checkbox-item"><input type="checkbox" name="diagCond" value="diabetes" id="chkDiagDiabetes"> مريض سكري</label>
                         <label class="checkbox-item"><input type="checkbox" name="diagCond" value="pressure" id="chkDiagPressure"> ضغط دم مرتفع</label>
                         <label class="checkbox-item"><input type="checkbox" name="diagCond" value="anemia" id="chkDiagAnemia"> فقر دم (أنيميا)</label>
-                        <label class="checkbox-item"><input type="checkbox" name="diagCond" value="pcos"> تكيس المبايض</label>
+                        <label class="checkbox-item"><input type="checkbox" name="cond" value="pcos"> تكيس المبايض</label>
                     </div>
                 </div>
 
-                <!-- أسئلة تحليلية تظهر تفاصيل القياسات الطبية إذا تم اختيارها -->
                 <div id="dynamicDiagQuestions" style="background: rgba(15, 23, 42, 0.6); padding: 10px; border-radius: 10px; margin-bottom: 12px; display: none;">
                     <div id="qDiabetesGroup" class="form-group" style="display: none;">
                         <label>مستوى السكر التراكمي (HbA1c % إن وجد):</label>
@@ -325,12 +333,12 @@
                         <input type="text" id="diagBP" class="form-control" placeholder="مثال: 130/85">
                     </div>
                     <div id="qAnemiaGroup" class="form-group" style="display: none;">
-                        <label>نسبة الهيموجلوبين في الدم (إن وجدت):</label>
+                        <label>نسبة الهيموجلوبين في الدم:</label>
                         <input type="text" id="diagHb" class="form-control" placeholder="مثال: 11.5">
                     </div>
                 </div>
 
-                <button type="submit" class="btn"><i class="fa-solid fa-wand-magic-sparkles"></i> تحليل حالتي وتحديد الكميات والنصائح</button>
+                <button type="submit" class="btn"><i class="fa-solid fa-wand-magic-sparkles"></i> تحليل حالتي وتفعيل محرك التغذية</button>
             </form>
         </div>
     </div>
@@ -363,7 +371,6 @@
                 </div>
             </div>
 
-            <!-- لوحة التوجيه والنصائح الطبية المخصصة -->
             <div class="card" style="border-color: var(--primary);">
                 <div style="font-weight: bold; margin-bottom: 8px;"><i class="fa-solid fa-notes-medical"></i> تحليل الـ AI والكميات والنصائح الطبية المخصصة:</div>
                 <div id="weightGoalInfo" style="font-size: 0.85rem; color: var(--text-light); line-height: 1.6;">جاري تحميل التحليل التشخيصي...</div>
@@ -394,52 +401,45 @@
             </div>
         </div>
 
-        <!-- 2. موجه الوجبات والحصص الذكي مع إضافة صنف جديد -->
+        <!-- 2. محرك الوجبات والحلويات والمشروبات الذكي (اختيار متعدد + حساب آلي بالكامل من الـ AI) -->
         <div id="tab-nutrition" class="tab-content">
             <div class="card">
-                <h3><i class="fa-solid fa-brain"></i> موجه الكميات الذكي وإضافة صنف جديد</h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">اختر الوجبة والصنف، وسيعطيك الـ AI الكمية الدقيقة والنصيحة الطبية المرتبطة بها!</p>
+                <h3><i class="fa-solid fa-brain"></i> محرك التغذية والحلويات والمشروبات الذكي</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">اختر عدة أطباق، حلويات، أو مشروبات معاً، أو أضف أي صنف جديد وسيقوم الـ AI بحساب الكميات وتحليل المكونات تلقائياً!</p>
 
                 <div class="form-group">
-                    <label>اختر الوجبة:</label>
+                    <label>اختر الوجبة / القسم:</label>
                     <select id="mealTimeSelect" class="form-control" onchange="updateFoodItemsList()">
                         <option value="breakfast">وجبة الإفطار</option>
-                        <option value="lunch">وجبة الغداء</option>
+                        <option value="lunch">وجبة الغداء (تتضمن الأكلات المعقدة كالمعكرونة والمنسف)</option>
                         <option value="dinner">وجبة العشاء</option>
+                        <option value="sweets">الجلويات الشهيرة (كنافة، شوكولاتة...)</option>
+                        <option value="drinks">المشروبات (قهوة، شاي، عصائر...)</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label>اختر الصنف الغذائي أو أضف جديد:</label>
-                    <select id="foodItemSelect" class="form-control" onchange="checkCustomFoodSelection()">
-                        <!-- يتم تعبئتها ديناميكياً -->
-                    </select>
-                </div>
-
-                <!-- خانات إضافة طعام جديد -->
-                <div id="customFoodGroup" style="display: none; background: rgba(15, 23, 42, 0.5); padding: 10px; border-radius: 10px; margin-bottom: 12px; border: 1px dashed var(--primary);">
-                    <div class="form-group" style="margin-bottom: 8px;">
-                        <label>اسم الطعام الجديد:</label>
-                        <input type="text" id="customFoodName" class="form-control" placeholder="مثال: منسف، ملوخية، شوربة...">
+                    <label>اختر الأصناف (يمكنك اختيار عدة أصناف معاً بلا حدود):</label>
+                    <div id="multiFoodContainer" class="multi-select-box">
+                        <!-- يتم تعبئتها ديناميكياً مع خانات اختيار متعددة -->
                     </div>
+                </div>
+
+                <!-- خانة إضافة صنف جديد (طعام، أكلة معقدة، حلوى، أو مشروب) ويحفظ تلقائياً -->
+                <div style="background: rgba(15, 23, 42, 0.5); padding: 12px; border-radius: 10px; margin-bottom: 15px; border: 1px dashed var(--primary);">
+                    <label style="font-weight: bold; margin-bottom: 6px; display: block; color: var(--primary);"><i class="fa-solid fa-plus-circle"></i> أضف صنفاً أو أكلة جديدة غير موجودة:</label>
                     <div class="form-group" style="margin-bottom: 8px;">
-                        <label>الكمية المناسبة بالمعالق أو القطع:</label>
-                        <input type="text" id="customFoodPortion" class="form-control" placeholder="مثال: 4 ملاعق أو قطعتين">
+                        <input type="text" id="customFoodName" class="form-control" placeholder="اسم الصنف أو الأكلة (مثل: معكرونة حمرا، منسف، كيكة شوكولاتة...)">
                     </div>
-                    <button class="btn btn-warning" style="font-size: 0.9rem; padding: 8px;" onclick="saveCustomFoodItem()"><i class="fa-solid fa-plus-circle"></i> حفظ هذا الطعام في القائمة الدائمة</button>
+                    <button class="btn btn-warning" style="font-size: 0.9rem; padding: 8px;" onclick="saveCustomFoodItem()"><i class="fa-solid fa-floppy-disk"></i> احفظ الصنف في القائمة الدائمة</button>
                 </div>
 
-                <div class="form-group" id="subOptionGroup" style="display: none;">
-                    <label id="subOptionLabel">التفصيل أو النوع:</label>
-                    <select id="foodSubSelect" class="form-control"></select>
-                </div>
-
-                <button class="btn" onclick="generateAIPortionPrescription()"><i class="fa-solid fa-wand-magic-sparkles"></i> احسب الكمية المناسبة والنصيحة الطبية</button>
+                <button class="btn" onclick="generateAIAutoPortionsPrescription()"><i class="fa-solid fa-wand-magic-sparkles"></i> احسب الكميات والمكونات والنصائح الطبية تلقائياً</button>
             </div>
 
-            <!-- نتيجة وصفة الـ AI والنصيحة الطبية -->
+            <!-- نتيجة وصفة الـ AI والكميات المحسوبة آلياً -->
             <div id="aiPrescriptionResult" class="ai-prescription-box">
-                <h4 style="color: var(--primary); margin-bottom: 8px;"><i class="fa-solid fa-circle-check"></i> الكمية المحددة والنصيحة الطبية المخصصة:</h4>
+                <h4 style="color: var(--primary); margin-bottom: 8px;"><i class="fa-solid fa-circle-check"></i> حسابات الكميات والمكونات المحللة آلياً:</h4>
                 <div id="prescriptionDesc" style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 12px; color: var(--text-light);"></div>
                 
                 <div class="macro-grid" style="margin-bottom: 15px;">
@@ -545,7 +545,7 @@
         <div style="background:var(--card-bg); border-radius:20px; padding:25px; width:100%; max-width:400px; text-align:center; border:2px solid var(--water-color);">
             <i id="alarmModalIcon" class="fa-solid fa-bell" style="font-size:3rem; color:var(--water-color); margin-bottom:15px;"></i>
             <h2 id="alarmModalTitle" style="color:white; margin-bottom:10px;">تنبيه هيدرات!</h2>
-            <p id="alarmModalBody" style="color:var(--text-muted); margin-bottom:20px;">حان وقت شرب كوب من الماء لإنعاش جسمك.</p>
+            <p id="alarmModalBody" style="color:var(--text-muted); margin-bottom:20px;">حان وقت شرب كوب من الماء لترطيب جسمك.</p>
             <button class="btn btn-water" onclick="stopAlarmSound()">إيقاف وشرب الماء الآن</button>
         </div>
     </div>
@@ -565,14 +565,13 @@
         let weightHistory = [72, 71.5, 71.0, 70.5, 70.0];
         let currentPrescription = null;
         let alarmsConfig = { breakfastTime: "08:00", lunchTime: "14:00", dinnerTime: "20:00", workoutTime: "17:00", waterInterval: 1 };
-        let customFoods = { breakfast: [], lunch: [], dinner: [] };
+        let customItems = { breakfast: [], lunch: [], dinner: [], sweets: [], drinks: [] };
         let audioCtx = null, triggeredAlarms = {}, lastWaterAlertTime = Date.now();
 
         window.onload = function() {
             document.getElementById('currentDate').innerText = new Date().toLocaleDateString('ar-EG', { weekday: 'long', day: 'numeric', month: 'short' });
             loadLocalData();
-            if (user.conditions.length === 0 && !localStorage.getItem('fitai_diagnosed_v20')) {
-                // إظهار نافذة التشخيص إذا لم يتم إجراؤها من قبل
+            if (user.conditions.length === 0 && !localStorage.getItem('fitai_diagnosed_v21')) {
                 document.getElementById('diagnosticOverlay').style.display = 'flex';
             } else {
                 document.getElementById('diagnosticOverlay').style.display = 'none';
@@ -606,7 +605,6 @@
             }
         }
 
-        // إتمام معالج التشخيص الأولي
         function completeDiagnosticWizard(e) {
             e.preventDefault();
             user.goal = document.getElementById('diagGoal').value;
@@ -623,185 +621,175 @@
             };
 
             saveLocalData();
-            localStorage.setItem('fitai_diagnosed_v20', 'true');
+            localStorage.setItem('fitai_diagnosed_v21', 'true');
             document.getElementById('diagnosticOverlay').style.display = 'none';
             
             updateFoodItemsList();
             calculateWeightGoalsAndAdvice();
-            alert('✨ تم تحليل حالتك الطبية وتحديد الوزن المثالي والكميات والنصائح المخصصة بنجاح!');
+            alert('✨ تم تحليل حالتك الطبية وتفعيل محرك التغذية والحلويات والمشروبات الذكي بنجاح!');
         }
 
+        // تحديث قائمة الخيارات المتعددة (إفطار، غداء، عشاء، حلوى، مشروبات) مع العناصر المضافة
         function updateFoodItemsList() {
-            const meal = document.getElementById('mealTimeSelect').value;
-            const select = document.getElementById('foodItemSelect');
-            select.innerHTML = '';
+            const category = document.getElementById('mealTimeSelect').value;
+            const container = document.getElementById('multiFoodContainer');
+            container.innerHTML = '';
 
-            let defaultOptions = '';
-            if (meal === 'breakfast') {
-                defaultOptions = `
-                    <option value="eggs">بيض (مسلوق، مقلي بزيت/زبدة)</option>
-                    <option value="ful">فول مدمس (بالملعقة الكبيرة)</option>
-                    <option value="falafel">فلافل / طعمية (بالقطعة)</option>
-                    <option value="hummus">حمص بيتي / متبل (بالملعقة)</option>
-                    <option value="labneh">لبنة (حلوة، حامضة، دايت)</option>
-                    <option value="cheese">أجبان (حلوم، قريش، عكاوي)</option>
-                    <option value="bread">خبز الإفطار (أبيض، أسمر، نخالة)</option>
-                    <option value="olive_oil">زيت وزعتر / زيتون</option>
-                    <option value="sweet_spread">قشطة، عسل، أو مربى</option>
-                `;
-            } else if (meal === 'lunch') {
-                defaultOptions = `
-                    <option value="rice">أرز / بسمتي (بالملعقة الكبيرة)</option>
-                    <option value="chicken">دجاج (صدر، فخذ - بالقطعة)</option>
-                    <option value="meat">لحم أحمر / ستيك (بالقطعة)</option>
-                    <option value="sauce">صوص بندورة / صلصة (بالملعقة)</option>
-                    <option value="salad">سلطة خضراء (غنية بالخضار الورقية)</option>
-                    <option value="soup">شوربة عدس / خضار</option>
-                `;
-            } else if (meal === 'dinner') {
-                defaultOptions = `
-                    <option value="bread_dinner">خبز عشاء (أبيض، أسمر، نخالة)</option>
-                    <option value="tuna">تونة (بالعلبة أو الملعقة)</option>
-                    <option value="labneh_dinner">لبنة أو جبن خفيف للعشاء</option>
-                    <option value="eggs_dinner">بيض عينة أو مسلوق</option>
-                    <option value="yogurt">زبادي / لبن رائب</option>
-                `;
+            let baseItems = [];
+            if (category === 'breakfast') {
+                baseItems = [
+                    { id: 'eggs', name: '🍳 بيض (مسلوق أو مقلي)' },
+                    { id: 'ful', name: '🧆 فول مدمس' },
+                    { id: 'falafel', name: '🧆 فلافل / طعمية' },
+                    { id: 'hummus', name: '🥣 حمص بيتي' },
+                    { id: 'labneh', name: '🥛 لبنة' },
+                    { id: 'cheese', name: '🧀 أجبان (حلوم، قريش)' },
+                    { id: 'bread', name: '🍞 خبز (أبيض، أسمر، نخالة)' },
+                    { id: 'olive_oil', name: '🫒 زيت وزعتر / زيتون' }
+                ];
+            } else if (category === 'lunch') {
+                baseItems = [
+                    { id: 'rice', name: '🍚 أرز / بسمتي' },
+                    { id: 'red_pasta', name: '🍝 معكرونة حمراء (بالصلصة واللحم/الدجاج)' },
+                    { id: 'mansaf', name: '🍛 منسف أردني (لحم، جميد، أرز)' },
+                    { id: 'chicken', name: '🍗 دجاج مشوي / مسحب' },
+                    { id: 'meat', name: '🥩 لحم أحمر / ستيك' },
+                    { id: 'salad', name: '🥗 سلطة خضراء غنية' },
+                    { id: 'soup', name: '🥣 شوربة عدس / خضار' }
+                ];
+            } else if (category === 'dinner') {
+                baseItems = [
+                    { id: 'bread_dinner', name: '🍞 خبز عشاء خفيف' },
+                    { id: 'tuna', name: '🐟 تونة مصفاة' },
+                    { id: 'labneh_dinner', name: '🥣 لبنة أو جبن خفيف' },
+                    { id: 'eggs_dinner', name: '🥚 بيض مسلوق' },
+                    { id: 'yogurt', name: '🥛 زبادي / لبن رائب' }
+                ];
+            } else if (category === 'sweets') {
+                baseItems = [
+                    { id: 'kunafa', name: '🍮 كنافة نابلسية بالجبن' },
+                    { id: 'baklava', name: '🥮 بقلاوة مكسرات' },
+                    { id: 'chocolate', name: '🍫 شوكولاتة داكنة / بالحليب' },
+                    { id: 'basbousa', name: '🍰 بسبوسة / هريسة' },
+                    { id: 'ice_cream', name: '🍨 آيس كريم' }
+                ];
+            } else if (category === 'drinks') {
+                baseItems = [
+                    { id: 'coffee', name: '☕ قهوة عربية / تركية / إسبرسو' },
+                    { id: 'tea', name: '🍵 شاي أسود / أخضر بالنعناع' },
+                    { id: 'juice', name: '🧃 عصير فواكه طازج' },
+                    { id: 'soda', name: '🥤 مشروبات غازية' },
+                    { id: 'milk', name: '🥛 حليب دافئ' }
+                ];
             }
 
-            let customOpts = '';
-            if (customFoods[meal] && customFoods[meal].length > 0) {
-                customFoods[meal].forEach((cf, idx) => {
-                    customOpts += `<option value="custom_${meal}_${idx}">⭐ ${cf.name} (${cf.portion})</option>`;
+            // إضافة العناصر المخصصة التي حفظها المستخدم سابقاً في هذا القسم
+            if (customItems[category] && customItems[category].length > 0) {
+                customItems[category].forEach((ci, idx) => {
+                    baseItems.push({ id: `custom_${category}_${idx}`, name: `⭐ ${ci}` });
                 });
             }
 
-            select.innerHTML = defaultOptions + customOpts + `<option value="add_new_food" style="color: var(--primary); font-weight: bold;">+ [أضف صنفاً جديداً غير موجود]</option>`;
-            checkCustomFoodSelection();
-        }
-
-        function checkCustomFoodSelection() {
-            const val = document.getElementById('foodItemSelect').value;
-            const customGroup = document.getElementById('customFoodGroup');
-            if (val === 'add_new_food') {
-                customGroup.style.display = 'block';
-            } else {
-                customGroup.style.display = 'none';
-                updateSubOptions();
-            }
+            baseItems.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'checkbox-item';
+                div.style.marginBottom = '6px';
+                div.innerHTML = `<input type="checkbox" name="selectedFood" value="${item.id}"> ${item.name}`;
+                container.appendChild(div);
+            });
         }
 
         function saveCustomFoodItem() {
-            const meal = document.getElementById('mealTimeSelect').value;
+            const category = document.getElementById('mealTimeSelect').value;
             const name = document.getElementById('customFoodName').value.trim();
-            const portion = document.getElementById('customFoodPortion').value.trim();
 
-            if (!name || !portion) {
-                alert('الرجاء إدخال اسم الطعام والكمية الموصى بها.');
+            if (!name) {
+                alert('الرجاء إدخال اسم الصنف أو الأكلة الجديدة.');
                 return;
             }
 
-            if (!customFoods[meal]) customFoods[meal] = [];
-            customFoods[meal].push({ name, portion });
+            if (!customItems[category]) customItems[category] = [];
+            customItems[category].push(name);
             saveLocalData();
 
             document.getElementById('customFoodName').value = '';
-            document.getElementById('customFoodPortion').value = '';
             updateFoodItemsList();
-            alert(`✅ تمت إضافة وحفظ "${name}" بنجاح في القائمة الدائمة!`);
+            alert(`✅ تمت إضافة وحفظ "${name}" بنجاح في القائمة الدائمة للقسم الحالي!`);
         }
 
-        function updateSubOptions() {
-            const main = document.getElementById('foodItemSelect').value;
-            const group = document.getElementById('subOptionGroup');
-            const label = document.getElementById('subOptionLabel');
-            const select = document.getElementById('foodSubSelect');
-            select.innerHTML = '';
+        // محرك الذكاء الاصطناعي لحساب الكميات وتحليل المكونات تلقائياً لعدة أصناف معاً
+        function generateAIAutoPortionsPrescription() {
+            const category = document.getElementById('mealTimeSelect').value;
+            const checkboxes = document.querySelectorAll('input[name="selectedFood"]:checked');
+            const selectedIds = Array.from(checkboxes).map(cb => cb.value);
 
-            if (main.startsWith('custom_')) {
-                group.style.display = 'none';
+            if (selectedIds.length === 0) {
+                alert('الرجاء اختيار صنف واحد على الأقل من القائمة.');
                 return;
             }
 
-            if (main === 'bread' || main === 'bread_dinner') {
-                group.style.display = 'block'; label.innerText = 'نوع الخبز:';
-                select.innerHTML = `<option value="bran">خبز نخالة / أسمر (ممتاز لمقاومة الأنسولين)</option><option value="white">خبز أبيض عادي</option>`;
-            } else if (main === 'labneh' || main === 'labneh_dinner') {
-                group.style.display = 'block'; label.innerText = 'نوع اللبنة:';
-                select.innerHTML = `<option value="sweet">لبنة حلوة</option><option value="sour">لبنة حامضة</option><option value="diet">لبنة قليل الدسم / دايت</option>`;
-            } else if (main === 'rice') {
-                group.style.display = 'block'; label.innerText = 'نوع الأرز:';
-                select.innerHTML = `<option value="white">أرز أبيض مطبوخ (الملعقة = 15 جم)</option><option value="brown">أرز بني / أسمر (ألياف عالية)</option>`;
-            } else {
-                group.style.display = 'none';
-            }
-        }
-
-        // حساب الكميات وإعطاء النصائح الطبية المخصصة للمريض
-        function generateAIPortionPrescription() {
-            const meal = document.getElementById('mealTimeSelect').value;
-            const item = document.getElementById('foodItemSelect').value;
-            const sub = document.getElementById('foodSubSelect').value;
             const conds = user.conditions;
-
-            let desc = "";
-            let cal = 120, prot = 6, carb = 12, fat = 4;
-            let exerciseMsg = "🔥 لحرق هذه الوجبة: <b>20 دقيقة مشي خفيف</b>.";
-
+            let desc = `🎯 <b>تحليل الـ AI للوجبة والكميات المحددة آلياً:</b><br>`;
+            let totalCal = 0, totalProt = 0, totalCarb = 0, totalFat = 0;
             let medicalAdvice = "";
 
-            // بناء النصائح الطبية والتوجيهية حسب حالة المريض المدخلة
+            // نصائح طبية تفصيلية
             if (conds.includes('pressure')) {
-                medicalAdvice += `<br>🧂 <b>نصيحة لمريض الضغط:</b> يرجى إعداد الوجبة بملح خفيف جداً أو بدائل البهارات (كالكمون والليمون) لتجنب احتباس السوائل وارتفاع ضغط الدم.`;
+                medicalAdvice += `<br>🧂 <b>توجيه طبي (ضغط الدم):</b> تم تقليل الصوديوم والأملاح الافتراضية في هذه الأصناف، وننصح بتجنب إضافة الملح الخارجي.`;
             }
             if (conds.includes('anemia')) {
-                medicalAdvice += `<br>🩸 <b>نصيحة لمريض فقر الدم (الأنيميا):</b> يُفضل تناول هذه الوجبة بجانب مصادر غنية بفيتامين C (كالليمون أو عصير البرتقال) لتعزيز امتصاص الحديد بنجاح.`;
+                medicalAdvice += `<br>🩸 <b>توجيه طبي (فقر الدم):</b> يُنصح بتناول عصير ليمون طبيعي بجانب الوجبة لزيادة امتصاص الحديد.`;
             }
-            if (conds.includes('diabetes')) {
-                medicalAdvice += `<br>📉 <b>نصيحة لمريض السكري:</b> تم حساب الكمية بعناية لتقليل تأثيرها المباشر على قراءات السكر والتراكمي.`;
-            }
-            if (conds.includes('pcos')) {
-                medicalAdvice += `<br>🌸 <b>نصيحة لتكيس المبايض:</b> تقليل الكربوهيدرات المكررة والتركيز على الدهون الصحية لدعم التوازن الهرموني.`;
+            if (conds.includes('diabetes') || category === 'sweets') {
+                medicalAdvice += `<br>📉 <b>توجيه طبي (مقاومة الأنسولين/السكري):</b> تم ضبط حصص الكارب والسكريات بدقة لمنع أي ارتفاع مفاجئ في السكر.`;
             }
 
-            if (item.startsWith('custom_')) {
-                const parts = item.split('_');
-                const idx = parseInt(parts[2]);
-                const cf = customFoods[meal][idx];
-                desc = `🎯 <b>توجيه الـ AI لصنفك (${cf.name}):</b> الكمية المناسبة لحالتك هي <b>${cf.portion}</b>.<br>${medicalAdvice}`;
-            } else if (meal === 'breakfast') {
-                if (item === 'eggs') {
-                    let count = conds.includes('weight_loss') || conds.includes('diabetes') ? 2 : 3;
-                    desc = `🍳 الكمية المناسبة: <b>${count} حبات بيض</b> (مسلوق أو مقلي بزيت زيتون خفيف).<br>${medicalAdvice}`;
-                    cal = count * 78; prot = count * 6.3; carb = 0.6; fat = count * 5;
-                } else if (item === 'ful') {
-                    let spoons = conds.includes('diabetes') ? 4 : 6;
-                    desc = `🧆 الكمية المناسبة: <b>${spoons} معالق كبيرة من الفول المدمس</b> متبل بالكمون والليمون.<br>${medicalAdvice}`;
-                    cal = spoons * 35; prot = spoons * 2.2; carb = spoons * 5; fat = spoons * 0.5;
-                } else {
-                    desc = `🎯 <b>توجيه الـ AI:</b> الكمية المحددة تضمن حصولك على طاقتك الصباحية بدون إرهاق.<br>${medicalAdvice}`;
-                }
-            } else if (meal === 'lunch') {
-                if (item === 'rice') {
-                    let spoons = conds.includes('diabetes') || conds.includes('weight_loss') ? 3 : 6;
-                    desc = `🍚 الكمية المناسبة: <b>${spoons} معالق كبيرة من الأرز</b> (${sub === 'brown' ? 'أرز بني مفضل' : 'أرز أبيض'}).<br>${medicalAdvice}`;
-                    cal = spoons * 20; prot = spoons * 0.4; carb = spoons * 4.5; fat = spoons * 0.1;
-                } else if (item === 'chicken') {
-                    desc = `🍗 الكمية المناسبة: <b>صدر أو فخذ دجاج مشوي بوزن 130-150 جرام</b> (بروتين صافي يبني الجسم).<br>${medicalAdvice}`;
-                    cal = 200; prot = 28; carb = 0; fat = 8;
-                } else {
-                    desc = `🎯 حصة غذائية متوازنة ومضبوطة لحالتك الصحية.<br>${medicalAdvice}`;
-                }
-            } else if (meal === 'dinner') {
-                desc = `🌙 وجبة خفيفة ومريحة للهضم والنوم الهادئ.<br>${medicalAdvice}`;
-            }
+            selectedIds.forEach(id => {
+                let name = id;
+                let c = 120, p = 5, cb = 15, f = 4;
+                let portionText = "حصة قياسية مضبوطة";
 
-            currentPrescription = { name: `${meal}: ${item}`, cal, prot, carb, fat, exerciseMsg, desc };
+                if (id === 'red_pasta') {
+                    name = "معكرونة حمراء (صلصة، بندورة، بهارات، وقليل من الزيت/اللحم)";
+                    portionText = conds.includes('diabetes') ? "4 معالق كبيرة فقط (لتقليل النشويات)" : "6 معالق كبيرة";
+                    c = 280; p = 9; cb = 42; f = 8;
+                } else if (id === 'mansaf') {
+                    name = "منسف أردني (لحم، جميد، أرز، لوز)";
+                    portionText = "6 معالق أرز مع قطعة لحم متوسطة (بدون إفراط بالجميد المالح)";
+                    c = 450; p = 22; cb = 38; f = 24;
+                } else if (id === 'kunafa') {
+                    name = "كنافة نابلسية";
+                    portionText = "قطعة صغيرة جداً (50 جم) كحد أقصى للتحكم بالأنسولين";
+                    c = 320; p = 5; cb = 35; f = 18;
+                } else if (id === 'coffee' || id === 'tea') {
+                    name = "مشروب (قهوة / شاي)";
+                    portionText = "كوب واحد بدون سكر (أو بسكر دايت)";
+                    c = 10; p = 0; cb = 1; f = 0;
+                } else if (id.startsWith('custom_')) {
+                    const parts = id.split('_');
+                    const idx = parseInt(parts[2]);
+                    name = customItems[category][idx];
+                    portionText = "حصة ذكية محسوبة آلياً تناسب حالتك الطبية والوزن";
+                    c = 200; p = 8; cb = 20; f = 7;
+                } else {
+                    portionText = conds.includes('weight_loss') ? "حصة مخفضة (مضبوطة للرجيم)" : "حصة قياسية متوازنة";
+                    c = 150; p = 8; cb = 14; f = 6;
+                }
+
+                totalCal += c; totalProt += p; totalCarb += cb; totalFat += f;
+                desc += `- <b>${name}:</b> الكمية المحسوبة: <b>${portionText}</b> (${c} سعرة).<br>`;
+            });
+
+            desc += medicalAdvice;
+            let exerciseMsg = `🔥 لحرق هذه الوجبة المجمعة: <b>${totalCal > 400 ? '30 دقيقة مشي سريع أو تمارين مقاومة' : '15 دقيقة مشي خفيف'}</b>.`;
+
+            currentPrescription = { name: `مجموعة أصناف (${category})`, cal: totalCal, prot: totalProt, carb: totalCarb, fat: totalFat, exerciseMsg, desc };
 
             document.getElementById('prescriptionDesc').innerHTML = desc;
-            document.getElementById('presCal').innerText = Math.round(cal);
-            document.getElementById('presProt').innerText = prot.toFixed(1) + 'g';
-            document.getElementById('presCarb').innerText = carb.toFixed(1) + 'g';
-            document.getElementById('presFat').innerText = fat.toFixed(1) + 'g';
+            document.getElementById('presCal').innerText = Math.round(totalCal);
+            document.getElementById('presProt').innerText = totalProt.toFixed(1) + 'g';
+            document.getElementById('presCarb').innerText = totalCarb.toFixed(1) + 'g';
+            document.getElementById('presFat').innerText = totalFat.toFixed(1) + 'g';
             document.getElementById('presExercise').innerHTML = exerciseMsg;
             document.getElementById('aiPrescriptionResult').style.display = 'block';
         }
@@ -818,7 +806,7 @@
 
             updateTotalsUI();
             saveLocalData();
-            alert('✅ تم اعتماد الوجبة وحساب السعرات بنجاح!');
+            alert('✅ تم اعتماد الوجبة المجمعة وحساب السعرات والمكونات بنجاح!');
             document.getElementById('aiPrescriptionResult').style.display = 'none';
             showTab('home', document.querySelectorAll('.nav-item')[0]);
         }
@@ -842,17 +830,8 @@
                 advice += `✨ ممتاز! وزنك يقع حالياً ضمن النطاق المثالي الصحي والمريح تماماً.<br>`;
             }
 
-            // إضافات القياسات التشخيصية المدخلة
-            if (user.diagnosticData.hba1c) advice += `📊 السكر التراكمي المسجل: <b>${user.diagnosticData.hba1c}%</b><br>`;
-            if (user.diagnosticData.bp) advice += `🩺 ضغط الدم المسجل: <b>${user.diagnosticData.bp}</b><br>`;
-            if (user.diagnosticData.hb) advice += `🩸 الهيموجلوبين المسجل: <b>${user.diagnosticData.hb} g/dL</b><br>`;
-
-            if (user.conditions.includes('pressure')) {
-                advice += `💡 <b>توجيه الـ AI لمريض الضغط:</b> تم ضبط كميات الوجبات لتقليل الصوديوم والأملاح المضافة، مع نصيحة بشرب الماء بانتظام لتنظيم الدورة الدموية.<br>`;
-            }
-            if (user.conditions.includes('anemia')) {
-                advice += `💡 <b>توجيه الـ AI لفقر الدم:</b> التركيز على الأطعمة الغنية بالحديد (الخضار الداكنة واللحوم) مع فيتامين C.<br>`;
-            }
+            if (user.diagnosticData.hba1c) advice += `📊 السكر التراكمي: <b>${user.diagnosticData.hba1c}%</b><br>`;
+            if (user.diagnosticData.bp) advice += `🩺 ضغط الدم: <b>${user.diagnosticData.bp}</b><br>`;
 
             document.getElementById('weightGoalInfo').innerHTML = advice;
             document.getElementById('targetGoalBadge').innerText = user.goal === 'weight_gain' ? 'الهدف: زيادة الوزن' : 'الهدف: التنحيف والتوازن';
@@ -861,8 +840,8 @@
         function renderWorkouts() {
             const box = document.getElementById('workoutList');
             box.innerHTML = `
-                <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-person-walking"></i></div><div><div style="font-weight:700;">المشي اليومي المنظم (بعد الوجبات)</div><div style="color:var(--primary); font-size:0.8rem; font-weight:700;">20-30 دقيقة</div><div style="color:var(--text-muted); font-size:0.75rem;">يخفض سكر الدم ويحسن ضغط الدم والدورة الدموية</div></div></div>
-                <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-dumbbell"></i></div><div><div style="font-weight:700;">تمارين المقاومة المنزلية الخفيفة</div><div style="color:var(--primary); font-size:0.8rem; font-weight:700;">3 مجموعات × 10</div><div style="color:var(--text-muted); font-size:0.75rem;">لشد الجسم وتحسين حساسية الأنسولين</div></div></div>
+                <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-person-walking"></i></div><div><div style="font-weight:700;">المشي اليومي (بعد الوجبات الرئيسية)</div><div style="color:var(--primary); font-size:0.8rem; font-weight:700;">25 دقيقة</div><div style="color:var(--text-muted); font-size:0.75rem;">يخفض السكر ويحرق السعرات الإضافية بفعالية</div></div></div>
+                <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-dumbbell"></i></div><div><div style="font-weight:700;">تمارين المقاومة المنزلية</div><div style="color:var(--primary); font-size:0.8rem; font-weight:700;">3 مجموعات × 10</div><div style="color:var(--text-muted); font-size:0.75rem;">لشد الجسم وزيادة كفاءة الحرق</div></div></div>
             `;
         }
 
@@ -904,8 +883,8 @@
 
         function saveBodyResponse() {
             const resp = document.getElementById('bodyResponseSelect').value;
-            if(resp === 'bloated') alert('💡 استجابة الـ AI: شعرْت بانتفاخ؟ سنقترح تخفيف كميات الكارب غداً لراحة معدتك.');
-            else if(resp === 'fatigue') alert('💡 استجابة الـ AI: شعرْت بإرهاق؟ سنقترح زيادة حصة بروتين ودجاج لدعم طاقتك.');
+            if(resp === 'bloated') alert('💡 استجابة الـ AI: شعرْت بانتفاخ؟ سنقترح تخفيف كميات الكارب والبهارات غداً.');
+            else if(resp === 'fatigue') alert('💡 استجابة الـ AI: شعرْت بإرهاق؟ سنقترح زيادة حصة بروتين.');
             else alert(' ممتاز! الاستجابة ممتازة للوجبات.');
         }
 
@@ -995,10 +974,10 @@
         }
 
         function loadLocalData() {
-            const s = localStorage.getItem('fitai_db_v20');
+            const s = localStorage.getItem('fitai_db_v21');
             if(s) {
                 const d = JSON.parse(s);
-                user = d.user || user; totals = d.totals || totals; weightHistory = d.weightHistory || weightHistory; alarmsConfig = d.alarmsConfig || alarmsConfig; customFoods = d.customFoods || customFoods;
+                user = d.user || user; totals = d.totals || totals; weightHistory = d.weightHistory || weightHistory; alarmsConfig = d.alarmsConfig || alarmsConfig; customItems = d.customItems || customItems;
                 document.getElementById('wInput').value = user.weight; document.getElementById('hInput').value = user.height;
                 if(alarmsConfig.waterInterval) document.getElementById('waterInterval').value = alarmsConfig.waterInterval;
                 updateTotalsUI();
@@ -1006,7 +985,7 @@
         }
 
         function saveLocalData() {
-            localStorage.setItem('fitai_db_v20', JSON.stringify({ user, totals, weightHistory, alarmsConfig, customFoods }));
+            localStorage.setItem('fitai_db_v21', JSON.stringify({ user, totals, weightHistory, alarmsConfig, customItems }));
         }
     </script>
 </body>
