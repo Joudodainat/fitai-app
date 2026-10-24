@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FitAI الشامل - الموجه الذكي للتغذية والماء</title>
+    <title>FitAI - الموجه الذكي والتشخيص الطبي المتقدم</title>
     <!-- Google Fonts & FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -260,9 +260,80 @@
 
         .nav-item i { font-size: 1.2rem; margin-bottom: 3px; }
         .nav-item.active { color: var(--primary); }
+
+        /* نافذة التشخيص الأولي البادئة */
+        #diagnosticOverlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.98);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body onclick="unlockAudio()">
+
+    <!-- نافذة التشخيص الطبي الذكي والأسئلة (تظهر أولاً قبل أي شيء) -->
+    <div id="diagnosticOverlay">
+        <div class="card" style="width: 100%; max-width: 500px; border: 2px solid var(--primary);">
+            <div style="text-align: center; margin-bottom: 15px;">
+                <i class="fa-solid fa-stethoscope" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 8px;"></i>
+                <h2>التحليلي الذكي والتشخيص الطبي المبدئي</h2>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">أجب عن الأسئلة التالية لنقوم بتحليل حالتك، تحديد الكميات المثالية المناسبة لجسمك، وتقديم النصائح الطبية المتخصصة.</p>
+            </div>
+
+            <form onsubmit="completeDiagnosticWizard(event)">
+                <div class="form-group">
+                    <label>1. ما هو هدفك الأساسي؟</label>
+                    <select id="diagGoal" class="form-control">
+                        <option value="weight_loss">تنحيف / خسارة الوزن</option>
+                        <option value="weight_gain">زيادة الوزن والنحافة</option>
+                        <option value="balance">تغذية متوازنة وثبات الوزن</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>2. الوزن الحالي (كجم) والطول (سم):</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="number" id="diagWeight" class="form-control" placeholder="الوزن (مثال: 70)" required>
+                        <input type="number" id="diagHeight" class="form-control" placeholder="الطول (مثال: 155)" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>3. هل تعاني من أي حالة صحية؟ (اختر الكل إن وجد):</label>
+                    <div class="checkbox-group" onchange="toggleWizardFields()">
+                        <label class="checkbox-item"><input type="checkbox" name="diagCond" value="diabetes" id="chkDiagDiabetes"> مريض سكري</label>
+                        <label class="checkbox-item"><input type="checkbox" name="diagCond" value="pressure" id="chkDiagPressure"> ضغط دم مرتفع</label>
+                        <label class="checkbox-item"><input type="checkbox" name="diagCond" value="anemia" id="chkDiagAnemia"> فقر دم (أنيميا)</label>
+                        <label class="checkbox-item"><input type="checkbox" name="diagCond" value="pcos"> تكيس المبايض</label>
+                    </div>
+                </div>
+
+                <!-- أسئلة تحليلية تظهر تفاصيل القياسات الطبية إذا تم اختيارها -->
+                <div id="dynamicDiagQuestions" style="background: rgba(15, 23, 42, 0.6); padding: 10px; border-radius: 10px; margin-bottom: 12px; display: none;">
+                    <div id="qDiabetesGroup" class="form-group" style="display: none;">
+                        <label>مستوى السكر التراكمي (HbA1c % إن وجد):</label>
+                        <input type="text" id="diagHbA1c" class="form-control" placeholder="مثال: 7.0">
+                    </div>
+                    <div id="qPressureGroup" class="form-group" style="display: none;">
+                        <label>أحدث قراءات ضغط الدم:</label>
+                        <input type="text" id="diagBP" class="form-control" placeholder="مثال: 130/85">
+                    </div>
+                    <div id="qAnemiaGroup" class="form-group" style="display: none;">
+                        <label>نسبة الهيموجلوبين في الدم (إن وجدت):</label>
+                        <input type="text" id="diagHb" class="form-control" placeholder="مثال: 11.5">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn"><i class="fa-solid fa-wand-magic-sparkles"></i> تحليل حالتي وتحديد الكميات والنصائح</button>
+            </form>
+        </div>
+    </div>
 
     <header>
         <div class="brand">
@@ -292,9 +363,10 @@
                 </div>
             </div>
 
+            <!-- لوحة التوجيه والنصائح الطبية المخصصة -->
             <div class="card" style="border-color: var(--primary);">
-                <div style="font-weight: bold; margin-bottom: 8px;"><i class="fa-solid fa-notes-medical"></i> تحليل الـ AI لأهدافك والوزن المثالي:</div>
-                <div id="weightGoalInfo" style="font-size: 0.85rem; color: var(--text-light); line-height: 1.5;">يرجى إدخال طولك، وزنك، وأهدافك (مثل التنحيف وتكيس المبايض أو زيادة الوزن) في تبويب (حسابي).</div>
+                <div style="font-weight: bold; margin-bottom: 8px;"><i class="fa-solid fa-notes-medical"></i> تحليل الـ AI والكميات والنصائح الطبية المخصصة:</div>
+                <div id="weightGoalInfo" style="font-size: 0.85rem; color: var(--text-light); line-height: 1.6;">جاري تحميل التحليل التشخيصي...</div>
             </div>
 
             <div id="mealImpactCard" class="card" style="display: none; border-color: var(--water-color);">
@@ -322,11 +394,11 @@
             </div>
         </div>
 
-        <!-- 2. موجه الوجبات والحصص الذكي مع إضافة طعام جديد وحفظه -->
+        <!-- 2. موجه الوجبات والحصص الذكي مع إضافة صنف جديد -->
         <div id="tab-nutrition" class="tab-content">
             <div class="card">
                 <h3><i class="fa-solid fa-brain"></i> موجه الكميات الذكي وإضافة صنف جديد</h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">اختر الوجبة والصنف، أو أضف طعامك الخاص لحفظه دائماً في القائمة!</p>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">اختر الوجبة والصنف، وسيعطيك الـ AI الكمية الدقيقة والنصيحة الطبية المرتبطة بها!</p>
 
                 <div class="form-group">
                     <label>اختر الوجبة:</label>
@@ -340,19 +412,19 @@
                 <div class="form-group">
                     <label>اختر الصنف الغذائي أو أضف جديد:</label>
                     <select id="foodItemSelect" class="form-control" onchange="checkCustomFoodSelection()">
-                        <!-- يتم تعبئتها ديناميكياً مع الأصناف المحفوظة -->
+                        <!-- يتم تعبئتها ديناميكياً -->
                     </select>
                 </div>
 
-                <!-- خانات إضافة طعام جديد وحفظه إذا لم يكن موجوداً -->
+                <!-- خانات إضافة طعام جديد -->
                 <div id="customFoodGroup" style="display: none; background: rgba(15, 23, 42, 0.5); padding: 10px; border-radius: 10px; margin-bottom: 12px; border: 1px dashed var(--primary);">
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>اسم الطعام الجديد:</label>
-                        <input type="text" id="customFoodName" class="form-control" placeholder="مثال: منسف، ملوخية، شوفان...">
+                        <input type="text" id="customFoodName" class="form-control" placeholder="مثال: منسف، ملوخية، شوربة...">
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
-                        <label>الكمية المناسبة بالمعالق أو القطع (يقدرها الـ AI):</label>
-                        <input type="text" id="customFoodPortion" class="form-control" placeholder="مثال: 4 ملاعق كبيرة أو قطعتين">
+                        <label>الكمية المناسبة بالمعالق أو القطع:</label>
+                        <input type="text" id="customFoodPortion" class="form-control" placeholder="مثال: 4 ملاعق أو قطعتين">
                     </div>
                     <button class="btn btn-warning" style="font-size: 0.9rem; padding: 8px;" onclick="saveCustomFoodItem()"><i class="fa-solid fa-plus-circle"></i> حفظ هذا الطعام في القائمة الدائمة</button>
                 </div>
@@ -362,12 +434,12 @@
                     <select id="foodSubSelect" class="form-control"></select>
                 </div>
 
-                <button class="btn" onclick="generateAIPortionPrescription()"><i class="fa-solid fa-wand-magic-sparkles"></i> احسب الحصة والكمية المناسبة</button>
+                <button class="btn" onclick="generateAIPortionPrescription()"><i class="fa-solid fa-wand-magic-sparkles"></i> احسب الكمية المناسبة والنصيحة الطبية</button>
             </div>
 
-            <!-- نتيجة وصفة الـ AI -->
+            <!-- نتيجة وصفة الـ AI والنصيحة الطبية -->
             <div id="aiPrescriptionResult" class="ai-prescription-box">
-                <h4 style="color: var(--primary); margin-bottom: 8px;"><i class="fa-solid fa-circle-check"></i> الوصفة المخصصة لك:</h4>
+                <h4 style="color: var(--primary); margin-bottom: 8px;"><i class="fa-solid fa-circle-check"></i> الكمية المحددة والنصيحة الطبية المخصصة:</h4>
                 <div id="prescriptionDesc" style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 12px; color: var(--text-light);"></div>
                 
                 <div class="macro-grid" style="margin-bottom: 15px;">
@@ -387,7 +459,7 @@
         <div id="tab-workout" class="tab-content">
             <div class="card">
                 <h3><i class="fa-solid fa-dumbbell"></i> جدول التمارين المخصصة لحرق السعرات</h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted);">تتغير التمارين تلقائياً حسب الوجبات والهدف.</p>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">تتغير التمارين تلقائياً حسب الوجبات والحالة الصحية.</p>
             </div>
             <div id="workoutList"></div>
         </div>
@@ -416,7 +488,7 @@
             </div>
         </div>
 
-        <!-- 5. المنبهات والإنذارات (شامل تذكير الماء) -->
+        <!-- 5. المنبهات والإنذارات -->
         <div id="tab-alarms" class="tab-content">
             <div class="card">
                 <h3><i class="fa-solid fa-clock"></i> المنبهات والإنذارات وتذكير الماء</h3>
@@ -441,18 +513,16 @@
         <!-- 6. الملف الشخصي والأهداف -->
         <div id="tab-profile" class="tab-content">
             <div class="card">
-                <h3><i class="fa-solid fa-user-gear"></i> الملف الشخصي والأهداف الطبية المتعددة</h3>
+                <h3><i class="fa-solid fa-user-gear"></i> الملف الشخصي والتحليل الطبي</h3>
                 <form onsubmit="saveProfileData(event)">
                     <div class="form-group">
-                        <label>اختر أهدافك وحالتك (يمكنك اختيار عدة خيارات معاً):</label>
+                        <label>الحالات والأهداف الصحية:</label>
                         <div class="checkbox-group">
                             <label class="checkbox-item"><input type="checkbox" name="cond" value="weight_loss"> تنحيف / تخسيس</label>
                             <label class="checkbox-item"><input type="checkbox" name="cond" value="weight_gain"> زيادة الوزن والنحافة</label>
-                            <label class="checkbox-item"><input type="checkbox" name="cond" value="pcos"> تكيس المبايض (PCOS)</label>
+                            <label class="checkbox-item"><input type="checkbox" name="cond" value="pcos"> تكيس المبايض</label>
                             <label class="checkbox-item"><input type="checkbox" name="cond" value="diabetes"> مريض سكري</label>
                             <label class="checkbox-item"><input type="checkbox" name="cond" value="pressure"> ضغط دم مرتفع</label>
-                            <label class="checkbox-item"><input type="checkbox" name="cond" value="ibs"> القولون العصبي</label>
-                            <label class="checkbox-item"><input type="checkbox" name="cond" value="thyroid"> الغدة الدرقية</label>
                             <label class="checkbox-item"><input type="checkbox" name="cond" value="anemia"> فقر دم / أنيميا</label>
                         </div>
                     </div>
@@ -464,15 +534,15 @@
                         <label>الطول (سم):</label>
                         <input type="number" id="hInput" class="form-control" value="170" required>
                     </div>
-                    <button type="submit" class="btn"><i class="fa-solid fa-save"></i> احسب الوزن المثالي وحصص الوجبات</button>
+                    <button type="submit" class="btn"><i class="fa-solid fa-save"></i> تحديث التحليل الطبي وحصص الوجبات</button>
                 </form>
             </div>
         </div>
     </div>
 
     <!-- نافذة المنبه الصارم وتذكير الماء -->
-    <div id="alarmModal" class="modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.85); z-index:2000; align-items:center; justify-content:center; padding:20px;">
-        <div style="background:var(--card-bg); border-radius:20px; padding:25px; width:100%; max-width:400px; target-align:center; border:2px solid var(--water-color);">
+    <div id="alarmModal" class="modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.85); z-index:4000; align-items:center; justify-content:center; padding:20px;">
+        <div style="background:var(--card-bg); border-radius:20px; padding:25px; width:100%; max-width:400px; text-align:center; border:2px solid var(--water-color);">
             <i id="alarmModalIcon" class="fa-solid fa-bell" style="font-size:3rem; color:var(--water-color); margin-bottom:15px;"></i>
             <h2 id="alarmModalTitle" style="color:white; margin-bottom:10px;">تنبيه هيدرات!</h2>
             <p id="alarmModalBody" style="color:var(--text-muted); margin-bottom:20px;">حان وقت شرب كوب من الماء لإنعاش جسمك.</p>
@@ -490,7 +560,7 @@
     </nav>
 
     <script>
-        let user = { conditions: ['weight_loss', 'pcos'], weight: 70, height: 170 };
+        let user = { conditions: [], goal: 'weight_loss', weight: 70, height: 170, diagnosticData: {} };
         let totals = { cal: 0, prot: 0, carb: 0, fat: 0, water: 0 };
         let weightHistory = [72, 71.5, 71.0, 70.5, 70.0];
         let currentPrescription = null;
@@ -501,8 +571,14 @@
         window.onload = function() {
             document.getElementById('currentDate').innerText = new Date().toLocaleDateString('ar-EG', { weekday: 'long', day: 'numeric', month: 'short' });
             loadLocalData();
-            updateFoodItemsList();
-            calculateWeightGoalsAndAdvice();
+            if (user.conditions.length === 0 && !localStorage.getItem('fitai_diagnosed_v20')) {
+                // إظهار نافذة التشخيص إذا لم يتم إجراؤها من قبل
+                document.getElementById('diagnosticOverlay').style.display = 'flex';
+            } else {
+                document.getElementById('diagnosticOverlay').style.display = 'none';
+                updateFoodItemsList();
+                calculateWeightGoalsAndAdvice();
+            }
             renderWorkouts();
             drawChart();
             setInterval(checkAlarms, 4000);
@@ -512,6 +588,47 @@
         function unlockAudio() {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function toggleWizardFields() {
+            const hasDiabetes = document.getElementById('chkDiagDiabetes').checked;
+            const hasPressure = document.getElementById('chkDiagPressure').checked;
+            const hasAnemia = document.getElementById('chkDiagAnemia').checked;
+
+            const box = document.getElementById('dynamicDiagQuestions');
+            if (hasDiabetes || hasPressure || hasAnemia) {
+                box.style.display = 'block';
+                document.getElementById('qDiabetesGroup').style.display = hasDiabetes ? 'block' : 'none';
+                document.getElementById('qPressureGroup').style.display = hasPressure ? 'block' : 'none';
+                document.getElementById('qAnemiaGroup').style.display = hasAnemia ? 'block' : 'none';
+            } else {
+                box.style.display = 'none';
+            }
+        }
+
+        // إتمام معالج التشخيص الأولي
+        function completeDiagnosticWizard(e) {
+            e.preventDefault();
+            user.goal = document.getElementById('diagGoal').value;
+            user.weight = parseFloat(document.getElementById('diagWeight').value);
+            user.height = parseFloat(document.getElementById('diagHeight').value);
+
+            const checkboxes = document.querySelectorAll('input[name="diagCond"]:checked');
+            user.conditions = Array.from(checkboxes).map(cb => cb.value);
+
+            user.diagnosticData = {
+                hba1c: document.getElementById('diagHbA1c').value,
+                bp: document.getElementById('diagBP').value,
+                hb: document.getElementById('diagHb').value
+            };
+
+            saveLocalData();
+            localStorage.setItem('fitai_diagnosed_v20', 'true');
+            document.getElementById('diagnosticOverlay').style.display = 'none';
+            
+            updateFoodItemsList();
+            calculateWeightGoalsAndAdvice();
+            alert('✨ تم تحليل حالتك الطبية وتحديد الوزن المثالي والكميات والنصائح المخصصة بنجاح!');
         }
 
         function updateFoodItemsList() {
@@ -538,7 +655,7 @@
                     <option value="chicken">دجاج (صدر، فخذ - بالقطعة)</option>
                     <option value="meat">لحم أحمر / ستيك (بالقطعة)</option>
                     <option value="sauce">صوص بندورة / صلصة (بالملعقة)</option>
-                    <option value="salad">سلطة خضراء</option>
+                    <option value="salad">سلطة خضراء (غنية بالخضار الورقية)</option>
                     <option value="soup">شوربة عدس / خضار</option>
                 `;
             } else if (meal === 'dinner') {
@@ -551,7 +668,6 @@
                 `;
             }
 
-            // إضافة الأصناف المخصصة التي حفظها المستخدم مسبقاً
             let customOpts = '';
             if (customFoods[meal] && customFoods[meal].length > 0) {
                 customFoods[meal].forEach((cf, idx) => {
@@ -591,7 +707,7 @@
             document.getElementById('customFoodName').value = '';
             document.getElementById('customFoodPortion').value = '';
             updateFoodItemsList();
-            alert(`✅ تمت إضافة وحفظ "${name}" بنجاح في قائمة الـ ${meal === 'breakfast' ? 'إفطار' : (meal === 'lunch' ? 'غداء' : 'عشاء')}!`);
+            alert(`✅ تمت إضافة وحفظ "${name}" بنجاح في القائمة الدائمة!`);
         }
 
         function updateSubOptions() {
@@ -620,7 +736,7 @@
             }
         }
 
-        // حساب الوجبة والكميات للـ AI
+        // حساب الكميات وإعطاء النصائح الطبية المخصصة للمريض
         function generateAIPortionPrescription() {
             const meal = document.getElementById('mealTimeSelect').value;
             const item = document.getElementById('foodItemSelect').value;
@@ -631,36 +747,52 @@
             let cal = 120, prot = 6, carb = 12, fat = 4;
             let exerciseMsg = "🔥 لحرق هذه الوجبة: <b>20 دقيقة مشي خفيف</b>.";
 
-            const isPCOSOrDiabetes = conds.includes('pcos') || conds.includes('diabetes');
-            const isWeightLoss = conds.includes('weight_loss');
+            let medicalAdvice = "";
+
+            // بناء النصائح الطبية والتوجيهية حسب حالة المريض المدخلة
+            if (conds.includes('pressure')) {
+                medicalAdvice += `<br>🧂 <b>نصيحة لمريض الضغط:</b> يرجى إعداد الوجبة بملح خفيف جداً أو بدائل البهارات (كالكمون والليمون) لتجنب احتباس السوائل وارتفاع ضغط الدم.`;
+            }
+            if (conds.includes('anemia')) {
+                medicalAdvice += `<br>🩸 <b>نصيحة لمريض فقر الدم (الأنيميا):</b> يُفضل تناول هذه الوجبة بجانب مصادر غنية بفيتامين C (كالليمون أو عصير البرتقال) لتعزيز امتصاص الحديد بنجاح.`;
+            }
+            if (conds.includes('diabetes')) {
+                medicalAdvice += `<br>📉 <b>نصيحة لمريض السكري:</b> تم حساب الكمية بعناية لتقليل تأثيرها المباشر على قراءات السكر والتراكمي.`;
+            }
+            if (conds.includes('pcos')) {
+                medicalAdvice += `<br>🌸 <b>نصيحة لتكيس المبايض:</b> تقليل الكربوهيدرات المكررة والتركيز على الدهون الصحية لدعم التوازن الهرموني.`;
+            }
 
             if (item.startsWith('custom_')) {
                 const parts = item.split('_');
                 const idx = parseInt(parts[2]);
                 const cf = customFoods[meal][idx];
-                desc = `🎯 <b>توجيه الـ AI لصنفك المخصص (${cf.name}):</b> بناءً على أهدافك وحالتك، الكمية الموصى بها هي <b>${cf.portion}</b> لضمان الحفاظ على وزنك ونشاطك.`;
+                desc = `🎯 <b>توجيه الـ AI لصنفك (${cf.name}):</b> الكمية المناسبة لحالتك هي <b>${cf.portion}</b>.<br>${medicalAdvice}`;
             } else if (meal === 'breakfast') {
                 if (item === 'eggs') {
-                    let count = isWeightLoss || isPCOSOrDiabetes ? 2 : 3;
-                    desc = `🍳 مسموح بـ <b>${count} حبات بيض</b> مسلوق أو مقلي بزيت زيتون.`;
+                    let count = conds.includes('weight_loss') || conds.includes('diabetes') ? 2 : 3;
+                    desc = `🍳 الكمية المناسبة: <b>${count} حبات بيض</b> (مسلوق أو مقلي بزيت زيتون خفيف).<br>${medicalAdvice}`;
                     cal = count * 78; prot = count * 6.3; carb = 0.6; fat = count * 5;
                 } else if (item === 'ful') {
-                    let spoons = isPCOSOrDiabetes || isWeightLoss ? 4 : 7;
-                    desc = `🧆 مسموح بـ <b>${spoons} معالق كبيرة من الفول المدمس</b>.`;
+                    let spoons = conds.includes('diabetes') ? 4 : 6;
+                    desc = `🧆 الكمية المناسبة: <b>${spoons} معالق كبيرة من الفول المدمس</b> متبل بالكمون والليمون.<br>${medicalAdvice}`;
                     cal = spoons * 35; prot = spoons * 2.2; carb = spoons * 5; fat = spoons * 0.5;
                 } else {
-                    desc = `🎯 <b>توجيه الـ AI:</b> الكمية المحددة تناسب حالتك الصحية وأهدافك بدقة.`;
+                    desc = `🎯 <b>توجيه الـ AI:</b> الكمية المحددة تضمن حصولك على طاقتك الصباحية بدون إرهاق.<br>${medicalAdvice}`;
                 }
             } else if (meal === 'lunch') {
                 if (item === 'rice') {
-                    let spoons = isPCOSOrDiabetes || isWeightLoss ? 3 : 6;
-                    desc = `🍚 مسموح بـ <b>${spoons} معالق كبيرة من الأرز</b> المطبوخ بعناية.`;
+                    let spoons = conds.includes('diabetes') || conds.includes('weight_loss') ? 3 : 6;
+                    desc = `🍚 الكمية المناسبة: <b>${spoons} معالق كبيرة من الأرز</b> (${sub === 'brown' ? 'أرز بني مفضل' : 'أرز أبيض'}).<br>${medicalAdvice}`;
                     cal = spoons * 20; prot = spoons * 0.4; carb = spoons * 4.5; fat = spoons * 0.1;
+                } else if (item === 'chicken') {
+                    desc = `🍗 الكمية المناسبة: <b>صدر أو فخذ دجاج مشوي بوزن 130-150 جرام</b> (بروتين صافي يبني الجسم).<br>${medicalAdvice}`;
+                    cal = 200; prot = 28; carb = 0; fat = 8;
                 } else {
-                    desc = `🎯 <b>توجيه الـ AI للغداء:</b> حصة غذائية متوازنة ومضبوطة بالجرام.`;
+                    desc = `🎯 حصة غذائية متوازنة ومضبوطة لحالتك الصحية.<br>${medicalAdvice}`;
                 }
             } else if (meal === 'dinner') {
-                desc = `🌙 <b>توجيه الـ AI للعشاء:</b> وجبة خفيفة ومريحة للهضم والقولون والنوم.`;
+                desc = `🌙 وجبة خفيفة ومريحة للهضم والنوم الهادئ.<br>${medicalAdvice}`;
             }
 
             currentPrescription = { name: `${meal}: ${item}`, cal, prot, carb, fat, exerciseMsg, desc };
@@ -694,34 +826,48 @@
         function calculateWeightGoalsAndAdvice() {
             const w = user.weight, h = user.height;
             const bmi = w / Math.pow(h/100, 2);
-            const idealMin = 18.5 * Math.pow(h/100, 2);
-            const idealMax = 24.9 * Math.pow(h/100, 2);
+            const idealMin = 20.0 * Math.pow(h/100, 2);
+            const idealMax = 23.0 * Math.pow(h/100, 2);
             
             let advice = `وزنك الحالي: ${w} كجم | طولك: ${h} سم (مؤشر كتلة الجسم: ${bmi.toFixed(1)})<br>
-            <b>الوزن المثالي الموصى به طبياً:</b> بين ${idealMin.toFixed(1)} إلى ${idealMax.toFixed(1)} كجم.<br>`;
+            <b>الوزن المثالي الواقعي والمستهدف:</b> بين ${idealMin.toFixed(1)} إلى ${idealMax.toFixed(1)} كجم.<br>`;
 
-            if (user.conditions.includes('weight_loss') && user.conditions.includes('pcos')) {
-                advice += `🎯 <b>الهدف (تنحيف + تكيس مبايض):</b> تقنين النشويات والسكريات لتقليل مقاومة الأنسولين وحرق الدهون.`;
-            } else if (user.conditions.includes('weight_gain')) {
-                advice += `🎯 <b>الهدف (زيادة الوزن):</b> زيادة الحصص والتركيز على الكارب النظيف والبروتين.`;
+            if (w > idealMax) {
+                const diff = (w - idealMax).toFixed(1);
+                advice += `📉 تحتاج لإنقاص تقريباً <b>${diff} كجم</b> للوصول للوزن المثالي المريح.<br>`;
+            } else if (w < idealMin) {
+                const diff = (idealMin - w).toFixed(1);
+                advice += `📈 تحتاج لزيادة تقريباً <b>${diff} كجم</b> للوصول للوزن الصحي المثالي.<br>`;
             } else {
-                advice += `🎯 <b>الهدف:</b> تغذية متوازنة ومنتظمة على مدار اليوم.`;
+                advice += `✨ ممتاز! وزنك يقع حالياً ضمن النطاق المثالي الصحي والمريح تماماً.<br>`;
+            }
+
+            // إضافات القياسات التشخيصية المدخلة
+            if (user.diagnosticData.hba1c) advice += `📊 السكر التراكمي المسجل: <b>${user.diagnosticData.hba1c}%</b><br>`;
+            if (user.diagnosticData.bp) advice += `🩺 ضغط الدم المسجل: <b>${user.diagnosticData.bp}</b><br>`;
+            if (user.diagnosticData.hb) advice += `🩸 الهيموجلوبين المسجل: <b>${user.diagnosticData.hb} g/dL</b><br>`;
+
+            if (user.conditions.includes('pressure')) {
+                advice += `💡 <b>توجيه الـ AI لمريض الضغط:</b> تم ضبط كميات الوجبات لتقليل الصوديوم والأملاح المضافة، مع نصيحة بشرب الماء بانتظام لتنظيم الدورة الدموية.<br>`;
+            }
+            if (user.conditions.includes('anemia')) {
+                advice += `💡 <b>توجيه الـ AI لفقر الدم:</b> التركيز على الأطعمة الغنية بالحديد (الخضار الداكنة واللحوم) مع فيتامين C.<br>`;
             }
 
             document.getElementById('weightGoalInfo').innerHTML = advice;
-            document.getElementById('targetGoalBadge').innerText = user.conditions.includes('weight_gain') ? 'الهدف: زيادة الوزن' : 'الهدف: التنحيف والتوازن';
+            document.getElementById('targetGoalBadge').innerText = user.goal === 'weight_gain' ? 'الهدف: زيادة الوزن' : 'الهدف: التنحيف والتوازن';
         }
 
         function renderWorkouts() {
             const box = document.getElementById('workoutList');
             box.innerHTML = `
-                <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-person-walking"></i></div><div><div style="font-weight:700;">المشي اليومي (بعد الوجبات)</div><div style="color:var(--primary); font-size:0.8rem; font-weight:700;">20-30 دقيقة</div><div style="color:var(--text-muted); font-size:0.75rem;">يخفض سكر الدم ويساعد على حرق الوجبات مباشرة</div></div></div>
-                <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-dumbbell"></i></div><div><div style="font-weight:700;">تمارين المقاومة المنزلية</div><div style="color:var(--primary); font-size:0.8rem; font-weight:700;">3 مجموعات × 10</div><div style="color:var(--text-muted); font-size:0.75rem;">لشد الجسم وزيادة معدل الحرق الأيضي</div></div></div>
+                <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-person-walking"></i></div><div><div style="font-weight:700;">المشي اليومي المنظم (بعد الوجبات)</div><div style="color:var(--primary); font-size:0.8rem; font-weight:700;">20-30 دقيقة</div><div style="color:var(--text-muted); font-size:0.75rem;">يخفض سكر الدم ويحسن ضغط الدم والدورة الدموية</div></div></div>
+                <div class="exercise-item"><div class="exercise-icon"><i class="fa-solid fa-dumbbell"></i></div><div><div style="font-weight:700;">تمارين المقاومة المنزلية الخفيفة</div><div style="color:var(--primary); font-size:0.8rem; font-weight:700;">3 مجموعات × 10</div><div style="color:var(--text-muted); font-size:0.75rem;">لشد الجسم وتحسين حساسية الأنسولين</div></div></div>
             `;
         }
 
         function updateTotalsUI() {
-            const targetCal = user.conditions.includes('weight_gain') ? 2500 : 1800;
+            const targetCal = user.goal === 'weight_gain' ? 2500 : 1800;
             document.getElementById('calVal').innerText = `${Math.round(totals.cal)}/${targetCal}`;
             document.getElementById('protVal').innerText = `${Math.round(totals.prot)}g`;
             document.getElementById('carbVal').innerText = `${Math.round(totals.carb)}g`;
@@ -748,21 +894,19 @@
             e.preventDefault();
             const checkboxes = document.querySelectorAll('input[name="cond"]:checked');
             user.conditions = Array.from(checkboxes).map(cb => cb.value);
-            if (user.conditions.length === 0) user.conditions = ['weight_loss'];
-
             user.weight = parseFloat(document.getElementById('wInput').value);
             user.height = parseFloat(document.getElementById('hInput').value);
             saveLocalData();
             calculateWeightGoalsAndAdvice();
-            alert('تم حفظ أهدافك وحالتك وتحديث النظام بنجاح!');
+            alert('تم تحديث الملف الشخصي والتحليل الطبي بنجاح!');
             showTab('home', document.querySelectorAll('.nav-item')[0]);
         }
 
         function saveBodyResponse() {
             const resp = document.getElementById('bodyResponseSelect').value;
-            if(resp === 'bloated') alert('💡 استجابة الـ AI: سنقوم بتخفيف كميات الكارب في وجبتك القادمة لراحة معدتك.');
-            else if(resp === 'fatigue') alert('💡 استجابة الـ AI: شعرْت بإرهاق؟ سنقترح زيادة حصة بروتين ودجاج أو بيض.');
-            else alert(' ممتاز! الاستجابة ممتازة للوجبات والتمارين.');
+            if(resp === 'bloated') alert('💡 استجابة الـ AI: شعرْت بانتفاخ؟ سنقترح تخفيف كميات الكارب غداً لراحة معدتك.');
+            else if(resp === 'fatigue') alert('💡 استجابة الـ AI: شعرْت بإرهاق؟ سنقترح زيادة حصة بروتين ودجاج لدعم طاقتك.');
+            else alert(' ممتاز! الاستجابة ممتازة للوجبات.');
         }
 
         function drawChart() {
@@ -797,7 +941,6 @@
             if (hhmm === alarmsConfig.dinnerTime && !triggeredAlarms['d_'+hhmm]) { triggeredAlarms['d_'+hhmm] = true; fireAlarm('العشاء', 'حان موعد العشاء الخفيف!'); }
         }
 
-        // فحص تذكير الماء تلقائياً كل فترة محددة
         function checkWaterReminder() {
             const intervalHours = parseInt(alarmsConfig.waterInterval || 1);
             const diffHours = (Date.now() - lastWaterAlertTime) / (1000 * 60 * 60);
@@ -811,7 +954,7 @@
             playSound();
             document.getElementById('alarmModalIcon').className = "fa-solid fa-glass-water";
             document.getElementById('alarmModalTitle').innerText = 'تذكير شرب الماء 💧';
-            document.getElementById('alarmModalBody').innerText = 'حان وقت شرب كوب من الماء لإنعاش حيويتك وترطيب جسمك.';
+            document.getElementById('alarmModalBody').innerText = 'حان وقت شرب كوب من الماء لترطيب جسمك.';
             document.getElementById('alarmModal').style.display = 'flex';
         }
 
@@ -852,7 +995,7 @@
         }
 
         function loadLocalData() {
-            const s = localStorage.getItem('fitai_db_v18');
+            const s = localStorage.getItem('fitai_db_v20');
             if(s) {
                 const d = JSON.parse(s);
                 user = d.user || user; totals = d.totals || totals; weightHistory = d.weightHistory || weightHistory; alarmsConfig = d.alarmsConfig || alarmsConfig; customFoods = d.customFoods || customFoods;
@@ -863,7 +1006,7 @@
         }
 
         function saveLocalData() {
-            localStorage.setItem('fitai_db_v18', JSON.stringify({ user, totals, weightHistory, alarmsConfig, customFoods }));
+            localStorage.setItem('fitai_db_v20', JSON.stringify({ user, totals, weightHistory, alarmsConfig, customFoods }));
         }
     </script>
 </body>
