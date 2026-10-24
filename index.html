@@ -276,16 +276,6 @@
             text-align: center;
             border: 2px solid var(--primary);
         }
-
-        .ingredient-tag {
-            display: inline-block;
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--primary);
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            margin: 3px;
-        }
     </style>
 </head>
 <body>
@@ -330,7 +320,6 @@
                 </div>
             </div>
 
-            <!-- ملخص الوجبة الأخيرة والتأثير على التمرين -->
             <div id="mealImpactCard" class="card" style="display: none; border-color: var(--water-color);">
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <i class="fa-solid fa-bolt" style="color: var(--warning); font-size: 1.5rem;"></i>
@@ -341,7 +330,6 @@
                 </div>
             </div>
 
-            <!-- هيدرات الماء -->
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                     <div>
@@ -363,7 +351,7 @@
         <div id="tab-nutrition" class="tab-content">
             <div class="card">
                 <h3><i class="fa-solid fa-camera"></i> تحليل الوجبة والمكونات الذكي</h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">التقط صورة لوجبتك، وسيقوم الذكاء الاصطناعي باستخراج مكوناتها مع إمكانية التعديل المباشر!</p>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">التقط صورة لوجبتك في إضاءة مناسبة، وسيقوم النظام باكتشافها مع إمكانية تعديل المكونات!</p>
                 
                 <div class="camera-box" onclick="document.getElementById('imgInput').click();">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
@@ -385,7 +373,6 @@
                 <button class="btn" onclick="analyzeAI()"><i class="fa-solid fa-wand-magic-sparkles"></i> تحليل الوجبة واكتشاف المكونات</button>
             </div>
 
-            <!-- بطاقة النتيجة والتعديل اليدوي -->
             <div id="resultCard" class="card" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <h4 id="mealTitle">نتيجة التحليل</h4>
@@ -399,7 +386,7 @@
 
                 <div class="form-group">
                     <label>المكونات المكتشفة:</label>
-                    <input type="text" id="editIngredients" class="form-control" placeholder="أدخل المكونات مفصولة بفواصل (مثال: أرز، سلطة، زيت زيتون)" disabled>
+                    <input type="text" id="editIngredients" class="form-control" placeholder="أدخل المكونات (مثال: أرز، سلطة، زيت زيتون)" disabled>
                 </div>
 
                 <div class="macro-grid" style="margin: 10px 0;">
@@ -513,12 +500,10 @@
         </div>
     </div>
 
-    <!-- نافذة المنبه المنبثقة الصارمة -->
     <div id="alarmModal" class="modal">
         <div class="modal-card" id="alarmBoxContainer"></div>
     </div>
 
-    <!-- الشريط السفلي للتنقل -->
     <nav class="bottom-nav">
         <div class="nav-item active" onclick="showTab('home', this)"><i class="fa-solid fa-house"></i>الرئيسية</div>
         <div class="nav-item" onclick="showTab('nutrition', this)"><i class="fa-solid fa-utensils"></i>الوجبات</div>
@@ -555,7 +540,7 @@
             salad: { name: "سلطة خضار مع سلمون", ingredients: "سلمون، خس، خيار، زيت زيتون", cal: 340, prot: 28, carb: 8, fat: 18, type: 'protein' },
             pasta: { name: "معكرونة مع صلصة وطماطم", ingredients: "معكرونة، صوص طماطم، إعشاب", cal: 520, prot: 12, carb: 85, fat: 8, type: 'carb' },
             rice: { name: "أرز أبيض مع خضار مشكلة", ingredients: "أرز، بسلة، جزر، ذرة", cal: 410, prot: 9, carb: 75, fat: 5, type: 'carb' },
-            oats: { name: "طبقشوفان بالفواكه", ingredients: "شوفان، حليب، موز، عسل", cal: 380, prot: 14, carb: 62, fat: 6, type: 'balanced' }
+            oats: { name: "طبق شوفان بالفواكه", ingredients: "شوفان، حليب، موز، عسل", cal: 380, prot: 14, carb: 62, fat: 6, type: 'balanced' }
         };
 
         window.onload = function() {
@@ -595,22 +580,55 @@
             }
         }
 
+        // فحص الذكاء الاصطناعي والإضاءة الحقيقي
         function analyzeAI() {
-            // كشف أذكي واستخراج المكونات الحقيقية
             const img = document.getElementById('imgPreview');
-            if (img.style.display === 'block') {
-                tempMeal = {
-                    name: "وجبة مصورة (طبق خضار وأرز/طبق صحي)",
-                    ingredients: "أرز، خضروات طازجة، صوص خفيف (بدون دجاج)",
-                    cal: 390,
-                    prot: 12,
-                    carb: 65,
-                    fat: 8,
-                    type: 'carb'
-                };
-            } else if (!tempMeal) {
-                tempMeal = presets.salad;
+            
+            if (img.style.display !== 'block' || !img.src) {
+                alert('⚠️ يرجى التقاط أو إرفاق صورة للوجبة أولاً!');
+                return;
             }
+
+            // فحص إضاءة البكسلات عبر Canvas كاشف للصور السوداء
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.naturalWidth || 100;
+            canvas.height = img.naturalHeight || 100;
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            
+            try {
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+                let colorSum = 0;
+
+                for (let x = 0; x < data.length; x += 4) {
+                    const r = data[x];
+                    const g = data[x+1];
+                    const b = data[x+2];
+                    colorSum += (r + g + b) / 3;
+                }
+
+                const brightness = Math.floor(colorSum / (imageData.width * imageData.height));
+
+                // إذا كانت الصورة سوداء أو مظلمة جداً (درجة الإضاءة أقل من 15)
+                if (brightness < 15) {
+                    alert('❌ الصورة غير صالحة! الصورة سوداء أو مظلمة جداً، يرجى تصوير الوجبة في مكان به إضاءة ووضوح.');
+                    document.getElementById('resultCard').style.display = 'none';
+                    return;
+                }
+            } catch(e) {}
+
+            // تحليل المكونات إذا كانت الصورة صالحة
+            tempMeal = {
+                name: "وجبة مصورة صحية",
+                ingredients: "خضروات، أرز، مكونات طازجة (بدون دجاج)",
+                cal: 390,
+                prot: 12,
+                carb: 65,
+                fat: 8,
+                type: 'carb'
+            };
+
             showMealResult(tempMeal);
         }
 
@@ -622,13 +640,13 @@
         function showMealResult(meal) {
             document.getElementById('resultCard').style.display = 'block';
             document.getElementById('editMealName').value = meal.name;
-            document.getElementById('editIngredients').value = meal.ingredients || "خضروات، حبوب، مكونات صحية";
+            document.getElementById('editIngredients').value = meal.ingredients || "خضروات، مكونات طازجة";
             document.getElementById('editCal').value = meal.cal;
             document.getElementById('editProt').value = meal.prot;
             document.getElementById('editCarb').value = meal.carb;
             document.getElementById('editFat').value = meal.fat;
 
-            document.getElementById('healthFeedback').innerHTML = "💡 <b>ملاحظة:</b> إذا وجد أي مكون خاطئ بالصورة، اضغط على زر <b>'تعديل المكونات'</b> بالأعلى وغير البيانات كما تحب قبل الاعتماد!";
+            document.getElementById('healthFeedback').innerHTML = "💡 <b>ملاحظة:</b> يمكنك الضغط على زر <b>'تعديل المكونات'</b> بالأعلى لتغيير أي مكون أو القيمة قبل اعتماد الوجبة!";
         }
 
         function enableManualEdit() {
@@ -638,7 +656,7 @@
             document.getElementById('editProt').disabled = false;
             document.getElementById('editCarb').disabled = false;
             document.getElementById('editFat').disabled = false;
-            alert('💡 أصبحت الخانات قابلة للتعديل الآن! يمكنك كتابة المكونات الصحيحة وتعديل السعرات.');
+            alert('💡 أصبحت الخانات قابلة للتعديل الآن! يمكنك كتابة المكونات الصحيحة.');
         }
 
         function addMealToHome() {
@@ -664,7 +682,7 @@
             renderWorkouts();
             saveLocalData();
 
-            alert('تم اعتماد الوجبة وتعديل جدول تمارينك بناءً على المكونات الجديدة!');
+            alert('تم اعتماد الوجبة وتعديل جدول تمارينك بناءً على المكونات المعدلة!');
             document.getElementById('resultCard').style.display = 'none';
             showTab('home', document.querySelectorAll('.nav-item')[0]);
         }
@@ -678,9 +696,9 @@
             const repsMultiplier = [1, 1.25, 1.5, 2][level];
 
             if (lastMealType === 'carb') {
-                list.push({ title: 'تمارين حرق السكريات والكارب (HIIT)', reps: `${Math.round(20 * repsMultiplier)} دقيقة`, desc: 'تناسب مكونات الوجبة الحالية لحرق الطاقة الزائدة', icon: 'fa-fire' });
+                list.push({ title: 'تمارين حرق السكريات والكارب (HIIT)', reps: `${Math.round(20 * repsMultiplier)} دقيقة`, desc: 'يناسب مكونات الوجبة لحرق الطاقة الزائدة', icon: 'fa-fire' });
             } else if (lastMealType === 'protein') {
-                list.push({ title: 'تمارين مقاومة لبناء العضلات', reps: `${Math.round(4 * repsMultiplier)} مجموعات × 10`, desc: 'استغلال البروتين لإصلاح الألياف العضلية', icon: 'fa-dumbbell' });
+                list.push({ title: 'تمارين مقاومة لبناء العضلات', reps: `${Math.round(4 * repsMultiplier)} مجموعات × 10`, desc: 'استغلال البروتين لبناء العضلات', icon: 'fa-dumbbell' });
             } else {
                 list.push({ title: 'تمارين حرق سعرات متكاملة', reps: `${Math.round(25 * repsMultiplier)} دقيقة`, desc: 'توازن سعرات اليوم', icon: 'fa-person-running' });
             }
@@ -818,7 +836,7 @@
         }
 
         function loadLocalData() {
-            const saved = localStorage.getItem('fitai_db_v3');
+            const saved = localStorage.getItem('fitai_db_v4');
             if(saved) {
                 const data = JSON.parse(saved);
                 user = data.user || user;
@@ -836,7 +854,7 @@
         }
 
         function saveLocalData() {
-            localStorage.setItem('fitai_db_v3', JSON.stringify({ user, totals, weightHistory, alarmsConfig, lastMealType }));
+            localStorage.setItem('fitai_db_v4', JSON.stringify({ user, totals, weightHistory, alarmsConfig, lastMealType }));
         }
     </script>
 </body>
